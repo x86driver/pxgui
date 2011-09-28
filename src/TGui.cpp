@@ -1,6 +1,5 @@
 //---------------------------------------------------------------------------
 #include <iostream>
-#include <windows.h>
 
 #include "TGui.h"
 #include "sdlw.h"
@@ -16,7 +15,7 @@ TGui::TGui(SDL_Surface * screen)
 	SDL_PixelFormat *fmt = screen->format;
 	surface = SDL_CreateRGBSurface(SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE|SDL_HWACCEL|SDL_PREALLOC, screen->w, screen->h, fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
 	if(surface == NULL) {
-		MessageBox(NULL,"Error creating main GUI surface","Error",MB_OK|MB_ICONERROR);
+		printf("Error creating main GUI surface\n");
 		exit(-1);
 	}
 
@@ -35,12 +34,12 @@ TGui::~TGui()
 	//TODO: Add your source code here
 }
 
-void __fastcall TGui::RedrawElements()
+void  TGui::RedrawElements()
 {
 	//TODO: Add your source code here
 }
 
-void __fastcall TGui::AddElement(TGuiElement * Element)
+void  TGui::AddElement(TGuiElement * Element)
 {
 	if(Element == NULL) return;
 
@@ -57,7 +56,7 @@ void __fastcall TGui::AddElement(TGuiElement * Element)
 	Redraw();
 }
 
-void __fastcall TGui::RemoveElement(TGuiElement * Element)
+void  TGui::RemoveElement(TGuiElement * Element)
 {
 	int i;
 	TGuiElement *e;
@@ -84,7 +83,7 @@ void __fastcall TGui::RemoveElement(TGuiElement * Element)
 	}
 }
 
-void __fastcall TGui::BlitAll()
+void  TGui::BlitAll()
 {
 	int i = 0;
 	while(zList[i]) {
@@ -93,14 +92,14 @@ void __fastcall TGui::BlitAll()
 	}
 }
 
-void __fastcall TGui::Blit(char * name)
+void  TGui::Blit(char * name)
 {
 	//TODO: Add your source code here
 }
 
 // Redraw iterates through elements list looking for bInvalidRect flag
 // and computes one global dirty rectangle for updating changes 
-void __fastcall TGui::Redraw()
+void  TGui::Redraw()
 {
 	// find the smallest possible update rectangle
 	//   [sx,sy]----+
@@ -154,13 +153,13 @@ void __fastcall TGui::Redraw()
 	SDL_Flip(screen);
 }
 
-void __fastcall TGui::SetFocus(char * name)
+void  TGui::SetFocus(char * name)
 {
 	//TODO: Add your source code here
 }
 
 // Looks up the first topmost clicked Element end brings it to front
-void __fastcall TGui::OnMouseDown(int x, int y)
+void  TGui::OnMouseDown(int x, int y)
 {
 	int i;
 	TGuiElement *e;
@@ -221,7 +220,7 @@ void __fastcall TGui::OnMouseDown(int x, int y)
 	Redraw();
 }
 
-void __fastcall TGui::OnMouseUp(int x, int y)
+void  TGui::OnMouseUp(int x, int y)
 {
 	int i=0;
 
@@ -233,7 +232,7 @@ void __fastcall TGui::OnMouseUp(int x, int y)
 	}
 }
 
-void __fastcall TGui::Drag(int xrel, int yrel)
+void  TGui::Drag(int xrel, int yrel)
 {
 	if( zList[Count-1]->bDragable ) {
 		zList[Count-1]->Drag(xrel, yrel);

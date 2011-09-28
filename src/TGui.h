@@ -4,7 +4,7 @@
 #define TGuiH
 //-----------------------------------------------------------------------------------
 
-#include <sdl.h>
+#include <SDL.h>
 
 typedef class TGui;
 
@@ -33,16 +33,16 @@ public:
 	SDL_Surface *surface;
 	TGui(SDL_Surface * screen);
 	~TGui();
-	void __fastcall RedrawElements();
-	void __fastcall AddElement(TGuiElement * Element);
-	void __fastcall RemoveElement(TGuiElement * Element);
-	void __fastcall BlitAll();
-	void __fastcall Blit(char * name);
-	void __fastcall SetFocus(char * name);
-	void __fastcall Redraw();
-	void __fastcall OnMouseDown(int x, int y);
-	void __fastcall OnMouseUp(int x, int y);
-	void __fastcall Drag(int xrel, int yrel);
+	void  RedrawElements();
+	void  AddElement(TGuiElement * Element);
+	void  RemoveElement(TGuiElement * Element);
+	void  BlitAll();
+	void  Blit(char * name);
+	void  SetFocus(char * name);
+	void  Redraw();
+	void  OnMouseDown(int x, int y);
+	void  OnMouseUp(int x, int y);
+	void  Drag(int xrel, int yrel);
 	// No description
 	void OnMouseMove(int x, int y);
 };

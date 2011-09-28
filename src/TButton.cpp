@@ -31,12 +31,12 @@ TButton::~TButton()
 	free(caption);
 }
 
-void __fastcall TButton::Draw()
+void  TButton::Draw()
 {
 	DrawBtnUp();
 }
 
-void __fastcall TButton::DrawBtnUp()
+void  TButton::DrawBtnUp()
 {
 	int b = 1;
 
@@ -49,7 +49,7 @@ void __fastcall TButton::DrawBtnUp()
 	SDL_FillRect(surface, &bk, GetCol(surface, Col.CliBkg));
 }
 
-void __fastcall TButton::DrawBtnDown()
+void  TButton::DrawBtnDown()
 {
 	int b = 1;
 
@@ -62,14 +62,14 @@ void __fastcall TButton::DrawBtnDown()
 	SDL_FillRect(surface, &bk, GetCol(surface, Col.CliBkg));
 }
 
-bool __fastcall TButton::OnMouseDown()
+bool  TButton::OnMouseDown()
 {
 	DrawBtnDown();
 	bInvalidRect = true;
 	return true;
 }
 
-bool __fastcall TButton::OnMouseUp()
+bool  TButton::OnMouseUp()
 {
 	DrawBtnUp();
 	bInvalidRect = true;

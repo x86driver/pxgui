@@ -1,7 +1,6 @@
 //---------------------------------------------------------------------------
-#include <windows.h>
 
-#include "sdl.h"
+#include "SDL.h"
 #include "TGui.h"
 #include "TGuiElement.h"
 
@@ -13,7 +12,7 @@ TGuiElement::TGuiElement(TGui *Parent, int x, int y, int width, int height, char
 	SDL_PixelFormat *fmt = Parent->surface->format;
 	surface = SDL_CreateRGBSurface( SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE|SDL_SRCALPHA|SDL_HWACCEL|SDL_PREALLOC, width, height, fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
 	if(surface == NULL) {
-		MessageBox(NULL,"Error creating GuiElement surface","Error",MB_OK|MB_ICONERROR);
+		printf("Error creating GuiElement surface\n");
 		exit(-1);
 	}
 
@@ -41,7 +40,7 @@ TGuiElement::~TGuiElement()
 	SDL_FreeSurface(surface);
 }
 
-void __fastcall TGuiElement::Blit()
+void  TGuiElement::Blit()
 {
 	if(bMouseFocus)
 		SDL_SetAlpha(surface, SDL_SRCALPHA, ActiveAlpha);
@@ -52,21 +51,21 @@ void __fastcall TGuiElement::Blit()
 	dst.x = x;
 	dst.y = y;
 	if( -1 == SDL_BlitSurface( surface, NULL, Parent->surface, &dst ) ) {
-		MessageBox(NULL,"Error BlitSurface Element > Gui","Error",MB_OK|MB_ICONERROR);
+		printf("Error BlitSurface Element > Gui\n");
 	}
 }
 
-void __fastcall TGuiElement::Blit(int x, int y)
+void  TGuiElement::Blit(int x, int y)
 {
 	SDL_Rect dst;
 	dst.x = x;
 	dst.y = y;
 	if( -1 == SDL_BlitSurface( surface, NULL, Parent->surface, &dst ) ) {
-		MessageBox(NULL,"Error BlitSurface Element > Gui","Error",MB_OK|MB_ICONERROR);
+		printf("Error BlitSurface Element > Gui\n");
 	}
 }
 
-bool __fastcall TGuiElement::CheckMouse(int mx, int my)
+bool  TGuiElement::CheckMouse(int mx, int my)
 {
 	if( (mx >= x && mx <= x+width) && (my >= y && my <= y+height) ) {
 		return true;
@@ -76,7 +75,7 @@ bool __fastcall TGuiElement::CheckMouse(int mx, int my)
 	}
 }
 
-void __fastcall TGuiElement::Drag(int xrel, int yrel)
+void  TGuiElement::Drag(int xrel, int yrel)
 {
 	lastx = x;
 	lasty = y;

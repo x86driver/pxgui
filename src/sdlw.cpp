@@ -1,10 +1,8 @@
 //---------------------------------------------------------------------------
 #include <stdio.h>
-#include <conio.h>
 #include <iostream>
-#include <windows.h>
 
-#include "sdl.h"
+#include "SDL.h"
 #include "TGui.h"
 #include "sdlw.h"
 
@@ -20,7 +18,7 @@ bool LMB, MMB, RMB;
 int main(int argc, char *argv[])
 {
 	if( -1 == SDL_Init(SDL_INIT_VIDEO) ) {
-		MessageBox(NULL,"Error initializing SDL","Error",MB_OK|MB_ICONERROR);
+		printf("Error initializing SDL\n");
 		exit(-1);
 	}
 
@@ -44,13 +42,13 @@ int main(int argc, char *argv[])
 	screen = SDL_SetVideoMode(800, 600, 16, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE|SDL_HWACCEL|SDL_PREALLOC);
 	//screen = SDL_SetVideoMode(800, 600, 16, SDL_SWSURFACE|SDL_FULLSCREEN);
 	if(screen == NULL) {
-		MessageBox(NULL,"Error setting video mode!","Error",MB_OK|MB_ICONERROR);
+		printf("Error setting video mode!\n");
 		exit(-1);
 	}
 
 	background = SDL_LoadBMP("layout.bmp");
 	if(background == NULL) {
-		MessageBox(NULL,"Error creating background surfce!","Error",MB_OK|MB_ICONERROR);
+		printf("Error creating background surfce!\n");
 		exit(-1);
 	}
 

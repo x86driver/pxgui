@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 #include <string.h>
 
-#include "sdl.h"
+#include "SDL.h"
 #include "TGui.h"
 #include "TGuiElement.h"
 #include "TWindow.h"
@@ -29,13 +29,13 @@ TWindow::~TWindow()
 	//TODO: Add your source code here
 }
 
-bool __fastcall TWindow::OnMouseUp()
+bool  TWindow::OnMouseUp()
 {
     bDragable = false;
     return false;
 }
 
-bool __fastcall TWindow::OnMouseDown()
+bool  TWindow::OnMouseDown()
 {
     int mx, my;
     SDL_GetMouseState(&mx, &my);
@@ -45,7 +45,7 @@ bool __fastcall TWindow::OnMouseDown()
     return false;
 }
 
-void __fastcall TWindow::Draw()
+void  TWindow::Draw()
 {
 	int b = 1;
 	int caph = 15;

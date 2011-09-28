@@ -12,10 +12,10 @@ private:
 	SDL_Rect bkg, cap, cli;
 public:
 	TWindow(TGui *Parent, int x, int y, int width, int height, char * name, char * caption);
-	bool __fastcall OnMouseUp();
-	bool __fastcall OnMouseDown();
-	__fastcall ~TWindow();
-	void __fastcall Draw();
+	bool  OnMouseUp();
+	bool  OnMouseDown();
+	 ~TWindow();
+	void  Draw();
 };
 //-----------------------------------------------------------------------------------
 

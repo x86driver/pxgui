@@ -13,11 +13,11 @@ protected:
 	SDL_Surface * surface;
 	TGui * Parent;
 	// virtuals
-	virtual void __fastcall Draw() {};
+	virtual void  Draw() {};
 public:
 	// virtuals
-	virtual bool __fastcall OnMouseDown() { return false; }
-	virtual bool __fastcall OnMouseUp() { return false; }
+	virtual bool  OnMouseDown() { return false; }
+	virtual bool  OnMouseUp() { return false; }
 	virtual void OnMouseMove(int, int) { return; }
 	
 	int x, y, lastx, lasty;
@@ -31,10 +31,10 @@ public:
 	bool bInvalidRect;
 	TGuiElement(TGui *Parent, int x, int y, int width, int height, char *name);
 	~TGuiElement();
-	void __fastcall Blit();
-	void __fastcall Blit(int x, int y);
-	bool __fastcall CheckMouse(int mx, int my);
-	void __fastcall Drag(int xrel, int yrel);
+	void  Blit();
+	void  Blit(int x, int y);
+	bool  CheckMouse(int mx, int my);
+	void  Drag(int xrel, int yrel);
 };
 //-----------------------------------------------------------------------------------
 
