@@ -1,0 +1,26 @@
+PX-GUI v0.0.1
+-------------
+
+9.9.2003:
+=========
+
+Note:
+Originaly developed on Windows 2000 using MinGW32 and Dev-C++ IDE. There is no configure or Makefile for linux. It's all up to you, ppl. Im just silly wind0ze programmer trying to get myself outside the M$ paradigm... Anyway, this project resides in my head right now - what's done is done from scratch. It's my first GUI project and Im inventing everything from ground-up without any help or reading about GUI systems. I think that that's the right sole to make something completely new :)
+
+
+Requirements:
+SDL 1.2.6 (www.libsdl.org)
+C++ compiler
+
+
+What's inside:
+- basic button (no click handlers yet, only redraw on mouse click)
+- basic draggable window with z-ordering and alpha blending (no font support yet) 
+- mouse focusing
+
+
+ToDo:
+- everything ;)
+
+
+Ptaczek.
