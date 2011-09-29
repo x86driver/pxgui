@@ -1,12 +1,9 @@
 //---------------------------------------------------------------------------
-#include <iostream>
-
+#include <stdlib.h>
 #include "TGui.h"
 #include "sdlw.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-
-using std::cout;
 
 TGui *Gui;
 
@@ -190,7 +187,7 @@ void  TGui::OnMouseDown(int x, int y)
 				zList[j]->bMouseFocus = false;
 
 			zList[i]->bMouseFocus = true;
-			cout << zList[i]->name << " got mouse focus.\n";
+			printf("%s got mouse focus.\n", zList[i]->name);
 			// shift elements by one to free the last z-slot for this one
 			e = zList[i];
 			while( zList[i+1] != NULL )	{

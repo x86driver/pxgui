@@ -30,7 +30,7 @@ public:
 	bool bMouseFocus;
 	bool bInvalidRect;
 	TGuiElement(TGui *Parent, int x, int y, int width, int height, char *name);
-	~TGuiElement();
+	virtual ~TGuiElement();
 	void  Blit();
 	void  Blit(int x, int y);
 	bool  CheckMouse(int mx, int my);

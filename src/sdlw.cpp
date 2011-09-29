@@ -1,6 +1,9 @@
 //---------------------------------------------------------------------------
+#include <cstdlib>
+#include <cctype>
+
 #include <stdio.h>
-#include <iostream>
+#include <stdlib.h>
 
 #include "SDL.h"
 #include "TGui.h"
@@ -10,7 +13,8 @@
 
 #pragma package(smart_init)
 
-using std::cout;
+#define SCREEN_WIDTH 480
+#define SCREEN_HEIGHT 272
 
 SDL_Surface *screen, *background;
 bool LMB, MMB, RMB;
@@ -27,19 +31,19 @@ int main(int argc, char *argv[])
 	// get video info
 	const SDL_VideoInfo *inf;
 	inf = SDL_GetVideoInfo();
-	cout << "hw_available: " << inf->hw_available << "\n";
-	cout << "wm_available: " << inf->wm_available << "\n";
-	cout << "blit_hw: " << inf->blit_hw << "\n";
-	cout << "blit_hw_CC: " << inf->blit_hw_CC << "\n";
-	cout << "blit_hw_A: " << inf->blit_hw_A << "\n";
-	cout << "blit_sw: " << inf->blit_sw << "\n";
-	cout << "blit_sw_CC: " << inf->blit_sw_CC << "\n";
-	cout << "blit_sw_A: " << inf->blit_sw_A << "\n";
-	cout << "blit_fill: " << inf->blit_fill << "\n";
-	cout << "video_mem: " << inf->video_mem << "\n";
-	cout << "BitsPerPixel: " << (int)inf->vfmt->BitsPerPixel << "\n\n";
+	printf("hw_available: %d\n", inf->hw_available);
+	printf("wm_available: %d\n", inf->wm_available);
+	printf("blit_hw: %d\n", inf->blit_hw);
+	printf("blit_hw_CC: %d\n", inf->blit_hw_CC);
+	printf("blit_hw_A: %d\n", inf->blit_hw_A);
+	printf("blit_sw: %d\n", inf->blit_sw);
+	printf("blit_sw_CC: %d\n", inf->blit_sw_CC);
+	printf("blit_sw_A: %d\n", inf->blit_sw_A);
+	printf("blit_fill: %d\n", inf->blit_fill);
+	printf("video_mem: %d\n", inf->video_mem);
+	printf("BitsPerPixel: %d\n\n", (int)inf->vfmt->BitsPerPixel);
 
-	screen = SDL_SetVideoMode(800, 600, 16, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE|SDL_HWACCEL|SDL_PREALLOC);
+	screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 16, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE|SDL_HWACCEL|SDL_PREALLOC);
 	//screen = SDL_SetVideoMode(800, 600, 16, SDL_SWSURFACE|SDL_FULLSCREEN);
 	if(screen == NULL) {
 		printf("Error setting video mode!\n");
@@ -66,9 +70,9 @@ int main(int argc, char *argv[])
 	Gui->AddElement( new TButton(Gui, 205, 571, 60, 18, "btn4", "CLICK") );
 	Gui->AddElement( new TButton(Gui, 270, 571, 60, 18, "btn5", "CLICK") );
 
-	Gui->AddElement( new TWindow(Gui, 10, 10, 300, 200, "wnd1", "Hello!") );
-	Gui->AddElement( new TWindow(Gui, 30, 30, 400, 250, "wnd2", "Hello w2!") );
-	Gui->AddElement( new TWindow(Gui, 50, 50, 500, 100, "wnd3", "Hello w3!") );
+//	Gui->AddElement( new TWindow(Gui, 10, 10, 200, 200, "wnd1", "Hello!") );
+//	Gui->AddElement( new TWindow(Gui, 30, 30, 150, 150, "wnd2", "Hello w2!") );
+	Gui->AddElement( new TWindow(Gui, 0, 0, 480, 272, "wnd3", "Hello w3!") );
 
 	// and show the results
 	Gui->Redraw();
@@ -91,7 +95,7 @@ int main(int argc, char *argv[])
 					case SDL_BUTTON_LEFT:
 						LMB = true;
 						Gui->OnMouseDown(ev.motion.x, ev.motion.y);
-						//cout << "LMB Down\n";
+						//printf << "LMB Down\n";
 						break;
 					case SDL_BUTTON_MIDDLE:
 						MMB = true;
@@ -109,7 +113,7 @@ int main(int argc, char *argv[])
 					case SDL_BUTTON_LEFT:
 						LMB = false;
 						Gui->OnMouseUp(ev.motion.x, ev.motion.y);
-						//cout << "LMB Up\n";
+						//printf << "LMB Up\n";
 						break;
 					case SDL_BUTTON_MIDDLE:
 						MMB = false;
