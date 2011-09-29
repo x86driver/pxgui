@@ -1,0 +1,3 @@
+#!/bin/sh
+adb push /home/LinDoremi/telecow/out/target/product/leo/system/bin/gui /system/bin
+
