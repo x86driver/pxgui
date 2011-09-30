@@ -23,7 +23,7 @@ TGui::TGui(SDL_Surface * screen)
 	Count = 0;
 
 	dirty.x = 0; dirty.y = 0;
-	dirty.w = 800; dirty.h = 600;
+	dirty.w = 480; dirty.h = 272;
 }
 
 TGui::~TGui()
@@ -108,8 +108,8 @@ void  TGui::Redraw()
 	int i = 0;
 	int sx, sy, dx, dy, xl, xh, yl, yh;
 	xl = xh = yl = yh = 0;
-	sx = 800; // set dirty to max
-	sy = 600;
+	sx = 480; // set dirty to max
+	sy = 272;
 	dx = 0;
 	dy = 0;
 
@@ -131,11 +131,18 @@ void  TGui::Redraw()
 		i++;
 	}
 	// compute the global dirty rectangle
+    if (sx == 480 && sy == 272) {
+        dirty.x = dirty.y = 0;
+        dirty.w = 480;
+        dirty.h = 272;
+    } else {
 	dirty.x = sx;
 	dirty.y = sy;
 	dirty.w = dx-sx;
 	dirty.h = dy-sy;
+    }
 	//cout << "DRCT: " << dirty.x << ", " << dirty.y << ", " << dirty.w << ", " << dirty.h << "\n";
+    printf("DRCT: %d, %d, %d, %d\n", dirty.x, dirty.y, dirty.w, dirty.h);
 
 	// restore background
 	SDL_BlitSurface( background, &dirty, surface, &dirty );

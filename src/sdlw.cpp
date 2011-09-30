@@ -81,6 +81,7 @@ int main(int argc, char *argv[])
 	bool Done = false;
 	SDL_Event ev;
 
+    SDL_ShowCursor(SDL_DISABLE);
     SDL_UpdateRect(screen,0,0,0,0);
 
 	while( !Done  )

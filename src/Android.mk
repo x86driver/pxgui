@@ -10,6 +10,7 @@ LOCAL_SRC_FILES:= \
 
 LOCAL_C_INCLUDES := /home/shane/pro/libsdl/SDL-1.2.14/include
 LOCAL_STATIC_LIBRARIES := libSDL
+LOCAL_SHARED_LIBRARIES := libts
 
 LOCAL_MODULE:= gui
 
