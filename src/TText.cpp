@@ -9,10 +9,9 @@
 #define CHAR_SPACING 3
 #define LINE_SPACING 3
 
-#define FONT_SIZE 16
 #define FONT_FILE "/usr/share/cups/fonts/Monospace"
 
-TText::TText(TGui *Parent, int x, int y, char *name, char *str)
+TText::TText(TGui *Parent, int x, int y, int fsize, char *name, char *str)
 //    : TGuiElement(Parent, x, y, (8+CHAR_SPACING)*strlen(str), (8+LINE_SPACING), name)
     : TGuiElement(Parent, x, y, 100, 30, name)
 {
@@ -20,7 +19,8 @@ TText::TText(TGui *Parent, int x, int y, char *name, char *str)
 
     FT_Init_FreeType( &library );
     FT_New_Face( library, FONT_FILE, 0, &face );
-    FT_Set_Char_Size(face, FONT_SIZE*32, 0, 400, 0);
+    //FT_Set_Char_Size(face, FONT_SIZE, 0, 400, 0);
+    FT_Set_Pixel_Sizes(face, fsize, 0);
     slot = face->glyph;
 
     pen.x =  0;
@@ -88,29 +88,34 @@ void TText::draw_bitmap( FT_Bitmap *bitmap, FT_Int x, FT_Int y)
 void TText::drawtext(wchar_t *text)
 {
     int num_chars, n;
+    int x, y;
     num_chars = wcslen( text );
 
     for ( n = 0; n < num_chars; ++n ) {
         FT_Set_Transform( face, NULL, &pen );
         FT_Load_Char( face, text[n], FT_LOAD_RENDER );
 
-        draw_bitmap( &slot->bitmap,
-                 slot->bitmap_left,
-                 height - slot->bitmap_top );
+        x = slot->bitmap_left;
+        y = height - slot->bitmap_top - 5;
+        printf("draw on (%d, %d)\n", x, y);
+        draw_bitmap( &slot->bitmap, x, y);
+//                 slot->bitmap_left,
+//                 height - slot->bitmap_top );
 
         pen.x += slot->advance.x;
         pen.y += slot->advance.y;
     }
 
     // move to new line
-    pen.y -= FONT_SIZE *2 * 64;
-    pen.x  = 50 * 64;
+    // FIXME: We don't support multi-line yet, thus we comment it.
+    // pen.y -= FONT_SIZE *2 * 64;
+    // pen.x  = 50 * 64;
 
 }
 
 void TText::Draw()
 {
-    wchar_t text[] = L"Fuck";
+    wchar_t text[] = L"Fucky";
     drawtext(text);
 }
 
