@@ -5,6 +5,7 @@
 #include "TText.h"
 #include "utils.h"
 #include "font.h"
+#include "sdlw.h"
 
 #define CHAR_SPACING 3
 #define LINE_SPACING 3
@@ -61,6 +62,7 @@ void TText::draw_bitmap( FT_Bitmap *bitmap, FT_Int x, FT_Int y)
     FT_Int  i, j, p, q;
     FT_Int  x_max = x + bitmap->width;
     FT_Int  y_max = y + bitmap->rows;
+    int row, pixel;
 
     if (SDL_MUSTLOCK(surface)) {
         if (SDL_LockSurface(surface) < 0) {
@@ -69,6 +71,18 @@ void TText::draw_bitmap( FT_Bitmap *bitmap, FT_Int x, FT_Int y)
         }
     }
 
+    for (j = y, row = 0; row < face->glyph->bitmap.rows; ++j, ++row) {
+        for (i = x, pixel = 0; pixel < face->glyph->bitmap.width; ++i, ++pixel){
+            if (face->glyph->bitmap.buffer
+                    [row * face->glyph->bitmap.pitch +
+                     pixel / 8] & (0xC0 >> (pixel % 8))) {
+                color = SDL_MapRGB(surface->format, 255, 0, 0);
+                putpixel(surface, i, j, color);
+            }
+        }
+    }
+
+#if 0
     for ( i = x, p = 0; i < x_max; i++, p++ ) {
         for ( j = y, q = 0; j < y_max; j++, q++ ) {
             if ( i >= width || j >= height )
@@ -79,6 +93,7 @@ void TText::draw_bitmap( FT_Bitmap *bitmap, FT_Int x, FT_Int y)
             }
         }
     }
+#endif
 
     if (SDL_MUSTLOCK(surface)) {
         SDL_UnlockSurface(surface);
@@ -90,10 +105,14 @@ void TText::drawtext(wchar_t *text)
     int num_chars, n;
     int x, y;
     num_chars = wcslen( text );
+    FT_UInt glyph_index;
 
     for ( n = 0; n < num_chars; ++n ) {
         FT_Set_Transform( face, NULL, &pen );
-        FT_Load_Char( face, text[n], FT_LOAD_RENDER );
+        glyph_index = FT_Get_Char_Index(face, text[n]);
+        FT_Load_Glyph(face, glyph_index, FT_LOAD_DEFAULT);
+        FT_Render_Glyph(face->glyph, FT_RENDER_MODE_MONO);
+//        FT_Load_Char( face, text[n], FT_LOAD_RENDER );
 
         x = slot->bitmap_left;
         y = height - slot->bitmap_top - 5;
@@ -116,6 +135,14 @@ void TText::drawtext(wchar_t *text)
 void TText::Draw()
 {
     wchar_t text[] = L"Fucky";
+    SDL_Rect r;
+
+    r.x = x;
+    r.y = y;
+    r.w = width;
+    r.h = height;
+    SDL_BlitSurface(background, &r, surface, NULL);
+
     drawtext(text);
 }
 
