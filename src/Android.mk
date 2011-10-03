@@ -12,7 +12,8 @@ LOCAL_SRC_FILES:= \
     font_8x8.c
 
 LOCAL_C_INCLUDES := /home/shane/pro/libsdl/SDL-1.2.14/include
-LOCAL_STATIC_LIBRARIES := libSDL
+LOCAL_C_INCLUDES += /home/shane/source/include/ /home/shane/source/include/freetype2
+LOCAL_STATIC_LIBRARIES := libSDL libfreetype
 LOCAL_SHARED_LIBRARIES := libts
 
 LOCAL_MODULE:= gui
