@@ -11,7 +11,7 @@ class TGuiElement
 protected:
 	unsigned char ActiveAlpha, PassiveAlpha;
 	SDL_Surface * surface;
-	TGui * Parent;
+	class TGui * Parent;
 	// virtuals
 	virtual void  Draw() {};
 public:
