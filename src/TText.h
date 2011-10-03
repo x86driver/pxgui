@@ -7,7 +7,7 @@
 class TText : public TGuiElement
 {
 public:
-    TText(TGui *Parent, int x, int y, char *name, char *str);
+    TText(TGui *Parent, int x, int y, int fsize, char *name, char *str);
     ~TText();
     void Draw();
 private:
