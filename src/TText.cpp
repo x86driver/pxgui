@@ -3,13 +3,14 @@
 #include "TGuiElement.h"
 #include "TText.h"
 #include "utils.h"
+#include "font.h"
 
 #define CHAR_SPACING 3
 #define LINE_SPACING 3
 
-TText::TText(TGui *Parent, int x, int y, int width, int height, char *name, char *str)
-    : TGuiElement(Parent, x, y, width, height, name)
-//    : TGuiElement(Parent, x, y, (8+CHAR_SPACING)*strlen(str), (8+LINE_SPACING), name)
+TText::TText(TGui *Parent, int x, int y, char *name, char *str)
+//    : TGuiElement(Parent, x, y, width, height, name)
+    : TGuiElement(Parent, x, y, (8+CHAR_SPACING)*strlen(str), (8+LINE_SPACING), name)
 {
     this->str = strdup(str);
 
@@ -30,7 +31,16 @@ TText::~TText()
     free(str);
 }
 
-#if 1
+uint32_t get_font(unsigned char ascii)
+{
+    uint32_t inc = static_cast<uint32_t>(ascii);
+    return inc * 8;
+}
+
+const struct font_desc *TText::fonts[] = {
+    &font_vga_8x8
+};
+
 void TText::Draw()
 {
     Uint32 yellow = SDL_MapRGB(surface->format, 255, 0, 0);
@@ -42,10 +52,20 @@ void TText::Draw()
         }
     }
 
+    unsigned char ch;
+    const unsigned char *chptr = static_cast<const unsigned char*>(fonts[0]->data);
+    chptr += get_font('A');
+
     int x, y;
-    for (y = 0; y < height; ++y) {
-        for (x = 0; x < width; ++x) {
-            putpixel(surface, x, y, yellow);
+    for (y = 0; y < 8; ++y) {
+        x = 0;
+        ch = *chptr++;
+        while (ch) {
+            if (ch & 1) {
+                putpixel(surface, x, y, yellow);
+            }
+            ch >>= 1;
+            ++x;
         }
     }
 
@@ -53,20 +73,3 @@ void TText::Draw()
         SDL_UnlockSurface(surface);
     }
 }
-#endif
-
-#if 0
-void TText::Draw()
-{
-    int b = 1;
-
-    SDL_Rect tl = {0, 0, width, height};
-    SDL_Rect br = {b, b, width-b, height-b};
-    SDL_Rect bk = {b, b, width-2*b, height-2*b};
-
-    SDL_FillRect(surface, &tl, GetCol(surface, Col.Dim3D));
-    SDL_FillRect(surface, &br, GetCol(surface, Col.Light3D));
-    SDL_FillRect(surface, &bk, GetCol(surface, Col.CliBkg));
-}
-
-#endif
