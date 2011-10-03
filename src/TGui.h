@@ -22,6 +22,7 @@ typedef struct {
 #include "TGuiElement.h"
 #include "TButton.h"
 #include "TWindow.h"
+#include "TText.h"
 
 class TGui
 {
@@ -45,7 +46,6 @@ public:
 	void  Drag(int xrel, int yrel);
 	// No description
 	void OnMouseMove(int x, int y);
-    void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel);
 };
 //-----------------------------------------------------------------------------------
 
