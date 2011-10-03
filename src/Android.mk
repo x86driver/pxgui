@@ -6,7 +6,9 @@ LOCAL_SRC_FILES:= \
     TButton.cpp \
     TGui.cpp \
     TGuiElement.cpp \
-    TWindow.cpp
+    TWindow.cpp \
+    TText.cpp \
+    utils.cpp
 
 LOCAL_C_INCLUDES := /home/shane/pro/libsdl/SDL-1.2.14/include
 LOCAL_STATIC_LIBRARIES := libSDL
