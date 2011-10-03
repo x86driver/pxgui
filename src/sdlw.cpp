@@ -65,10 +65,10 @@ int main(int argc, char *argv[])
 
 	// add few elements
 	Gui->AddElement( new TButton(Gui, 10, 80, 60, 18, "btn1", "CLICK") );
-	Gui->AddElement( new TButton(Gui, 75, 571, 60, 18, "btn2", "CLICK") );
-	Gui->AddElement( new TButton(Gui, 140, 571, 60, 18, "btn3", "CLICK") );
-	Gui->AddElement( new TButton(Gui, 205, 571, 60, 18, "btn4", "CLICK") );
-	Gui->AddElement( new TButton(Gui, 270, 571, 60, 18, "btn5", "CLICK") );
+//	Gui->AddElement( new TButton(Gui, 75, 571, 60, 18, "btn2", "CLICK") );
+//	Gui->AddElement( new TButton(Gui, 140, 571, 60, 18, "btn3", "CLICK") );
+//	Gui->AddElement( new TButton(Gui, 205, 571, 60, 18, "btn4", "CLICK") );
+//	Gui->AddElement( new TButton(Gui, 270, 571, 60, 18, "btn5", "CLICK") );
 
 	Gui->AddElement( new TWindow(Gui, 10, 10, 50, 50, "wnd1", "Hello!") );
 //	Gui->AddElement( new TWindow(Gui, 30, 30, 150, 150, "wnd2", "Hello w2!") );
