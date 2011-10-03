@@ -6,8 +6,6 @@
 
 #include <SDL.h>
 
-typedef class TGui;
-
 typedef struct {
 	SDL_Color Border;
 	SDL_Color CapBkg;
