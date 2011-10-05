@@ -13,7 +13,8 @@ LOCAL_SRC_FILES:= \
 
 LOCAL_C_INCLUDES := /home/shane/pro/libsdl/SDL-1.2.14/include
 LOCAL_C_INCLUDES += /home/shane/source/include/ /home/shane/source/include/freetype2
-LOCAL_STATIC_LIBRARIES := libSDL libfreetype
+LOCAL_C_INCLUDES += external/sdl_ttf
+LOCAL_STATIC_LIBRARIES := libSDL libSDL_ttf libfreetype
 LOCAL_SHARED_LIBRARIES := libts
 
 LOCAL_MODULE:= gui
