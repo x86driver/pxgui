@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 //	Gui->AddElement( new TWindow(Gui, 30, 30, 150, 150, "wnd2", "Hello w2!") );
 //	Gui->AddElement( new TWindow(Gui, 0, 0, 480, 272, "wnd3", "Hello w3!") );
 
-    Gui->AddElement( new TText(Gui, 50, 50, 20, "text1", "Fuck") );
+    Gui->AddElement( new TText(Gui, 50, 50, 24, "text1", "Fuck") );
 
 	// and show the results
 	Gui->Redraw();

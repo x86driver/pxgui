@@ -1,5 +1,6 @@
 #include <string.h>
 #include <wchar.h>
+#include <SDL_ttf.h>
 #include "TGui.h"
 #include "TGuiElement.h"
 #include "TText.h"
@@ -10,7 +11,7 @@
 #define CHAR_SPACING 3
 #define LINE_SPACING 3
 
-#define FONT_FILE "/usr/share/cups/fonts/Monospace"
+#define DEFAULT_FONT "/usr/share/cups/fonts/Monospace"
 
 TText::TText(TGui *Parent, int x, int y, int fsize, char *name, char *str)
 //    : TGuiElement(Parent, x, y, (8+CHAR_SPACING)*strlen(str), (8+LINE_SPACING), name)
@@ -18,20 +19,17 @@ TText::TText(TGui *Parent, int x, int y, int fsize, char *name, char *str)
 {
     this->str = strdup(str);
 
-    FT_Init_FreeType( &library );
-    FT_New_Face( library, FONT_FILE, 0, &face );
-    //FT_Set_Char_Size(face, FONT_SIZE, 0, 400, 0);
-    FT_Set_Pixel_Sizes(face, fsize, 0);
-    slot = face->glyph;
+    if ( TTF_Init() < 0 ) {
+        fprintf(stderr, "Couldn't initialize TTF: %s\n",SDL_GetError());
+        SDL_Quit();
+        return;
+    }
 
-    pen.x =  0;
-    pen.y = 0;
-
-    FT_Error error = FT_Select_Charmap( face, FT_ENCODING_UNICODE);
-    if ( error != 0 ) {
-        printf("select font error");
-        perror("select font");
-        exit(1);
+    font = TTF_OpenFont(DEFAULT_FONT, 24);
+    if ( font == NULL ) {
+        fprintf(stderr, "Couldn't load %d pt font from %s: %s\n",
+                    24, DEFAULT_FONT, SDL_GetError());
+//        cleanup(2);
     }
 
     SDL_SetAlpha(surface, SDL_SRCALPHA, 255);
@@ -42,8 +40,31 @@ TText::TText(TGui *Parent, int x, int y, int fsize, char *name, char *str)
 TText::~TText()
 {
     free(str);
-    FT_Done_Face(face);
-    FT_Done_FreeType(library);
+    SDL_FreeSurface(text);
+}
+
+void TText::Draw()
+{
+    SDL_Color backcolor = {0xff, 0, 0, 0};
+    SDL_Color forecolor = {0, 0, 0xff, 0};
+    SDL_Rect dstrect;
+
+    text = TTF_RenderText_Shaded(font, str, forecolor, backcolor);
+    if ( text == NULL ) {
+        fprintf(stderr, "Couldn't render text: %s\n", SDL_GetError());
+        TTF_CloseFont(font);
+    }
+
+    dstrect.x = 0;
+    dstrect.y = 0;
+    dstrect.w = text->w;
+    dstrect.h = text->h;
+
+    if ( SDL_BlitSurface(text, NULL, surface, &dstrect) < 0 ) {
+        fprintf(stderr, "Couldn't blit text to display: %s\n", 
+                                SDL_GetError());
+        TTF_CloseFont(font);
+    }
 }
 
 uint32_t get_font(unsigned char ascii)
@@ -71,6 +92,7 @@ void TText::draw_bitmap( FT_Bitmap *bitmap, FT_Int x, FT_Int y)
         }
     }
 
+#if 0
     for (j = y, row = 0; row < face->glyph->bitmap.rows; ++j, ++row) {
         for (i = x, pixel = 0; pixel < face->glyph->bitmap.width; ++i, ++pixel){
             if (face->glyph->bitmap.buffer
@@ -81,8 +103,9 @@ void TText::draw_bitmap( FT_Bitmap *bitmap, FT_Int x, FT_Int y)
             }
         }
     }
+#endif
 
-#if 0
+#if 1
     for ( i = x, p = 0; i < x_max; i++, p++ ) {
         for ( j = y, q = 0; j < y_max; j++, q++ ) {
             if ( i >= width || j >= height )
@@ -100,6 +123,7 @@ void TText::draw_bitmap( FT_Bitmap *bitmap, FT_Int x, FT_Int y)
     }
 }
 
+#if 0
 void TText::drawtext(wchar_t *text)
 {
     int num_chars, n;
@@ -109,14 +133,14 @@ void TText::drawtext(wchar_t *text)
 
     for ( n = 0; n < num_chars; ++n ) {
         FT_Set_Transform( face, NULL, &pen );
-        glyph_index = FT_Get_Char_Index(face, text[n]);
-        FT_Load_Glyph(face, glyph_index, FT_LOAD_DEFAULT);
-        FT_Render_Glyph(face->glyph, FT_RENDER_MODE_MONO);
-//        FT_Load_Char( face, text[n], FT_LOAD_RENDER );
+//        glyph_index = FT_Get_Char_Index(face, text[n]);
+//        FT_Load_Glyph(face, glyph_index, FT_LOAD_DEFAULT);
+//        FT_Render_Glyph(face->glyph, FT_RENDER_MODE_MONO);
+        FT_Load_Char( face, text[n], FT_LOAD_RENDER );
 
         x = slot->bitmap_left;
         y = height - slot->bitmap_top - 5;
-        printf("draw on (%d, %d)\n", x, y);
+        printf("orignal draw on (%d, %d)\n", slot->bitmap_left, slot->bitmap_top);
         draw_bitmap( &slot->bitmap, x, y);
 //                 slot->bitmap_left,
 //                 height - slot->bitmap_top );
@@ -131,7 +155,9 @@ void TText::drawtext(wchar_t *text)
     // pen.x  = 50 * 64;
 
 }
+#endif
 
+#if 0
 void TText::Draw()
 {
     wchar_t text[] = L"Fucky";
@@ -141,10 +167,12 @@ void TText::Draw()
     r.y = y;
     r.w = width;
     r.h = height;
-    SDL_BlitSurface(background, &r, surface, NULL);
-
+//    SDL_BlitSurface(background, &r, surface, NULL);
+    r.x = r.y = 0;
+    SDL_FillRect(surface, &r, SDL_MapRGB(surface->format, 0, 255, 0));
     drawtext(text);
 }
+#endif
 
 #if 0
 void TText::Draw()

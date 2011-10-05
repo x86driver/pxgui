@@ -1,6 +1,7 @@
 #ifndef TTEXTH
 #define TTEXTH
 
+#include <SDL_ttf.h>
 #include <ft2build.h>
 #include <freetype2/freetype/freetype.h>
 
@@ -13,13 +14,11 @@ public:
 private:
     char *str;
     TColors Col;
+    SDL_Surface *text;
+    TTF_Font *font;
     static const struct font_desc *fonts[];
 
 // FreeType
-    FT_Library library;
-    FT_Face face;
-    FT_GlyphSlot slot;
-    FT_Vector pen;
     void drawtext(wchar_t *text);
     void draw_bitmap( FT_Bitmap *bitmap, FT_Int x, FT_Int y);
 };
