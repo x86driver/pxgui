@@ -11,10 +11,13 @@ public:
     TText(TGui *Parent, int x, int y, int fsize, char *name, char *str);
     ~TText();
     void Draw();
+    void setTextVisible(bool visible);
 private:
     char *str;
+    bool visible;
     TColors Col;
     SDL_Surface *text;
+    SDL_Rect dstrect;
     TTF_Font *font;
     static const struct font_desc *fonts[];
 

@@ -17,7 +17,11 @@ TText::TText(TGui *Parent, int x, int y, int fsize, char *name, char *str)
 //    : TGuiElement(Parent, x, y, (8+CHAR_SPACING)*strlen(str), (8+LINE_SPACING), name)
     : TGuiElement(Parent, x, y, 100, 30, name)
 {
+    SDL_Color backcolor = {0xff, 0, 0, 0};
+    SDL_Color forecolor = {0, 0, 0xff, 0};
+
     this->str = strdup(str);
+    visible = true;
 
     if ( TTF_Init() < 0 ) {
         fprintf(stderr, "Couldn't initialize TTF: %s\n",SDL_GetError());
@@ -29,8 +33,20 @@ TText::TText(TGui *Parent, int x, int y, int fsize, char *name, char *str)
     if ( font == NULL ) {
         fprintf(stderr, "Couldn't load %d pt font from %s: %s\n",
                     24, DEFAULT_FONT, SDL_GetError());
-//        cleanup(2);
     }
+
+    text = TTF_RenderText_Shaded(font, str, forecolor, backcolor);
+    if ( text == NULL ) {
+        fprintf(stderr, "Couldn't render text: %s\n", SDL_GetError());
+        TTF_CloseFont(font);
+    }
+
+    dstrect.x = 0;
+    dstrect.y = 0;
+    dstrect.w = text->w;
+    dstrect.h = text->h;
+
+    TTF_CloseFont(font);
 
     SDL_SetAlpha(surface, SDL_SRCALPHA, 255);
 
@@ -46,25 +62,23 @@ TText::~TText()
 void TText::Draw()
 {
     SDL_Color backcolor = {0xff, 0, 0, 0};
-    SDL_Color forecolor = {0, 0, 0xff, 0};
-    SDL_Rect dstrect;
 
-    text = TTF_RenderText_Shaded(font, str, forecolor, backcolor);
-    if ( text == NULL ) {
-        fprintf(stderr, "Couldn't render text: %s\n", SDL_GetError());
-        TTF_CloseFont(font);
-    }
-
-    dstrect.x = 0;
-    dstrect.y = 0;
-    dstrect.w = text->w;
-    dstrect.h = text->h;
-
-    if ( SDL_BlitSurface(text, NULL, surface, &dstrect) < 0 ) {
-        fprintf(stderr, "Couldn't blit text to display: %s\n", 
+    if (visible == true) {
+        if ( SDL_BlitSurface(text, NULL, surface, &dstrect) < 0 ) {
+            fprintf(stderr, "Couldn't blit text to display: %s\n",
                                 SDL_GetError());
-        TTF_CloseFont(font);
+        }
+    } else {
+        printf("I'm invisible!\n");
+        SDL_FillRect(surface, NULL, GetCol(surface, backcolor));
     }
+}
+
+void TText::setTextVisible(bool visible)
+{
+    this->visible = visible;
+    bInvalidRect = true;
+    Draw();
 }
 
 uint32_t get_font(unsigned char ascii)
