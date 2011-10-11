@@ -8,6 +8,7 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
+extern TText *mytext;
 
 TButton::TButton(TGui *Parent, int x, int y, int width, int height, char * name, char * caption) : TGuiElement(Parent, x, y, width, height, name)
 {
@@ -73,5 +74,8 @@ bool  TButton::OnMouseUp()
 {
 	DrawBtnUp();
 	bInvalidRect = true;
+    static bool showtext = false;
+    mytext->setTextVisible(showtext);
+    showtext -= 1;
 	return true;
 }
