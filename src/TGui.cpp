@@ -113,7 +113,7 @@ void  TGui::Redraw()
 	dx = 0;
 	dy = 0;
 
-#if 0
+#if 1
 	while(zList[i]) {
 		if(zList[i]->bInvalidRect) {
 			xl = zList[i]->x < zList[i]->lastx ? zList[i]->x : zList[i]->lastx;
@@ -144,9 +144,11 @@ void  TGui::Redraw()
 	dirty.h = dy-sy;
     }
 #endif
+#if 0
     dirty.x = dirty.y = 0;
     dirty.w = 480;
     dirty.h = 272;
+#endif
 
 	//cout << "DRCT: " << dirty.x << ", " << dirty.y << ", " << dirty.w << ", " << dirty.h << "\n";
     printf("DRCT: %d, %d, %d, %d\n", dirty.x, dirty.y, dirty.w, dirty.h);
@@ -162,6 +164,24 @@ void  TGui::Redraw()
 
 	// and flip it
 	SDL_Flip(screen);
+}
+
+void  TGui::RedrawAll()
+{
+    dirty.x = dirty.y = 0;
+    dirty.w = 480;
+    dirty.h = 272;
+
+    SDL_BlitSurface( background, &dirty, surface, &dirty );
+
+    // draw all elements
+    BlitAll();
+
+    // update main screen area
+    SDL_BlitSurface( surface, &dirty, screen, &dirty );
+
+    // and flip it
+    SDL_Flip(screen);
 }
 
 void  TGui::SetFocus(char * name)

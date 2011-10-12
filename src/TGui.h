@@ -39,6 +39,7 @@ public:
 	void  Blit(char * name);
 	void  SetFocus(char * name);
 	void  Redraw();
+	void  RedrawAll();
 	void  OnMouseDown(int x, int y);
 	void  OnMouseUp(int x, int y);
 	void  Drag(int xrel, int yrel);

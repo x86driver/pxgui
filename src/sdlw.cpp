@@ -89,6 +89,8 @@ int main(int argc, char *argv[])
     SDL_ShowCursor(SDL_DISABLE);
     SDL_UpdateRect(screen,0,0,0,0);
 
+    Gui->RedrawAll();
+
 	while( !Done  )
 	{
 		SDL_Delay(1);
