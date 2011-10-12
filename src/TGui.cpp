@@ -113,6 +113,7 @@ void  TGui::Redraw()
 	dx = 0;
 	dy = 0;
 
+#if 0
 	while(zList[i]) {
 		if(zList[i]->bInvalidRect) {
 			xl = zList[i]->x < zList[i]->lastx ? zList[i]->x : zList[i]->lastx;
@@ -131,6 +132,7 @@ void  TGui::Redraw()
 		i++;
 	}
 	// compute the global dirty rectangle
+
     if (sx == 480 && sy == 272) {
         dirty.x = dirty.y = 0;
         dirty.w = 480;
@@ -141,6 +143,11 @@ void  TGui::Redraw()
 	dirty.w = dx-sx;
 	dirty.h = dy-sy;
     }
+#endif
+    dirty.x = dirty.y = 0;
+    dirty.w = 480;
+    dirty.h = 272;
+
 	//cout << "DRCT: " << dirty.x << ", " << dirty.y << ", " << dirty.w << ", " << dirty.h << "\n";
     printf("DRCT: %d, %d, %d, %d\n", dirty.x, dirty.y, dirty.w, dirty.h);
 

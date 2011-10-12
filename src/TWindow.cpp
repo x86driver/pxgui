@@ -40,8 +40,8 @@ bool  TWindow::OnMouseDown()
     int mx, my;
     SDL_GetMouseState(&mx, &my);
     
-    if( (mx>cap.x+x && mx<cap.x+cap.w+x) && (my>cap.y+y && my<cap.y+cap.h+y) )
-        bDragable = true;
+//    if( (mx>cap.x+x && mx<cap.x+cap.w+x) && (my>cap.y+y && my<cap.y+cap.h+y) )
+//        bDragable = true;
     return false;
 }
 
