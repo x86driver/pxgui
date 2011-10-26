@@ -2,12 +2,13 @@
 #include <stdlib.h>
 #include "TGui.h"
 #include "sdlw.h"
+#include "platform.h"
 //---------------------------------------------------------------------------
-#pragma package(smart_init)
 
 TGui *Gui;
 
 TGui::TGui(SDL_Surface * screen)
+    : zList(NULL), Count(0), dirty(), surface(NULL)
 {
 	SDL_PixelFormat *fmt = screen->format;
 	surface = SDL_CreateRGBSurface(SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE|SDL_HWACCEL|SDL_PREALLOC, screen->w, screen->h, fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
@@ -19,16 +20,18 @@ TGui::TGui(SDL_Surface * screen)
 	// zindex ordered list
 	zList = (TGuiElement **)calloc(256, sizeof(TGuiElement *));
 
-	// number of elements maintained by the Gui
-	Count = 0;
-
-	dirty.x = 0; dirty.y = 0;
-	dirty.w = 480; dirty.h = 272;
+	dirty.x = 0;
+    dirty.y = 0;
+	dirty.w = DEFAULT_SCREEN_WIDTH;
+    dirty.h = DEFAULT_SCREEN_HEIGHT;
 }
 
 TGui::~TGui()
 {
-	//TODO: Add your source code here
+    for (int i = 0; i < Count; ++i)
+        delete zList[i];
+    SDL_FreeSurface(surface);
+    free(zList);
 }
 
 void  TGui::RedrawElements()
@@ -56,7 +59,6 @@ void  TGui::AddElement(TGuiElement * Element)
 void  TGui::RemoveElement(TGuiElement * Element)
 {
 	int i;
-	TGuiElement *e;
 
 	if(Element == NULL) return;
 
@@ -89,7 +91,7 @@ void  TGui::BlitAll()
 	}
 }
 
-void  TGui::Blit(char * name)
+void  TGui::Blit(__attribute__((unused)) char * name)
 {
 	//TODO: Add your source code here
 }
@@ -184,7 +186,7 @@ void  TGui::RedrawAll()
     SDL_Flip(screen);
 }
 
-void  TGui::SetFocus(char * name)
+void  TGui::SetFocus(__attribute__((unused)) char * name)
 {
 	//TODO: Add your source code here
 }
@@ -251,7 +253,7 @@ void  TGui::OnMouseDown(int x, int y)
 	Redraw();
 }
 
-void  TGui::OnMouseUp(int x, int y)
+void  TGui::OnMouseUp(__attribute__((unused)) int x, __attribute__((unused)) int y)
 {
 	int i=0;
 

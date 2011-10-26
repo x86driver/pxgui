@@ -26,7 +26,7 @@ class TGui
 {
 private:
 	TGuiElement **zList;
-	int Count;
+	int Count;  // number of elements maintained by the Gui
 	SDL_Rect dirty;
 public:
 	SDL_Surface *surface;

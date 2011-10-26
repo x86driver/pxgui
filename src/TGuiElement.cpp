@@ -6,10 +6,13 @@
 #include "TGuiElement.h"
 
 //---------------------------------------------------------------------------
-#pragma package(smart_init)
 
-TGuiElement::TGuiElement(TGui *Parent, int x, int y, int width, int height, char * name)
-    : bVisible(true)
+TGuiElement::TGuiElement(TGui *Parent, int x, int y, int width, int height, const char * name)
+    : x(x), y(y), lastx(x), lasty(y), zIndex(0),
+      width(width), height(height), name(strdup(name)),
+      bVisible(true), bDragable(false), bMouseFocus(false),
+      bInvalidRect(true), ActiveAlpha(255), PassiveAlpha(255),
+      surface(NULL), Parent(Parent)
 {
 	SDL_PixelFormat *fmt = Parent->surface->format;
 	surface = SDL_CreateRGBSurface( SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE|SDL_SRCALPHA|SDL_HWACCEL|SDL_PREALLOC, width, height, fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
@@ -17,23 +20,6 @@ TGuiElement::TGuiElement(TGui *Parent, int x, int y, int width, int height, char
 		printf("Error creating GuiElement surface\n");
 		exit(-1);
 	}
-
-	ActiveAlpha = 255;
-	PassiveAlpha = 255;
-
-	//SDL_SetAlpha(surface, SDL_SRCALPHA, Active);
-
-	this->x = x;
-	this->y = y;
-	this->lastx = x;
-	this->lasty = y;
-	this->width = width;
-	this->height = height;
-	this->name = strdup(name);
-	this->Parent = Parent;
-	bMouseFocus = false;
-	bDragable = false; // non-dragable by default
-	bInvalidRect = true;
 }
 
 TGuiElement::~TGuiElement()

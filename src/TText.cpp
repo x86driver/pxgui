@@ -10,7 +10,7 @@
 
 #define DEFAULT_FONT "/usr/share/cups/fonts/Monospace"
 
-TText::TText(TGui *Parent, int x, int y, int fsize, char *name, char *str)
+TText::TText(TGui *Parent, int x, int y, int fsize, const char *name, const char *str)
     : TGuiElement(Parent, x, y, 100, 30, name),
       str(strdup(str)), fontsize(fsize),
       backcolor({0xc0, 0xc0, 0xc0, 0}),

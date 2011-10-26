@@ -6,14 +6,13 @@
 #include "TGuiElement.h"
 #include "TButton.h"
 //---------------------------------------------------------------------------
-#pragma package(smart_init)
 
 extern TText *mytext;
 
-TButton::TButton(TGui *Parent, int x, int y, int width, int height, char * name, char * caption) : TGuiElement(Parent, x, y, width, height, name)
+TButton::TButton(TGui *Parent, int x, int y, int width, int height, const char * name, const char * caption)
+    : TGuiElement(Parent, x, y, width, height, name),
+      caption(strdup(caption)), Col()
 {
-	this->caption = strdup(caption);
-
 	// set colors
 	Col.Border.r = 0x00; Col.Border.g = 0x00; Col.Border.b = 0x00;
 	Col.CapBkg.r = 0xF0; Col.CapBkg.g = 0xA0; Col.CapBkg.b = 0x00;

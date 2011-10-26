@@ -8,20 +8,17 @@
 #include "SDL.h"
 #include "TGui.h"
 #include "sdlw.h"
+#include "platform.h"
 
 //---------------------------------------------------------------------------
 
-#pragma package(smart_init)
-
-#define SCREEN_WIDTH 480
-#define SCREEN_HEIGHT 272
 
 SDL_Surface *screen, *background;
 bool LMB, MMB, RMB;
 
 TText *mytext;
 
-int main(int argc, char *argv[])
+int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 {
 	if( -1 == SDL_Init(SDL_INIT_VIDEO) ) {
 		printf("Error initializing SDL\n");
@@ -45,8 +42,7 @@ int main(int argc, char *argv[])
 	printf("video_mem: %d\n", inf->video_mem);
 	printf("BitsPerPixel: %d\n\n", (int)inf->vfmt->BitsPerPixel);
 
-	screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 16, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE|SDL_HWACCEL|SDL_PREALLOC);
-	//screen = SDL_SetVideoMode(800, 600, 16, SDL_SWSURFACE|SDL_FULLSCREEN);
+	screen = SDL_SetVideoMode(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT, 16, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE|SDL_HWACCEL|SDL_PREALLOC);
 	if(screen == NULL) {
 		printf("Error setting video mode!\n");
 		exit(-1);
@@ -155,6 +151,11 @@ int main(int argc, char *argv[])
 				break;
 		}
 	}
+
+    delete Gui;
+    SDL_FreeSurface(screen);
+    SDL_FreeSurface(background);
+
 	return 1;
 }
 
