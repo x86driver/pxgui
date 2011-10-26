@@ -13,13 +13,14 @@ protected:
 	SDL_Surface * surface;
 	class TGui * Parent;
 	// virtuals
-	virtual void  Draw() {};
+	virtual void  Draw() = 0;
 public:
 	// virtuals
 	virtual bool  OnMouseDown() { return false; }
 	virtual bool  OnMouseUp() { return false; }
 	virtual void OnMouseMove(int, int) { return; }
-	
+    void setVisible(bool visible);
+
 	int x, y, lastx, lasty;
 	int zIndex; // starting at 0, highest value = topmost
 	int width;

@@ -39,11 +39,13 @@ void  TButton::Draw()
 
 void  TButton::DrawBtnUp()
 {
-	int b = 1;
+    Sint16 b = 1;
 
-	SDL_Rect tl = {0, 0, width, height};
-	SDL_Rect br = {b, b, width-b, height-b};
-	SDL_Rect bk = {b, b, width-2*b, height-2*b};
+    SDL_SetAlpha(surface, SDL_SRCALPHA, 255);
+
+    SDL_Rect tl = {0, 0, static_cast<Uint16>(width), static_cast<Uint16>(height)};
+    SDL_Rect br = {b, b, static_cast<Uint16>(width-b), static_cast<Uint16>(height-b)};
+    SDL_Rect bk = {b, b, static_cast<Uint16>(width-2*b), static_cast<Uint16>(height-2*b)};
 
 	SDL_FillRect(surface, &tl, GetCol(surface, Col.Light3D));
 	SDL_FillRect(surface, &br, GetCol(surface, Col.Dim3D));
@@ -52,11 +54,11 @@ void  TButton::DrawBtnUp()
 
 void  TButton::DrawBtnDown()
 {
-	int b = 1;
+    Sint16 b = 1;
 
-	SDL_Rect tl = {0, 0, width, height};
-	SDL_Rect br = {b, b, width-b, height-b};
-	SDL_Rect bk = {b, b, width-2*b, height-2*b};
+    SDL_Rect tl = {0, 0, static_cast<Uint16>(width), static_cast<Uint16>(height)};
+    SDL_Rect br = {b, b, static_cast<Uint16>(width-b), static_cast<Uint16>(height-b)};
+    SDL_Rect bk = {b, b, static_cast<Uint16>(width-2*b), static_cast<Uint16>(height-2*b)};
 
 	SDL_FillRect(surface, &tl, GetCol(surface, Col.Dim3D));
 	SDL_FillRect(surface, &br, GetCol(surface, Col.Light3D));
@@ -75,7 +77,7 @@ bool  TButton::OnMouseUp()
 	DrawBtnUp();
 	bInvalidRect = true;
     static bool showtext = false;
-    mytext->setTextVisible(showtext);
+    mytext->setVisible(showtext);
     showtext -= 1;
 	return true;
 }

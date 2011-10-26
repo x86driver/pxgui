@@ -11,19 +11,21 @@ public:
     TText(TGui *Parent, int x, int y, int fsize, char *name, char *str);
     ~TText();
     void Draw();
-    void setTextVisible(bool visible);
+    SDL_Surface *render();
+    void setfontsize(int size);
+    void setbgcolor(uint8_t r, uint8_t g, uint8_t b);
+    void setfgcolor(uint8_t r, uint8_t g, uint8_t b);
+    void settext(const char *str);
 private:
     char *str;
-    bool visible;
-    TColors Col;
+    int fontsize;
+    SDL_Color backcolor;
+    SDL_Color forecolor;
     SDL_Surface *text;
-    SDL_Rect dstrect;
     TTF_Font *font;
-    static const struct font_desc *fonts[];
 
-// FreeType
-    void drawtext(wchar_t *text);
-    void draw_bitmap( FT_Bitmap *bitmap, FT_Int x, FT_Int y);
+    TText(const TText &);
+    TText &operator=(const TText &);
 };
 
 #endif

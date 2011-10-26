@@ -1,7 +1,7 @@
 TARGET = gui
 OBJS = sdlw.o  TButton.o  TGui.o  TGuiElement.o  TWindow.o TText.o font_8x8.o utils.o
 CPP = g++
-CFLAGS = -g -Wall -Wextra
+CFLAGS = -g -Wall -Wextra -Weffc++ -std=gnu++0x -O0
 CFLAGS += `sdl-config --cflags --libs` `freetype-config --cflags --libs`
 CFLAGS += -I/usr/local/include/SDL -L/usr/local/lib -lSDL_ttf
 

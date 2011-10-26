@@ -9,6 +9,7 @@
 #pragma package(smart_init)
 
 TGuiElement::TGuiElement(TGui *Parent, int x, int y, int width, int height, char * name)
+    : bVisible(true)
 {
 	SDL_PixelFormat *fmt = Parent->surface->format;
 	surface = SDL_CreateRGBSurface( SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE|SDL_SRCALPHA|SDL_HWACCEL|SDL_PREALLOC, width, height, fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
@@ -84,3 +85,9 @@ void  TGuiElement::Drag(int xrel, int yrel)
 	y += yrel;
 }
 
+void  TGuiElement::setVisible(bool visible)
+{
+    bVisible = visible;
+    bInvalidRect = true;
+    Draw();
+}

@@ -45,6 +45,10 @@ public:
 	void  Drag(int xrel, int yrel);
 	// No description
 	void OnMouseMove(int x, int y);
+
+private:
+    TGui(const TGui &);
+    TGui &operator=(const TGui &);
 };
 //-----------------------------------------------------------------------------------
 
