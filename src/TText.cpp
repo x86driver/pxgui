@@ -5,7 +5,6 @@
 #include "TGuiElement.h"
 #include "TText.h"
 #include "utils.h"
-#include "font.h"
 #include "sdlw.h"
 
 #define DEFAULT_FONT "/usr/share/cups/fonts/Monospace"

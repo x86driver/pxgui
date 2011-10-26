@@ -82,7 +82,10 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 	bool Done = false;
 	SDL_Event ev;
 
-//    SDL_ShowCursor(SDL_DISABLE);
+#ifdef BUILD_FOR_ANDROID
+    SDL_ShowCursor(SDL_DISABLE);
+#endif
+
     SDL_UpdateRect(screen,0,0,0,0);
 
     Gui->RedrawAll();
