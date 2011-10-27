@@ -62,7 +62,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 	Gui = new TGui(screen);
 
 	// add few elements
-	Gui->AddElement( new TButton(Gui, 10, 80, 60, 18, "btn1", "CLICK") );
+	Gui->AddElement( new TButton(Gui, 10, 80, 80, 50, "btn1", "CLICK") );
 //	Gui->AddElement( new TButton(Gui, 75, 571, 60, 18, "btn2", "CLICK") );
 //	Gui->AddElement( new TButton(Gui, 140, 571, 60, 18, "btn3", "CLICK") );
 //	Gui->AddElement( new TButton(Gui, 205, 571, 60, 18, "btn4", "CLICK") );
