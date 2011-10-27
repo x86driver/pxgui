@@ -58,7 +58,7 @@ void  TGui::AddElement(TGuiElement * Element)
 
 void  TGui::RemoveElement(TGuiElement * Element)
 {
-	int i;
+	int i = 0;
 
 	if(Element == NULL) return;
 
