@@ -9,9 +9,12 @@
 
 extern TText *mytext;
 
+static const int FONT_SIZE = 16;
+
 TButton::TButton(TGui *Parent, int x, int y, int width, int height, const char * name, const char * caption)
     : TGuiElement(Parent, x, y, width, height, name),
-      caption(strdup(caption)), fontsize(16), Col()
+      caption(strdup(caption)), fontsize(FONT_SIZE),
+      fontcolor({0, 0, 0, 0}), Col()
 {
 	// set colors
 	Col.Border.r = 0x00; Col.Border.g = 0x00; Col.Border.b = 0x00;
@@ -34,6 +37,7 @@ TButton::~TButton()
 void  TButton::render_text()
 {
     TText *txt = new TText(Parent, 0, 0, fontsize, "button text", caption);
+    txt->setfgcolor(fontcolor.r, fontcolor.g, fontcolor.b);
     SDL_Surface *text_surface = txt->render();
     SDL_Rect dst;
     dst.x = (width - text_surface->w) / 2;
@@ -100,4 +104,9 @@ bool  TButton::OnMouseUp()
 void  TButton::setfontsize(int size)
 {
     fontsize = size;
+}
+
+void  TButton::setfontcolor(uint8_t r, uint8_t g, uint8_t b)
+{
+    fontcolor = {r, g, b, 0};
 }

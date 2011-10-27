@@ -7,6 +7,7 @@ class TButton : public TGuiElement
 private:
 	char * caption;
     int    fontsize;
+    SDL_Color fontcolor;
 	TColors Col;
 	void  DrawBtnUp();
 	void  DrawBtnDown();
@@ -16,6 +17,7 @@ public:
 	 ~TButton();
 	void  Draw();
     void  setfontsize(int size);
+    void  setfontcolor(uint8_t r, uint8_t g, uint8_t b);
 	bool  OnMouseDown();
 	bool  OnMouseUp();
 
