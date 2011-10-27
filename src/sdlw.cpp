@@ -16,7 +16,13 @@
 SDL_Surface *screen, *background;
 bool LMB, MMB, RMB;
 
-TText *mytext;
+void show_me_money(TGuiElement *widget, void *data)
+{
+    static bool visible = true;
+    TText *txt = static_cast<TText*>(widget);
+    txt->setVisible(visible);
+    visible = !visible;
+}
 
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 {
@@ -62,7 +68,9 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 	Gui = new TGui(screen);
 
 	// add few elements
-	Gui->AddElement( new TButton(Gui, 10, 80, 80, 50, "btn1", "CLICK") );
+    TButton *btn1 = new TButton(Gui, 10, 80, 80, 50, "btn1", "CLICK");
+    Gui->AddElement(btn1);
+//	Gui->AddElement( new TButton(Gui, 10, 80, 80, 50, "btn1", "CLICK") );
 //	Gui->AddElement( new TButton(Gui, 75, 571, 60, 18, "btn2", "CLICK") );
 //	Gui->AddElement( new TButton(Gui, 140, 571, 60, 18, "btn3", "CLICK") );
 //	Gui->AddElement( new TButton(Gui, 205, 571, 60, 18, "btn4", "CLICK") );
@@ -72,8 +80,11 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 //	Gui->AddElement( new TWindow(Gui, 30, 30, 150, 150, "wnd2", "Hello w2!") );
 //	Gui->AddElement( new TWindow(Gui, 0, 0, 480, 272, "wnd3", "Hello w3!") );
 
-    mytext = new TText(Gui, 50, 50, 24, "text1", "Fuck");
+    TText *mytext = new TText(Gui, 50, 50, 24, "text1", "Fuck");
     Gui->AddElement(mytext);
+
+    Functor<TButton::CallbackType> cmd1(show_me_money);
+    btn1->setClicked(cmd1, mytext, NULL);
 
 	// and show the results
 	Gui->Redraw();

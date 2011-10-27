@@ -2,13 +2,24 @@
 #ifndef TButtonH
 #define TButtonH
 
+#include "lib/functor.h"
+#include "lib/tuple.h"
+
 class TButton : public TGuiElement
 {
+public:
+    typedef std::tuple_element<0, std::tuple<void (TGuiElement *, void*)>>::type CallbackType;
+
 private:
 	char * caption;
     int    fontsize;
     SDL_Color fontcolor;
 	TColors Col;
+    TGuiElement *cmd_widget;
+    void *cmd_data;
+    NoCommand<CallbackType> nocmd;
+    Functor<CallbackType> cmd;
+
 	void  DrawBtnUp();
 	void  DrawBtnDown();
     void  render_text();
@@ -18,6 +29,7 @@ public:
 	void  Draw();
     void  setfontsize(int size);
     void  setfontcolor(uint8_t r, uint8_t g, uint8_t b);
+    void  setClicked(Functor<CallbackType> &cmd, TGuiElement *widget, void *data);
 	bool  OnMouseDown();
 	bool  OnMouseUp();
 

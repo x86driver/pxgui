@@ -48,4 +48,14 @@ private:
 };
 //-----------------------------------------------------------------------------------
 
+template <typename Signature>
+class NoCommand;
+
+template <typename R, typename... Args>
+class NoCommand<R (Args...)> {
+public:
+    R operator()(Args...) {
+    }
+};
+
 #endif

@@ -14,7 +14,9 @@ static const int FONT_SIZE = 16;
 TButton::TButton(TGui *Parent, int x, int y, int width, int height, const char * name, const char * caption)
     : TGuiElement(Parent, x, y, width, height, name),
       caption(strdup(caption)), fontsize(FONT_SIZE),
-      fontcolor({0, 0, 0, 0}), Col()
+      fontcolor({0, 0, 0, 0}), Col(),
+      cmd_widget(NULL), cmd_data(NULL),
+      nocmd(), cmd(nocmd)
 {
 	// set colors
 	Col.Border.r = 0x00; Col.Border.g = 0x00; Col.Border.b = 0x00;
@@ -87,6 +89,7 @@ void  TButton::DrawBtnDown()
 bool  TButton::OnMouseDown()
 {
 	DrawBtnDown();
+    cmd(cmd_widget, cmd_data);
 	bInvalidRect = true;
 	return true;
 }
@@ -95,9 +98,9 @@ bool  TButton::OnMouseUp()
 {
 	DrawBtnUp();
 	bInvalidRect = true;
-    static bool showtext = false;
-    mytext->setVisible(showtext);
-    showtext -= 1;
+//    static bool showtext = false;
+//    mytext->setVisible(showtext);
+//    showtext -= 1;
 	return true;
 }
 
@@ -109,4 +112,11 @@ void  TButton::setfontsize(int size)
 void  TButton::setfontcolor(uint8_t r, uint8_t g, uint8_t b)
 {
     fontcolor = {r, g, b, 0};
+}
+
+void  TButton::setClicked(Functor<CallbackType> &cmd, TGuiElement *widget, void *data)
+{
+    this->cmd = cmd;
+    this->cmd_widget = widget;
+    this->cmd_data = data;
 }
