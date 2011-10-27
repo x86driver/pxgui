@@ -7,8 +7,10 @@
 
 TGui *Gui;
 
-TGui::TGui(SDL_Surface * screen)
-    : zList(NULL), Count(0), dirty(), surface(NULL)
+TGui::TGui(SDL_Surface * screen, SDL_Surface * background)
+    : zList(NULL), Count(0), dirty(),
+      screen(screen), background(background),
+      surface(NULL)
 {
 	SDL_PixelFormat *fmt = screen->format;
 	surface = SDL_CreateRGBSurface(SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE|SDL_HWACCEL|SDL_PREALLOC, screen->w, screen->h, fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);

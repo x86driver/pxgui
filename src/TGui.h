@@ -28,9 +28,10 @@ private:
 	TGuiElement **zList;
 	int Count;  // number of elements maintained by the Gui
 	SDL_Rect dirty;
+    SDL_Surface *screen, *background;
 public:
 	SDL_Surface *surface;
-	TGui(SDL_Surface * screen);
+	TGui(SDL_Surface * screen, SDL_Surface * background);
 	~TGui();
 	void  RedrawElements();
 	void  AddElement(TGuiElement * Element);

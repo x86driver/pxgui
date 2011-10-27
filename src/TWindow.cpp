@@ -26,7 +26,8 @@ TWindow::TWindow(TGui *Parent, int x, int y, int width, int height, const char *
 
 TWindow::~TWindow()
 {
-	//TODO: Add your source code here
+    if (caption)
+        free(caption);
 }
 
 bool  TWindow::OnMouseUp()

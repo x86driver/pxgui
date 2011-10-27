@@ -33,6 +33,8 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 
 	atexit(SDL_Quit);
 
+    SDL_Surface *screen, *background;
+
 	// get video info
 	const SDL_VideoInfo *inf;
 	inf = SDL_GetVideoInfo();
@@ -65,7 +67,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 	SDL_Flip(screen);
 
 	// create gui
-	Gui = new TGui(screen);
+	Gui = new TGui(screen, background);
 
 	// add few elements
     TButton *btn1 = new TButton(Gui, 10, 80, 80, 50, "btn1", "CLICK");

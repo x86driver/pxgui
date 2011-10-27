@@ -98,9 +98,6 @@ bool  TButton::OnMouseUp()
 {
 	DrawBtnUp();
 	bInvalidRect = true;
-//    static bool showtext = false;
-//    mytext->setVisible(showtext);
-//    showtext -= 1;
 	return true;
 }
 
