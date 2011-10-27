@@ -14,6 +14,10 @@ TGuiElement::TGuiElement(TGui *Parent, int x, int y, int width, int height, cons
       bInvalidRect(true), ActiveAlpha(255), PassiveAlpha(255),
       surface(NULL), Parent(Parent)
 {
+    if (width < 0 || height < 0) {
+        return;     // Do nothing, create surface later
+    }
+
 	SDL_PixelFormat *fmt = Parent->surface->format;
 	surface = SDL_CreateRGBSurface( SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE|SDL_SRCALPHA|SDL_HWACCEL|SDL_PREALLOC, width, height, fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
 	if(surface == NULL) {
@@ -76,4 +80,31 @@ void  TGuiElement::setVisible(bool visible)
     bVisible = visible;
     bInvalidRect = true;
     Draw();
+}
+
+void  TGuiElement::setAspect(int width, int height)
+{
+    this->width = width;
+    this->height = height;
+
+    if (surface)
+        SDL_FreeSurface(surface);
+
+    SDL_PixelFormat *fmt = Parent->surface->format;
+    surface = SDL_CreateRGBSurface( SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE|SDL_SRCALPHA|SDL_HWACCEL|SDL_PREALLOC, width, height, fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
+    if (surface == NULL) {
+        printf("Error creating GuiElement surface\n");
+        exit(-1);
+    }
+
+}
+
+int   TGuiElement::getWidth() const
+{
+    return width;
+}
+
+int   TGuiElement::getHeight() const
+{
+    return height;
 }
