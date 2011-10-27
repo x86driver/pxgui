@@ -98,3 +98,13 @@ void  TGuiElement::setAspect(int width, int height)
     }
 
 }
+
+int   TGuiElement::getWidth() const
+{
+    return width;
+}
+
+int   TGuiElement::getHeight() const
+{
+    return height;
+}

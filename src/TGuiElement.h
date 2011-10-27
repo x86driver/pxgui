@@ -22,6 +22,8 @@ public:
 	void  Drag(int xrel, int yrel);
     void  setVisible(bool visible);
     void  setAspect(int width, int height);
+    int   getWidth() const;
+    int   getHeight() const;
 
     int x, y, lastx, lasty;
     int zIndex; // starting at 0, highest value = topmost

@@ -11,7 +11,7 @@ extern TText *mytext;
 
 TButton::TButton(TGui *Parent, int x, int y, int width, int height, const char * name, const char * caption)
     : TGuiElement(Parent, x, y, width, height, name),
-      caption(strdup(caption)), Col()
+      caption(strdup(caption)), fontsize(16), Col()
 {
 	// set colors
 	Col.Border.r = 0x00; Col.Border.g = 0x00; Col.Border.b = 0x00;
@@ -29,6 +29,18 @@ TButton::TButton(TGui *Parent, int x, int y, int width, int height, const char *
 TButton::~TButton()
 {
 	free(caption);
+}
+
+void  TButton::render_text()
+{
+    TText *txt = new TText(Parent, 0, 0, fontsize, "button text", caption);
+    SDL_Surface *text_surface = txt->render();
+    SDL_Rect dst;
+    dst.x = (width - text_surface->w) / 2;
+    dst.y = (height - text_surface->h) / 2;
+    SDL_BlitSurface(text_surface, NULL, surface, &dst);
+    delete txt;
+    SDL_FreeSurface(text_surface);
 }
 
 void  TButton::Draw()
@@ -49,6 +61,8 @@ void  TButton::DrawBtnUp()
 	SDL_FillRect(surface, &tl, GetCol(surface, Col.Light3D));
 	SDL_FillRect(surface, &br, GetCol(surface, Col.Dim3D));
 	SDL_FillRect(surface, &bk, GetCol(surface, Col.CliBkg));
+
+    render_text();
 }
 
 void  TButton::DrawBtnDown()
@@ -62,6 +76,8 @@ void  TButton::DrawBtnDown()
 	SDL_FillRect(surface, &tl, GetCol(surface, Col.Dim3D));
 	SDL_FillRect(surface, &br, GetCol(surface, Col.Light3D));
 	SDL_FillRect(surface, &bk, GetCol(surface, Col.CliBkg));
+
+    render_text();
 }
 
 bool  TButton::OnMouseDown()
@@ -79,4 +95,9 @@ bool  TButton::OnMouseUp()
     mytext->setVisible(showtext);
     showtext -= 1;
 	return true;
+}
+
+void  TButton::setfontsize(int size)
+{
+    fontsize = size;
 }
