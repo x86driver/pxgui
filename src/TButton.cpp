@@ -51,6 +51,7 @@ void  TButton::render_text()
 
 void  TButton::Draw()
 {
+    printf("Draw button [%s] up: %p\n", name, __builtin_return_address(0));
 	DrawBtnUp();
 }
 
@@ -89,7 +90,7 @@ void  TButton::DrawBtnDown()
 bool  TButton::OnMouseDown()
 {
 	DrawBtnDown();
-    cmd(cmd_widget, cmd_data);
+//    cmd(cmd_widget, cmd_data);
 	bInvalidRect = true;
 	return true;
 }
@@ -97,7 +98,8 @@ bool  TButton::OnMouseDown()
 bool  TButton::OnMouseUp()
 {
 	DrawBtnUp();
-	bInvalidRect = true;
+	bInvalidRect = false;
+    cmd(cmd_widget, cmd_data);
     if (cmd_widget)
         cmd_widget->bInvalidRect = true;    // We redraw the action widget
 	return true;

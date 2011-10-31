@@ -15,6 +15,10 @@
 
 bool LMB, MMB, RMB;
 
+static TGui *activeGui;
+static SDL_Surface *screen, *background;
+static SDL_Surface *linuxback;
+
 void show_me_money(TGuiElement *widget, void *data)
 {
     static bool visible = true;
@@ -26,8 +30,13 @@ void show_me_money(TGuiElement *widget, void *data)
 void show_next_page(TGuiElement *widget, void *data)
 {
     TGui *gui = static_cast<TGui*>(data);
+    SDL_Rect dst;
+    dst.x = dst.y = 0;
+    dst.w = 480;
+    dst.h = 272;
     gui->RedrawAll();
-    gui->Redraw();
+//    gui->Redraw();
+    activeGui = gui;
 }
 
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
@@ -39,7 +48,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 
 	atexit(SDL_Quit);
 
-    SDL_Surface *screen, *background;
+//    SDL_Surface *screen, *background;
 
 	// get video info
 	const SDL_VideoInfo *inf;
@@ -68,13 +77,19 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 		exit(-1);
 	}
 
+    linuxback = SDL_LoadBMP("linux.bmp");
+    if (linuxback == NULL) {
+        printf("Error creating background surfce!\n");
+        exit(-1);
+    }
+
 	// first time screen drawing
 	SDL_BlitSurface(background, NULL, screen, NULL);
 	SDL_Flip(screen);
 
 	// create gui
 	Gui = new TGui(screen, background);
-    TGui *Gui2 = new TGui(screen, background);
+    TGui *Gui2 = new TGui(screen, linuxback);
 
 	// add few elements
     TButton *btn1 = new TButton(Gui, 10, 80, 80, 50, "btn1", "CLICK");
@@ -82,7 +97,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 
 	Gui->AddElement( new TWindow(Gui, 10, 10, 50, 50, "wnd1", "Hello!") );
 
-    TText *mytext = new TText(Gui, 50, 50, 24, "text1", "Fuck");
+    TText *mytext = new TText(Gui, 50, 50, 24, "text1", "Fuck ^_^");
     Gui->AddElement(mytext);
 
     Functor<TButton::CallbackType> cmd1(show_me_money);
@@ -90,13 +105,14 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 //    btn1->setClicked(cmd1, mytext, NULL);
     btn1->setClicked(cmd2, NULL, Gui2);
 	// and show the results
-	Gui->Redraw();
+//	Gui->Redraw();
 
     // here are page2
-    TButton *btn2 = new TButton(Gui2, 20, 150, 100, 70, "btn2", "FUCK");
+    TButton *btn2 = new TButton(Gui2, 300, 150, 100, 70, "btn2", "FUCK");
     Gui2->AddElement(btn2);
     TText *mytext2 = new TText(Gui2, 10, 10, 24, "text2", "Shit!");
     Gui2->AddElement(mytext2);
+    btn2->setClicked(cmd2, NULL, Gui);
 
 	LMB = MMB = RMB = false;
 	bool Done = false;
@@ -108,7 +124,9 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 
     SDL_UpdateRect(screen,0,0,0,0);
 
-    Gui->RedrawAll();
+//    Gui->RedrawAll();
+    activeGui = Gui2;
+    activeGui->RedrawAll();
 
 	while( !Done  )
 	{
@@ -123,7 +141,8 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 				{
 					case SDL_BUTTON_LEFT:
 						LMB = true;
-						Gui->OnMouseDown(ev.motion.x, ev.motion.y);
+//						Gui->OnMouseDown(ev.motion.x, ev.motion.y);
+                        activeGui->OnMouseDown(ev.motion.x, ev.motion.y);
 						//printf << "LMB Down\n";
 						break;
 					case SDL_BUTTON_MIDDLE:
@@ -141,7 +160,8 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 				{
 					case SDL_BUTTON_LEFT:
 						LMB = false;
-						Gui->OnMouseUp(ev.motion.x, ev.motion.y);
+//						Gui->OnMouseUp(ev.motion.x, ev.motion.y);
+                        activeGui->OnMouseUp(ev.motion.x, ev.motion.y);
 						//printf << "LMB Up\n";
 						break;
 					case SDL_BUTTON_MIDDLE:

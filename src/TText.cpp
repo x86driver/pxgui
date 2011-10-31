@@ -52,6 +52,9 @@ SDL_Surface *TText::render()
         TTF_CloseFont(font);
     }
 
+//    width = t->w; FIXME
+//    height = t->h;
+
     return t;
 }
 
