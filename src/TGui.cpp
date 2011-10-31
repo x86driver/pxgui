@@ -123,7 +123,7 @@ void  TGui::Redraw()
 	dx = 0;
 	dy = 0;
 
-#if 1
+#if 0
 	while(zList[i]) {
         printf("Checking \033[1;33m%s\033[0;38m ...\n", zList[i]->name);
 		if(zList[i]->bInvalidRect) {
@@ -156,7 +156,7 @@ void  TGui::Redraw()
 	dirty.h = dy-sy;
     }
 #endif
-#if 0
+#if 1
     dirty.x = dirty.y = 0;
     dirty.w = 480;
     dirty.h = 272;

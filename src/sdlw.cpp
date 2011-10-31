@@ -106,8 +106,8 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 
     Functor<TButton::CallbackType> cmd1(show_me_money);
     Functor<TButton::CallbackType> cmd2(show_next_page);
-//    btn1->setClicked(cmd1, mytext, NULL);
-    btn1->setClicked(cmd2, NULL, Gui2);
+    btn1->setClicked(cmd1, mytext, NULL);
+//    btn1->setClicked(cmd2, NULL, Gui2);
 	// and show the results
 //	Gui->Redraw();
 

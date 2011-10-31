@@ -15,7 +15,7 @@ LOCAL_C_INCLUDES += /home/shane/source/include/ /home/shane/source/include/freet
 LOCAL_C_INCLUDES += external/sdl_ttf
 LOCAL_STATIC_LIBRARIES := libSDL libSDL_ttf libfreetype
 LOCAL_SHARED_LIBRARIES := libts
-LOCAL_CFLAGS += -Wall -Wextra -Weffc++ -std=gnu++0x -DBUILD_FOR_ANDROID
+LOCAL_CFLAGS += -Wall -Wextra -Weffc++ -std=gnu++0x -DBUILD_FOR_ANDROID -O2
 
 LOCAL_MODULE:= gui
 
