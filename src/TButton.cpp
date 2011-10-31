@@ -98,7 +98,7 @@ bool  TButton::OnMouseDown()
 bool  TButton::OnMouseUp()
 {
 	DrawBtnUp();
-	bInvalidRect = false;
+	bInvalidRect = true;
     cmd(cmd_widget, cmd_data);
     if (cmd_widget)
         cmd_widget->bInvalidRect = true;    // We redraw the action widget

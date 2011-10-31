@@ -18,6 +18,7 @@ bool LMB, MMB, RMB;
 static TGui *activeGui;
 static SDL_Surface *screen, *background;
 static SDL_Surface *linuxback;
+static TGui *Gui2;
 
 void show_me_money(TGuiElement *widget, void *data)
 {
@@ -34,8 +35,10 @@ void show_next_page(TGuiElement *widget, void *data)
     dst.x = dst.y = 0;
     dst.w = 480;
     dst.h = 272;
+//    Gui2->surface = NULL;
     gui->RedrawAll();
 //    gui->Redraw();
+    SDL_Flip(screen);
     activeGui = gui;
 }
 
@@ -84,12 +87,12 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
     }
 
 	// first time screen drawing
-	SDL_BlitSurface(background, NULL, screen, NULL);
-	SDL_Flip(screen);
+//	SDL_BlitSurface(background, NULL, screen, NULL);
+//	SDL_Flip(screen);
 
 	// create gui
 	Gui = new TGui(screen, background);
-    TGui *Gui2 = new TGui(screen, linuxback);
+    Gui2 = new TGui(screen, linuxback);
 
 	// add few elements
     TButton *btn1 = new TButton(Gui, 10, 80, 80, 50, "btn1", "CLICK");
