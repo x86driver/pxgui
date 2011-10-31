@@ -110,8 +110,10 @@ void  TGui::Redraw()
 	//    |         |
 	//    +-----[dx,dy]
 
-    if (!active)
+    if (!active) {
+        SDL_Flip(screen);
         return;
+    }
 
 	int i = 0;
 	int sx, sy, dx, dy, xl, xh, yl, yh;
