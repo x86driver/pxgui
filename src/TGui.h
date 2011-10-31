@@ -31,6 +31,7 @@ private:
     SDL_Surface *screen, *background;
 public:
 	SDL_Surface *surface;
+    bool active;
 	TGui(SDL_Surface * screen, SDL_Surface * background);
 	~TGui();
 	void  RedrawElements();

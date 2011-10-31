@@ -10,7 +10,8 @@ TGui *Gui;
 TGui::TGui(SDL_Surface * screen, SDL_Surface * background)
     : zList(NULL), Count(0), dirty(),
       screen(screen), background(background),
-      surface(NULL)
+      surface(NULL),
+      active(false)
 {
 	SDL_PixelFormat *fmt = screen->format;
 	surface = SDL_CreateRGBSurface(SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE|SDL_HWACCEL|SDL_PREALLOC, screen->w, screen->h, fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
@@ -108,6 +109,9 @@ void  TGui::Redraw()
 	//    |         |
 	//    |         |
 	//    +-----[dx,dy]
+
+    if (!active)
+        return;
 
 	int i = 0;
 	int sx, sy, dx, dy, xl, xh, yl, yh;

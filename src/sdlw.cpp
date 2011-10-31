@@ -35,7 +35,8 @@ void show_next_page(TGuiElement *widget, void *data)
     dst.x = dst.y = 0;
     dst.w = 480;
     dst.h = 272;
-//    Gui2->surface = NULL;
+    Gui2->active = false;
+    Gui->active = true;
     gui->RedrawAll();
 //    gui->Redraw();
     SDL_Flip(screen);
@@ -128,6 +129,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
     SDL_UpdateRect(screen,0,0,0,0);
 
 //    Gui->RedrawAll();
+    Gui2->active = true;
     activeGui = Gui2;
     activeGui->RedrawAll();
 
