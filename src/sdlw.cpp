@@ -13,7 +13,6 @@
 //---------------------------------------------------------------------------
 
 
-SDL_Surface *screen, *background;
 bool LMB, MMB, RMB;
 
 void show_me_money(TGuiElement *widget, void *data)
