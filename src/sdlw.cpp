@@ -23,6 +23,13 @@ void show_me_money(TGuiElement *widget, void *data)
     visible = !visible;
 }
 
+void show_next_page(TGuiElement *widget, void *data)
+{
+    TGui *gui = static_cast<TGui*>(data);
+    gui->RedrawAll();
+    gui->Redraw();
+}
+
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 {
 	if( -1 == SDL_Init(SDL_INIT_VIDEO) ) {
@@ -67,28 +74,29 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 
 	// create gui
 	Gui = new TGui(screen, background);
+    TGui *Gui2 = new TGui(screen, background);
 
 	// add few elements
     TButton *btn1 = new TButton(Gui, 10, 80, 80, 50, "btn1", "CLICK");
     Gui->AddElement(btn1);
-//	Gui->AddElement( new TButton(Gui, 10, 80, 80, 50, "btn1", "CLICK") );
-//	Gui->AddElement( new TButton(Gui, 75, 571, 60, 18, "btn2", "CLICK") );
-//	Gui->AddElement( new TButton(Gui, 140, 571, 60, 18, "btn3", "CLICK") );
-//	Gui->AddElement( new TButton(Gui, 205, 571, 60, 18, "btn4", "CLICK") );
-//	Gui->AddElement( new TButton(Gui, 270, 571, 60, 18, "btn5", "CLICK") );
 
 	Gui->AddElement( new TWindow(Gui, 10, 10, 50, 50, "wnd1", "Hello!") );
-//	Gui->AddElement( new TWindow(Gui, 30, 30, 150, 150, "wnd2", "Hello w2!") );
-//	Gui->AddElement( new TWindow(Gui, 0, 0, 480, 272, "wnd3", "Hello w3!") );
 
     TText *mytext = new TText(Gui, 50, 50, 24, "text1", "Fuck");
     Gui->AddElement(mytext);
 
     Functor<TButton::CallbackType> cmd1(show_me_money);
-    btn1->setClicked(cmd1, mytext, NULL);
-
+    Functor<TButton::CallbackType> cmd2(show_next_page);
+//    btn1->setClicked(cmd1, mytext, NULL);
+    btn1->setClicked(cmd2, NULL, Gui2);
 	// and show the results
 	Gui->Redraw();
+
+    // here are page2
+    TButton *btn2 = new TButton(Gui2, 20, 150, 100, 70, "btn2", "FUCK");
+    Gui2->AddElement(btn2);
+    TText *mytext2 = new TText(Gui2, 10, 10, 24, "text2", "Shit!");
+    Gui2->AddElement(mytext2);
 
 	LMB = MMB = RMB = false;
 	bool Done = false;
