@@ -166,7 +166,7 @@ void  TGui::Redraw()
     printf("DRCT: %d, %d, %d, %d\n", dirty.x, dirty.y, dirty.w, dirty.h);
 
 	// restore background
-//	SDL_BlitSurface( background, &dirty, surface, &dirty );
+	SDL_BlitSurface( background, &dirty, surface, &dirty );
 
 	// draw all elements
 	BlitAll();
@@ -188,7 +188,7 @@ void  TGui::RedrawAll()
     SDL_FillRect(surface, &dirty, 0);
     SDL_FillRect(screen, &dirty, 0);
 
-//    SDL_BlitSurface( background, &dirty, surface, &dirty );
+    SDL_BlitSurface( background, &dirty, surface, &dirty );
 
     // draw all elements
     BlitAll();
