@@ -123,7 +123,7 @@ void  TGui::Redraw()
 	dx = 0;
 	dy = 0;
 
-#if 0
+#if 1
 	while(zList[i]) {
         printf("Checking \033[1;33m%s\033[0;38m ...\n", zList[i]->name);
 		if(zList[i]->bInvalidRect) {
@@ -156,7 +156,7 @@ void  TGui::Redraw()
 	dirty.h = dy-sy;
     }
 #endif
-#if 1
+#if 0
     dirty.x = dirty.y = 0;
     dirty.w = 480;
     dirty.h = 272;
@@ -166,7 +166,7 @@ void  TGui::Redraw()
     printf("DRCT: %d, %d, %d, %d\n", dirty.x, dirty.y, dirty.w, dirty.h);
 
 	// restore background
-	SDL_BlitSurface( background, &dirty, surface, &dirty );
+//	SDL_BlitSurface( background, &dirty, surface, &dirty );
 
 	// draw all elements
 	BlitAll();
@@ -175,7 +175,7 @@ void  TGui::Redraw()
 	SDL_BlitSurface( surface, &dirty, screen, &dirty );
 
 	// and flip it
-	SDL_Flip(screen);
+    SDL_Flip(screen);
 }
 
 void  TGui::RedrawAll()
@@ -188,7 +188,7 @@ void  TGui::RedrawAll()
     SDL_FillRect(surface, &dirty, 0);
     SDL_FillRect(screen, &dirty, 0);
 
-    SDL_BlitSurface( background, &dirty, surface, &dirty );
+//    SDL_BlitSurface( background, &dirty, surface, &dirty );
 
     // draw all elements
     BlitAll();

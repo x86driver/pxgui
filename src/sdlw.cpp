@@ -39,7 +39,8 @@ void show_next_page(TGuiElement *widget, void *data)
     Gui->active = true;
     gui->RedrawAll();
 //    gui->Redraw();
-    SDL_Flip(screen);
+    gui->RedrawAll();
+//    SDL_Flip(screen);
     activeGui = gui;
 }
 
