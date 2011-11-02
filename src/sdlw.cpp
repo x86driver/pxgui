@@ -146,6 +146,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 //    Gui2->active = true;
 
     pm.getActive()->RedrawAll();
+    pm.getActive()->RedrawAll();
 
 	while( !Done  )
 	{

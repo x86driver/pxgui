@@ -9,6 +9,7 @@ LOCAL_SRC_FILES:= \
     TWindow.cpp \
     TText.cpp \
     utils.cpp \
+    TPage.cpp
 
 LOCAL_C_INCLUDES := /home/shane/pro/libsdl/SDL-1.2.14/include
 LOCAL_C_INCLUDES += /home/shane/source/include/ /home/shane/source/include/freetype2
