@@ -271,8 +271,10 @@ void  TGui::OnMouseUp(__attribute__((unused)) int x, __attribute__((unused)) int
 
 	while( zList[i] ) {
 		if( zList[i]->bMouseFocus )
-			if( zList[i]->OnMouseUp() == true )
+			if( zList[i]->OnMouseUp() == true ) {
 				Redraw();
+                Redraw();   // FIXME
+            }
 		i++;
 	}
 }
