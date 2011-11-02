@@ -8,7 +8,7 @@
 class TButton : public TGuiElement
 {
 public:
-    typedef std::tuple_element<0, std::tuple<void (TGuiElement *, void*)>>::type CallbackType;
+    typedef std::tuple_element<0, std::tuple<void (void*)>>::type CallbackType;
 
 private:
 	char * caption;
@@ -29,7 +29,7 @@ public:
 	void  Draw();
     void  setfontsize(int size);
     void  setfontcolor(uint8_t r, uint8_t g, uint8_t b);
-    void  setClicked(Functor<CallbackType> &cmd, TGuiElement *widget, void *data);
+    void  setClicked(Functor<CallbackType> &cmd, void *data);
 	bool  OnMouseDown();
 	bool  OnMouseUp();
 

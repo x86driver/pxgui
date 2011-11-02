@@ -7,6 +7,7 @@
 
 #include "SDL.h"
 #include "TGui.h"
+#include "TPage.h"
 #include "sdlw.h"
 #include "platform.h"
 
@@ -15,12 +16,11 @@
 
 bool LMB, MMB, RMB;
 
-static TGui *activeGui;
 static SDL_Surface *screen, *background;
 static SDL_Surface *linuxback;
 static TGui *Gui2;
 
-void show_me_money(TGuiElement *widget, void *data)
+void show_me_money(void *widget)
 {
     static bool visible = true;
     TText *txt = static_cast<TText*>(widget);
@@ -28,6 +28,11 @@ void show_me_money(TGuiElement *widget, void *data)
     visible = !visible;
 }
 
+void set_pages(TGui *oldpage, TGui *newpage)
+{
+}
+
+#if 0
 void show_next_page(TGuiElement *widget, void *data)
 {
     TGui *gui = static_cast<TGui*>(data);
@@ -43,6 +48,7 @@ void show_next_page(TGuiElement *widget, void *data)
 //    SDL_Flip(screen);
     activeGui = gui;
 }
+#endif
 
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 {
@@ -106,8 +112,8 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
     Gui->AddElement(mytext);
 
     Functor<TButton::CallbackType> cmd1(show_me_money);
-    Functor<TButton::CallbackType> cmd2(show_next_page);
-    btn1->setClicked(cmd1, mytext, NULL);
+//    Functor<TButton::CallbackType> cmd2(show_next_page);
+    btn1->setClicked(cmd1, mytext);
 //    btn1->setClicked(cmd2, NULL, Gui2);
 	// and show the results
 //	Gui->Redraw();
@@ -117,7 +123,14 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
     Gui2->AddElement(btn2);
     TText *mytext2 = new TText(Gui2, 10, 10, 24, "text2", "Shit!");
     Gui2->AddElement(mytext2);
-    btn2->setClicked(cmd2, NULL, Gui);
+
+    printf("Gui: %p, Gui2: %p\n", Gui, Gui2);
+//    PageManager *pm = new PageManager(Gui2);
+    PageManager pm(Gui2);
+    pm.insert(Gui, 0);
+    pm.insert(Gui2, 1);
+    Functor<void (void*)> cmd_switch_page(pm);
+    btn2->setClicked(cmd_switch_page, 0);
 
 	LMB = MMB = RMB = false;
 	bool Done = false;
@@ -130,9 +143,9 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
     SDL_UpdateRect(screen,0,0,0,0);
 
 //    Gui->RedrawAll();
-    Gui2->active = true;
-    activeGui = Gui2;
-    activeGui->RedrawAll();
+//    Gui2->active = true;
+
+    pm.getActive()->RedrawAll();
 
 	while( !Done  )
 	{
@@ -148,7 +161,8 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 					case SDL_BUTTON_LEFT:
 						LMB = true;
 //						Gui->OnMouseDown(ev.motion.x, ev.motion.y);
-                        activeGui->OnMouseDown(ev.motion.x, ev.motion.y);
+//                        activeGui->OnMouseDown(ev.motion.x, ev.motion.y);
+                        pm.getActive()->OnMouseDown(ev.motion.x, ev.motion.y);
 						//printf << "LMB Down\n";
 						break;
 					case SDL_BUTTON_MIDDLE:
@@ -167,7 +181,8 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 					case SDL_BUTTON_LEFT:
 						LMB = false;
 //						Gui->OnMouseUp(ev.motion.x, ev.motion.y);
-                        activeGui->OnMouseUp(ev.motion.x, ev.motion.y);
+//                        activeGui->OnMouseUp(ev.motion.x, ev.motion.y);
+                        pm.getActive()->OnMouseUp(ev.motion.x, ev.motion.y);
 						//printf << "LMB Up\n";
 						break;
 					case SDL_BUTTON_MIDDLE:

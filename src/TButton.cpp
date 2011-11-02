@@ -99,7 +99,7 @@ bool  TButton::OnMouseUp()
 {
 	DrawBtnUp();
 	bInvalidRect = true;
-    cmd(cmd_widget, cmd_data);
+    cmd(cmd_data);
     if (cmd_widget)
         cmd_widget->bInvalidRect = true;    // We redraw the action widget
 	return true;
@@ -115,9 +115,17 @@ void  TButton::setfontcolor(uint8_t r, uint8_t g, uint8_t b)
     fontcolor = {r, g, b, 0};
 }
 
+void  TButton::setClicked(Functor<CallbackType> &cmd, void *data)
+{
+    this->cmd = cmd;
+    this->cmd_data = data;
+}
+
+#if 0
 void  TButton::setClicked(Functor<CallbackType> &cmd, TGuiElement *widget, void *data)
 {
     this->cmd = cmd;
     this->cmd_widget = widget;
     this->cmd_data = data;
 }
+#endif
