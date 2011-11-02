@@ -4,6 +4,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <pthread.h>
 
 #include "SDL.h"
 #include "TGui.h"
@@ -15,6 +17,7 @@
 
 
 bool LMB, MMB, RMB;
+static PageManager *pm;
 
 void show_me_money(void *widget)
 {
@@ -24,13 +27,22 @@ void show_me_money(void *widget)
     visible = !visible;
 }
 
-void update_text(void *widget)
+void *thread_update_text(void *widget)
 {
     static int count = 0;
     char buf[64];
     TText *txt = static_cast<TText*>(widget);
-    snprintf(buf, sizeof(buf), "count: %d", count++);
-    txt->settext(buf);
+
+    while (1) {
+        snprintf(buf, sizeof(buf), "count: %d", count++);
+        txt->settext(buf);
+        printf("Update text: %s\n", buf);
+        pm->getActive()->RedrawAll();
+        pm->getActive()->RedrawAll();
+        sleep(1);
+    }
+
+    return NULL;
 }
 
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
@@ -118,16 +130,16 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
     Gui3->AddElement(mytext3);
     Gui3->AddElement(count);
 
-    Functor<void (void*)> cmd_update(update_text);
-    btn_update->setClicked(cmd_update, count);
+//    Functor<void (void*)> cmd_update(update_text);
+//    btn_update->setClicked(cmd_update, count);
 
-    PageManager pm(Gui3);
-    pm.insert(Gui, 0);
-    pm.insert(Gui2, 1);
-    pm.insert(Gui3, 2);
-    pm.set_switch_button(btn2, 0);
-    pm.set_switch_button(btn1, 2);
-    pm.set_switch_button(btn3, 1);
+    pm = new PageManager(Gui3);
+    pm->insert(Gui, 0);
+    pm->insert(Gui2, 1);
+    pm->insert(Gui3, 2);
+    pm->set_switch_button(btn2, 0);
+    pm->set_switch_button(btn1, 2);
+    pm->set_switch_button(btn3, 1);
 
 	LMB = MMB = RMB = false;
 	bool Done = false;
@@ -139,8 +151,11 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 
     SDL_UpdateRect(screen,0,0,0,0);
 
-    pm.getActive()->RedrawAll();
-    pm.getActive()->RedrawAll();
+    pm->getActive()->RedrawAll();
+    pm->getActive()->RedrawAll();
+
+    pthread_t tid;
+    pthread_create(&tid, NULL, thread_update_text, count);
 
 	while( !Done  )
 	{
@@ -155,7 +170,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 				{
 					case SDL_BUTTON_LEFT:
 						LMB = true;
-                        pm.getActive()->OnMouseDown(ev.motion.x, ev.motion.y);
+                        pm->getActive()->OnMouseDown(ev.motion.x, ev.motion.y);
 						break;
 					case SDL_BUTTON_MIDDLE:
 						MMB = true;
@@ -172,7 +187,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 				{
 					case SDL_BUTTON_LEFT:
 						LMB = false;
-                        pm.getActive()->OnMouseUp(ev.motion.x, ev.motion.y);
+                        pm->getActive()->OnMouseUp(ev.motion.x, ev.motion.y);
 						break;
 					case SDL_BUTTON_MIDDLE:
 						MMB = false;
