@@ -5,7 +5,7 @@ template <typename R, typename... Args>
 class FunctorImpl
 {
 public:
-    virtual R operator()(Args...) = 0;
+    virtual R operator()(Args...) const = 0;
     virtual FunctorImpl *clone() const = 0;
     virtual ~FunctorImpl() {}
 };
@@ -15,16 +15,34 @@ class FunctorHandler : public FunctorImpl<R, Args...>
 {
 public:
     explicit FunctorHandler(const Fun &fun) : fun_(fun) {}
-    R operator()(Args... args)
+    R operator()(Args... args) const
     {
-        return fun_(args...);
+        auto f = fun_;
+        return f(args...);
     }
     FunctorHandler *clone() const
     {
         return new FunctorHandler(*this);
     }
 private:
-    Fun fun_;
+    const Fun &fun_;
+};
+
+template <typename Fun, typename R, typename... Args>
+class FunctorHandler<Fun*, R, Args...> : public FunctorImpl<R, Args...>
+{
+public:
+    explicit FunctorHandler(const Fun *fun) : fun_(fun) {}
+    R operator()(Args... args) const
+    {
+        return (const_cast<Fun*>(fun_))->operator()(args...);
+    }
+    FunctorHandler *clone() const
+    {
+        return new FunctorHandler(*this);
+    }
+private:
+    const Fun *fun_;
 };
 
 template <typename Signature>
@@ -36,8 +54,12 @@ public:
 
     ~Functor() { if (impl) delete impl; }
 
-    template <class Fun> Functor(const Fun fun)
+    template <class Fun> Functor(const Fun &fun)
         : impl(new FunctorHandler<Fun, R, Args...>(fun))
+    {}
+
+    template <class Fun> Functor(const Fun *fun)
+        : impl(new FunctorHandler<Fun*, R, Args...>(fun))
     {}
 
     Functor(const Functor &f)

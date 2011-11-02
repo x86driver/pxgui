@@ -3,9 +3,12 @@
 #include "functor.h"
 
 struct TestFunctor {
+    TestFunctor() : count(0) {}
     void operator()(int i) {
-        printf("%s: %d\n", __FUNCTION__, i);
+        printf("%s: %d, count: %d\n", __FUNCTION__, i, count);
     }
+    void set(int x) { count = x; }
+    int count;
 };
 
 void myFunction(int i)
@@ -79,6 +82,16 @@ int main()
     auto cmd5 = cmd1;
     cmd5 = cmd2;
     cmd5(10);
+
+    f.set(100);
+    cmd2(9);
+
+    TestFunctor *myfunc = new TestFunctor;
+    Functor<void (int)> mycmd(myfunc);
+    mycmd(3);
+    myfunc->set(7);
+    mycmd(4);
+    delete myfunc;
 
     return 0;
 }
