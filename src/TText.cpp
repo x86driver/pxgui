@@ -29,7 +29,6 @@ TText::TText(TGui *Parent, int x, int y, int fsize, const char *name, const char
     }
 
     text = render();
-    setAspect(text->w, text->h);
 
     SDL_SetAlpha(surface, SDL_SRCALPHA, 255);
 
@@ -52,8 +51,7 @@ SDL_Surface *TText::render()
         TTF_CloseFont(font);
     }
 
-//    width = t->w; FIXME
-//    height = t->h;
+    setAspect(t->w, t->h);
 
     return t;
 }
@@ -96,5 +94,13 @@ void TText::settext(const char *str)
     if (this->str)
         free(this->str);
     this->str = strdup(str);
+
+    if (text)
+        SDL_FreeSurface(text);
+    text = render();
+
+    Draw();
+
+    bInvalidRect = true;
 }
 

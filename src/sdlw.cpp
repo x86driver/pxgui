@@ -24,6 +24,15 @@ void show_me_money(void *widget)
     visible = !visible;
 }
 
+void update_text(void *widget)
+{
+    static int count = 0;
+    char buf[64];
+    TText *txt = static_cast<TText*>(widget);
+    snprintf(buf, sizeof(buf), "count: %d", count++);
+    txt->settext(buf);
+}
+
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 {
 	if( -1 == SDL_Init(SDL_INIT_VIDEO) ) {
@@ -99,12 +108,20 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
     }
 
     TGui *Gui3 = new TGui(screen, snoopy);
-    TButton *btn3 = new TButton(Gui3, 220, 30, 50, 100, "btn3", "BULLSHIT");
-    TText *mytext3 = new TText(Gui3, 100, 40, 32, "text3", "I'm bull shit");
-    Gui3->AddElement(btn3);
-    Gui3->AddElement(mytext3);
+    TButton *btn3 = new TButton(Gui3, 30, 200, 100, 50, "btn3", "BULLSHIT");
+    TButton *btn_update = new TButton(Gui3, 30, 50, 80, 50, "btn_update", "Update!");
+    TText *mytext3 = new TText(Gui3, 10, 140, 16, "text3", "I'm bull shit");
+    TText *count = new TText(Gui3, 130, 70, 20, "count", "count: ");
 
-    PageManager pm(Gui2);
+    Gui3->AddElement(btn3);
+    Gui3->AddElement(btn_update);
+    Gui3->AddElement(mytext3);
+    Gui3->AddElement(count);
+
+    Functor<void (void*)> cmd_update(update_text);
+    btn_update->setClicked(cmd_update, count);
+
+    PageManager pm(Gui3);
     pm.insert(Gui, 0);
     pm.insert(Gui2, 1);
     pm.insert(Gui3, 2);
