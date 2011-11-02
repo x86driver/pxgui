@@ -2,21 +2,11 @@
 #include <string.h>
 
 PageManager::PageManager(TGui *active)
-    : activeGui(active)
+    : activeGui(active), cmd_switch_page(this)
 {
     memset(&pages[0], 0, sizeof(pages));
     activeGui->active = true;
 }
-
-/*
-void PageManager::operator()()
-{
-    prev->active = false;
-    next->active = true;
-    next->RedrawAll();
-    next->RedrawAll();
-}
-*/
 
 void PageManager::operator()(void *data)
 {
@@ -46,4 +36,9 @@ TGui *PageManager::getActive() const
 {
     printf("getActive return: %p\n", activeGui);
     return this->activeGui;
+}
+
+void PageManager::set_switch_button(TButton *btn, int target_page)
+{
+    btn->setClicked(cmd_switch_page, (void*)target_page);
 }

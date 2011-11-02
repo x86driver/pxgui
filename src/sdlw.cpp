@@ -94,9 +94,8 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
     PageManager pm(Gui2);
     pm.insert(Gui, 0);
     pm.insert(Gui2, 1);
-    Functor<void (void*)> cmd_switch_page(pm);
-    btn2->setClicked(cmd_switch_page, (void*)0);
-    btn1->setClicked(cmd_switch_page, (void*)1);
+    pm.set_switch_button(btn2, 0);
+    pm.set_switch_button(btn1, 1);
 
 	LMB = MMB = RMB = false;
 	bool Done = false;
