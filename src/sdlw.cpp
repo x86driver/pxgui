@@ -91,11 +91,26 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
     TText *mytext2 = new TText(Gui2, 10, 10, 24, "text2", "Shit!");
     Gui2->AddElement(mytext2);
 
+    // here are page3
+    SDL_Surface *snoopy = SDL_LoadBMP("snoopy.bmp");
+    if (snoopy == NULL) {
+        printf("Error creating background surfce!\n");
+        exit(-1);
+    }
+
+    TGui *Gui3 = new TGui(screen, snoopy);
+    TButton *btn3 = new TButton(Gui3, 220, 30, 50, 100, "btn3", "BULLSHIT");
+    TText *mytext3 = new TText(Gui3, 100, 40, 32, "text3", "I'm bull shit");
+    Gui3->AddElement(btn3);
+    Gui3->AddElement(mytext3);
+
     PageManager pm(Gui2);
     pm.insert(Gui, 0);
     pm.insert(Gui2, 1);
+    pm.insert(Gui3, 2);
     pm.set_switch_button(btn2, 0);
-    pm.set_switch_button(btn1, 1);
+    pm.set_switch_button(btn1, 2);
+    pm.set_switch_button(btn3, 1);
 
 	LMB = MMB = RMB = false;
 	bool Done = false;
