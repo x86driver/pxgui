@@ -5,8 +5,6 @@
 #include "platform.h"
 //---------------------------------------------------------------------------
 
-TGui *Gui;
-
 TGui::TGui(SDL_Surface * screen, SDL_Surface * background)
     : zList(NULL), Count(0), dirty(),
       screen(screen), background(background),
