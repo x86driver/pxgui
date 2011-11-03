@@ -1,4 +1,5 @@
 //---------------------------------------------------------------------------
+#include <pthread.h>
 #include <string.h>
 #include <stdlib.h>
 #include "SDL.h"
@@ -6,6 +7,8 @@
 #include "TGuiElement.h"
 
 //---------------------------------------------------------------------------
+
+static pthread_mutex_t surface_lock = PTHREAD_MUTEX_INITIALIZER;
 
 TGuiElement::TGuiElement(TGui *Parent, int x, int y, int width, int height, const char * name)
     : x(x), y(y), lastx(x), lasty(y), zIndex(0),
@@ -42,9 +45,14 @@ void  TGuiElement::Blit()
 	SDL_Rect dst;
 	dst.x = x;
 	dst.y = y;
+
+    pthread_mutex_lock(&surface_lock);
+    SDL_UnlockSurface(Parent->surface);
 	if( -1 == SDL_BlitSurface( surface, NULL, Parent->surface, &dst ) ) {
-		printf("Error BlitSurface Element > Gui\n");
+		printf("Error on 1: %s\n", SDL_GetError());
 	}
+    pthread_mutex_unlock(&surface_lock);
+
 }
 
 void  TGuiElement::Blit(int x, int y)
@@ -53,7 +61,7 @@ void  TGuiElement::Blit(int x, int y)
 	dst.x = x;
 	dst.y = y;
 	if( -1 == SDL_BlitSurface( surface, NULL, Parent->surface, &dst ) ) {
-		printf("Error BlitSurface Element > Gui\n");
+        printf("Error on 2: %s\n", SDL_GetError());
 	}
 }
 

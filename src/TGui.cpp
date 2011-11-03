@@ -123,9 +123,7 @@ void  TGui::Redraw()
 
 #if 1
 	while(zList[i]) {
-        printf("Checking \033[1;33m%s\033[0;38m ...\n", zList[i]->name);
 		if(zList[i]->bInvalidRect) {
-            printf("\033[1;31m%s\033[0;38m will redraw\n", zList[i]->name);
 			xl = zList[i]->x < zList[i]->lastx ? zList[i]->x : zList[i]->lastx;
 			xh = zList[i]->x > zList[i]->lastx ? zList[i]->x+zList[i]->width : zList[i]->lastx+zList[i]->width;
 			sx = sx > xl ? xl : sx;
@@ -161,7 +159,7 @@ void  TGui::Redraw()
 #endif
 
 	//cout << "DRCT: " << dirty.x << ", " << dirty.y << ", " << dirty.w << ", " << dirty.h << "\n";
-    printf("DRCT: %d, %d, %d, %d\n", dirty.x, dirty.y, dirty.w, dirty.h);
+//    printf("DRCT: %d, %d, %d, %d\n", dirty.x, dirty.y, dirty.w, dirty.h);
 
 	// restore background
 	SDL_BlitSurface( background, &dirty, surface, &dirty );
@@ -181,10 +179,6 @@ void  TGui::RedrawAll()
     dirty.x = dirty.y = 0;
     dirty.w = 480;
     dirty.h = 272;
-
-    printf("I will redraw all!\n");
-    SDL_FillRect(surface, &dirty, 0);
-    SDL_FillRect(screen, &dirty, 0);
 
     SDL_BlitSurface( background, &dirty, surface, &dirty );
 

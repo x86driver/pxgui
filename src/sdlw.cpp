@@ -34,9 +34,9 @@ void *thread_update_text(void *widget)
     TText *txt = static_cast<TText*>(widget);
 
     while (1) {
-        snprintf(buf, sizeof(buf), "count: %d", count++);
+        time_t t = time(NULL);
+        snprintf(buf, sizeof(buf), "%s", ctime(&t));
         txt->settext(buf);
-        printf("Update text: %s\n", buf);
         pm->getActive()->RedrawAll();
         pm->getActive()->RedrawAll();
         sleep(1);
