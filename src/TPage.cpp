@@ -26,7 +26,6 @@ void PageManager::switch_to(int page)
         activeGui = pages[page];
         activeGui->active = true;
         activeGui->RedrawAll();
-        activeGui->RedrawAll();
     }
 }
 

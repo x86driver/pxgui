@@ -177,8 +177,8 @@ void  TGui::Redraw()
 void  TGui::RedrawAll()
 {
     dirty.x = dirty.y = 0;
-    dirty.w = 480;
-    dirty.h = 272;
+    dirty.w = DEFAULT_SCREEN_WIDTH;
+    dirty.h = DEFAULT_SCREEN_HEIGHT;
 
     SDL_BlitSurface( background, &dirty, surface, &dirty );
 
@@ -190,6 +190,12 @@ void  TGui::RedrawAll()
 
     // and flip it
     SDL_Flip(screen);
+
+#ifdef USE_DOUBLE_BUFFER
+    SDL_BlitSurface( surface, &dirty, screen, &dirty );
+    SDL_Flip(screen);
+#endif
+
 }
 
 void  TGui::SetFocus(__attribute__((unused)) char * name)

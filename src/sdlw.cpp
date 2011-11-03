@@ -162,7 +162,6 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
     SDL_UpdateRect(screen,0,0,0,0);
 
     pm->getActive()->RedrawAll();
-    pm->getActive()->RedrawAll();
 
     pthread_t tid;
     pthread_create(&tid, NULL, thread_update_text, count);
@@ -179,7 +178,6 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
                 switch (ev.user.code) {
                     case REDRAW_ALL:
                         printf("redraw event!\n");
-                        pm->getActive()->RedrawAll();
                         pm->getActive()->RedrawAll();
                         break;
                 }
