@@ -8,8 +8,6 @@
 
 //---------------------------------------------------------------------------
 
-static pthread_mutex_t surface_lock = PTHREAD_MUTEX_INITIALIZER;
-
 TGuiElement::TGuiElement(TGui *Parent, int x, int y, int width, int height, const char * name)
     : x(x), y(y), lastx(x), lasty(y), zIndex(0),
       width(width), height(height), name(strdup(name)),
@@ -46,13 +44,9 @@ void  TGuiElement::Blit()
 	dst.x = x;
 	dst.y = y;
 
-    pthread_mutex_lock(&surface_lock);
-    SDL_UnlockSurface(Parent->surface);
 	if( -1 == SDL_BlitSurface( surface, NULL, Parent->surface, &dst ) ) {
 		printf("Error on 1: %s\n", SDL_GetError());
 	}
-    pthread_mutex_unlock(&surface_lock);
-
 }
 
 void  TGuiElement::Blit(int x, int y)
