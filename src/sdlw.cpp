@@ -15,6 +15,7 @@
 
 //---------------------------------------------------------------------------
 
+#define REDRAW_ALL 0
 
 bool LMB, MMB, RMB;
 static PageManager *pm;
@@ -29,16 +30,23 @@ void show_me_money(void *widget)
 
 void *thread_update_text(void *widget)
 {
-    static int count = 0;
     char buf[64];
+    static int count = 0;
+    SDL_Event user_event;
     TText *txt = static_cast<TText*>(widget);
 
+    user_event.type = SDL_USEREVENT;
+    user_event.user.code = REDRAW_ALL;
+
     while (1) {
+        if (pm->getActivePage() != 2) {
+            sleep(1);
+            continue;
+        }
         time_t t = time(NULL);
         snprintf(buf, sizeof(buf), "%s", ctime(&t));
         txt->settext(buf);
-        pm->getActive()->RedrawAll();
-        pm->getActive()->RedrawAll();
+        SDL_PushEvent(&user_event);
         sleep(1);
     }
 
@@ -133,10 +141,11 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 //    Functor<void (void*)> cmd_update(update_text);
 //    btn_update->setClicked(cmd_update, count);
 
-    pm = new PageManager(Gui3);
+    pm = new PageManager;
     pm->insert(Gui, 0);
     pm->insert(Gui2, 1);
     pm->insert(Gui3, 2);
+    pm->setActivePage(2);
     pm->set_switch_button(btn2, 0);
     pm->set_switch_button(btn1, 2);
     pm->set_switch_button(btn3, 1);
@@ -165,6 +174,16 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 		}
 		switch(ev.type)
 		{
+            case SDL_USEREVENT:
+                switch (ev.user.code) {
+                    case REDRAW_ALL:
+                        printf("redraw event!\n");
+                        pm->getActive()->RedrawAll();
+                        pm->getActive()->RedrawAll();
+                        break;
+                }
+            break;
+
 			case SDL_MOUSEBUTTONDOWN:
 				switch(ev.button.button)
 				{

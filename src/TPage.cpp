@@ -1,11 +1,10 @@
 #include "TPage.h"
 #include <string.h>
 
-PageManager::PageManager(TGui *active)
-    : activeGui(active), cmd_switch_page(this)
+PageManager::PageManager()
+    : activePage(0), activeGui(NULL), cmd_switch_page(this)
 {
     memset(&pages[0], 0, sizeof(pages));
-    activeGui->active = true;
 }
 
 void PageManager::operator()(void *data)
@@ -22,6 +21,7 @@ void PageManager::insert(TGui *gui, int page)
 void PageManager::switch_to(int page)
 {
     if (pages[page]) {
+        activePage = page;
         activeGui->active = false;
         activeGui = pages[page];
         activeGui->active = true;
@@ -38,4 +38,18 @@ TGui *PageManager::getActive() const
 void PageManager::set_switch_button(TButton *btn, int target_page)
 {
     btn->setClicked(cmd_switch_page, (void*)target_page);
+}
+
+void PageManager::setActivePage(int page)
+{
+    if (pages[page]) {
+        activePage = page;
+        activeGui = pages[page];
+        activeGui->active = true;
+    }
+}
+
+int PageManager::getActivePage() const
+{
+    return activePage;
 }
