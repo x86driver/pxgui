@@ -45,6 +45,7 @@ void *thread_update_text(void *widget)
         }
         time_t t = time(NULL);
         snprintf(buf, sizeof(buf), "%s", ctime(&t));
+        buf[strlen(buf)-1] = '\0';
         txt->settext(buf);
         SDL_PushEvent(&user_event);
         sleep(1);
