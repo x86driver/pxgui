@@ -70,11 +70,14 @@ public:
         Gui->AddElement(wnd1);
         Gui->AddElement(text1);
 
-        Functor<TButton::CallbackType> cmd1(show_me_money);
-        btn1->setClicked(cmd1, text1);
+//        Functor<TButton::CallbackType> cmd1(show_me_money);
+//        btn1->setClicked(cmd1, text1);
     }
-    //似乎還需要設定要跳到哪一個 page
-    virtual const TGuiElement *get_switch_widget() const
+    virtual int get_next_page()
+    {
+        return 1;
+    }
+   virtual TButton *get_switch_button()
     {
         return btn1;
     }
@@ -88,6 +91,36 @@ private:
     TText   *text1;
 };
 
+class Page1 : public Pages
+{
+public:
+    Page1(int page, SDL_Surface *background = NULL) : Pages(page, background)
+    {
+        btn2 = new TButton(this, 300, 150, 100, 70, "btn2", "FUCK");
+        mytext2 = new TText(this, 10, 10, 24, "text2", "Shit!");
+
+        Gui->AddElement(btn2);
+        Gui->AddElement(mytext2);
+    }
+// note: get_next_page() 等等不一定要是純虛擬函式
+// 在 abstract 應該傳回 -1, 這樣 set_switch_button 就會知道不用做 set 了
+    virtual int get_next_page()
+    {
+        return 0;
+    }
+   virtual TButton *get_switch_button()
+    {
+        return btn2;
+    }
+    virtual void onTimerEvent()
+    {
+//        text1->settext("abc");
+    }
+private:
+    TButton *btn2;
+    TText *mytext2;
+};
+
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 {
 	if( -1 == SDL_Init(SDL_INIT_VIDEO) ) {
@@ -97,7 +130,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 
 	atexit(SDL_Quit);
 
-    SDL_Surface *background;
+    SDL_Surface *background, *linuxback;
 
 	screen = SDL_SetVideoMode(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT, 16, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE|SDL_HWACCEL|SDL_PREALLOC);
 	if(screen == NULL) {
@@ -111,10 +144,19 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 		exit(-1);
 	}
 
+    linuxback = SDL_LoadBMP("linux.bmp");
+    if (linuxback == NULL) {
+        printf("Error creating background surfce!\n");
+        exit(-1);
+    }
+
     Page0 page0(0, background);
     pm = new PageManager;
     pm->insert(&page0);
     pm->setActivePage(0);
+
+    Page1 page1(1, linuxback);
+    pm->insert(&page1);
 
 	LMB = MMB = RMB = false;
 	bool Done = false;

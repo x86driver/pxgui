@@ -19,17 +19,22 @@ void PageManager::insert(Pages *page)
     int n = page->get_page();
     if (n >= 0 && n < MAX_PAGE)   // 0~255
         pages[n] = page->get_gui();
+
+    set_switch_button(page->get_switch_button(), page->get_next_page());
 }
 
 void PageManager::switch_to(int page)
 {
+    printf("switch from %d to %d\n", activePage, page);
     if (pages[page]) {
+        printf("do switch page!\n");
         activePage = page;
         activeGui->active = false;
         activeGui = pages[page];
         activeGui->active = true;
         activeGui->RedrawAll();
-    }
+    } else
+        printf("don't switch page!\n");
 }
 
 TGui *PageManager::getActive() const

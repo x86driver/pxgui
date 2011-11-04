@@ -44,8 +44,10 @@ public:
     TGui *get_gui() const;
 
     virtual ~Pages();
-    virtual const TGuiElement *get_switch_widget() const = 0;
     virtual void onTimerEvent() = 0;
+    virtual int get_next_page() = 0;
+    virtual TButton *get_switch_button() = 0;
+
 protected:
     int page;
     TGui *Gui;
