@@ -4,15 +4,14 @@
 
 #include "TGui.h"
 #include "TGuiElement.h"
+#include "TText.h"
 #include "TButton.h"
 //---------------------------------------------------------------------------
 
-extern TText *mytext;
-
 static const int FONT_SIZE = 16;
 
-TButton::TButton(TGui *Parent, int x, int y, int width, int height, const char * name, const char * caption)
-    : TGuiElement(Parent, x, y, width, height, name),
+TButton::TButton(Pages *pages, int x, int y, int width, int height, const char * name, const char * caption)
+    : TGuiElement(pages, x, y, width, height, name),
       caption(strdup(caption)), fontsize(FONT_SIZE),
       fontcolor({0, 0, 0, 0}), Col(),
       cmd_widget(NULL), cmd_data(NULL),
@@ -38,7 +37,7 @@ TButton::~TButton()
 
 void  TButton::render_text()
 {
-    TText *txt = new TText(Parent, 0, 0, fontsize, "button text", caption);
+    TText *txt = new TText(page, 0, 0, fontsize, "button text", caption);
     txt->setfgcolor(fontcolor.r, fontcolor.g, fontcolor.b);
     SDL_Surface *text_surface = txt->render();
     SDL_Rect dst;

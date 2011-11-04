@@ -1,4 +1,6 @@
 #include "TPage.h"
+#include "TGui.h"
+#include "TButton.h"
 #include <string.h>
 
 PageManager::PageManager()
@@ -12,10 +14,11 @@ void PageManager::operator()(void *data)
     switch_to(reinterpret_cast<intptr_t>(data));
 }
 
-void PageManager::insert(TGui *gui, int page)
+void PageManager::insert(Pages *page)
 {
-    if (page >= 0 && page < MAX_PAGE)   // 0~255
-        pages[page] = gui;
+    int n = page->get_page();
+    if (n >= 0 && n < MAX_PAGE)   // 0~255
+        pages[n] = page->get_gui();
 }
 
 void PageManager::switch_to(int page)
@@ -51,4 +54,25 @@ void PageManager::setActivePage(int page)
 int PageManager::getActivePage() const
 {
     return activePage;
+}
+
+extern SDL_Surface *screen;
+Pages::Pages(int page_number, SDL_Surface *background)
+        : page(page_number),
+          Gui(new TGui(screen, background))
+{
+}
+
+Pages::~Pages()
+{
+}
+
+int Pages::get_page() const
+{
+    return page;
+}
+
+TGui *Pages::get_gui() const
+{
+    return Gui;
 }

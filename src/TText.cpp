@@ -9,8 +9,8 @@
 
 #define DEFAULT_FONT "/usr/share/cups/fonts/Monospace"
 
-TText::TText(TGui *Parent, int x, int y, int fsize, const char *name, const char *str)
-    : TGuiElement(Parent, x, y, -1, -1, name),
+TText::TText(Pages *pages, int x, int y, int fsize, const char *name, const char *str)
+    : TGuiElement(pages, x, y, -1, -1, name),
       str(strdup(str)), fontsize(fsize),
       backcolor({0xc0, 0xc0, 0xc0, 0}),
       forecolor({0, 0, 0xff, 0}),

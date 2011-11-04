@@ -8,8 +8,8 @@
 
 //---------------------------------------------------------------------------
 
-TWindow::TWindow(TGui *Parent, int x, int y, int width, int height, const char * name, const char * caption)
-    : TGuiElement(Parent, x, y, width, height, name),
+TWindow::TWindow(Pages *pages, int x, int y, int width, int height, const char * name, const char * caption)
+    : TGuiElement(pages, x, y, width, height, name),
       Col(), caption(strdup(caption)),
       bkg(), cap(), cli()
 {

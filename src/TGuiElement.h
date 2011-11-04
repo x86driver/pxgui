@@ -5,6 +5,7 @@
 //---------------------------------------------------------------------------
 
 #include "TGui.h"
+#include "TPage.h"
 
 class TGuiElement
 {
@@ -14,7 +15,7 @@ public:
 	virtual bool  OnMouseUp() { return false; }
 	virtual void OnMouseMove(int, int) { return; }
 
-	TGuiElement(class TGui *Parent, int x, int y, int width, int height, const char *name);
+	TGuiElement(class Pages *pages, int x, int y, int width, int height, const char *name);
 	virtual ~TGuiElement();
 	void  Blit();
 	void  Blit(int x, int y);
@@ -38,6 +39,7 @@ public:
 protected:
     unsigned char ActiveAlpha, PassiveAlpha;
     SDL_Surface * surface;
+    class Pages * page;
     class TGui * Parent;
     // virtuals
     virtual void  Draw() = 0;

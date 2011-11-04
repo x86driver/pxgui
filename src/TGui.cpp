@@ -29,8 +29,10 @@ TGui::TGui(SDL_Surface * screen, SDL_Surface * background)
 
 TGui::~TGui()
 {
-    for (int i = 0; i < Count; ++i)
-        delete zList[i];
+    for (int i = 0; i < Count; ++i) {
+        if (zList[i])
+            delete zList[i];
+    }
     SDL_FreeSurface(surface);
     free(zList);
 }
@@ -162,7 +164,8 @@ void  TGui::Redraw()
 //    printf("DRCT: %d, %d, %d, %d\n", dirty.x, dirty.y, dirty.w, dirty.h);
 
 	// restore background
-	SDL_BlitSurface( background, &dirty, surface, &dirty );
+    if (background)
+    	SDL_BlitSurface( background, &dirty, surface, &dirty );
 
 	// draw all elements
 	BlitAll();
@@ -180,7 +183,8 @@ void  TGui::RedrawAll()
     dirty.w = DEFAULT_SCREEN_WIDTH;
     dirty.h = DEFAULT_SCREEN_HEIGHT;
 
-    SDL_BlitSurface( background, &dirty, surface, &dirty );
+    if (background)
+        SDL_BlitSurface( background, &dirty, surface, &dirty );
 
     // draw all elements
     BlitAll();

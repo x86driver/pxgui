@@ -8,7 +8,7 @@
 class TText : public TGuiElement
 {
 public:
-    TText(TGui *Parent, int x, int y, int fsize, const char *name, const char *str);
+    TText(Pages *pages, int x, int y, int fsize, const char *name, const char *str);
     ~TText();
     void Draw();
     SDL_Surface *render();

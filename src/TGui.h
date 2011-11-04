@@ -18,9 +18,9 @@ typedef struct {
 //-----------------------------------------------------------------------------------
 
 #include "TGuiElement.h"
-#include "TButton.h"
-#include "TWindow.h"
-#include "TText.h"
+//#include "TButton.h"
+//#include "TWindow.h"
+//#include "TText.h"
 
 class TGui
 {

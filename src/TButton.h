@@ -24,7 +24,7 @@ private:
 	void  DrawBtnDown();
     void  render_text();
 public:
-	TButton(TGui *Parent, int x, int y, int width, int height, const char * name, const char * caption);
+	TButton(Pages *pages, int x, int y, int width, int height, const char * name, const char * caption);
 	 ~TButton();
 	void  Draw();
     void  setfontsize(int size);

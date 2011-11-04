@@ -10,6 +10,9 @@
 #include "SDL.h"
 #include "TGui.h"
 #include "TPage.h"
+#include "TText.h"
+#include "TWindow.h"
+#include "TButton.h"
 #include "sdlw.h"
 #include "platform.h"
 
@@ -19,6 +22,7 @@
 
 bool LMB, MMB, RMB;
 static PageManager *pm;
+SDL_Surface *screen;
 
 void show_me_money(void *widget)
 {
@@ -54,6 +58,154 @@ void *thread_update_text(void *widget)
     return NULL;
 }
 
+class Page0 : public Pages {
+public:
+    Page0(int page, SDL_Surface *background = NULL) : Pages(page, background)
+    {
+        btn1 = new TButton(this, 10, 80, 80, 50, "btn1", "CLICK");
+        wnd1 = new TWindow(this, 10, 10, 50, 50, "wnd1", "Hello!");
+        text1 = new TText(this, 50, 50, 24, "text1", "Fuck ^_^");
+
+        Gui->AddElement(btn1);
+        Gui->AddElement(wnd1);
+        Gui->AddElement(text1);
+
+        Functor<TButton::CallbackType> cmd1(show_me_money);
+        btn1->setClicked(cmd1, text1);
+    }
+    //似乎還需要設定要跳到哪一個 page
+    virtual const TGuiElement *get_switch_widget() const
+    {
+        return btn1;
+    }
+    virtual void onTimerEvent()
+    {
+        text1->settext("abc");
+    }
+private:
+    TButton *btn1;
+    TWindow *wnd1;
+    TText   *text1;
+};
+
+int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
+{
+	if( -1 == SDL_Init(SDL_INIT_VIDEO) ) {
+		printf("Error initializing SDL\n");
+		exit(-1);
+	}
+
+	atexit(SDL_Quit);
+
+    SDL_Surface *background;
+
+	screen = SDL_SetVideoMode(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT, 16, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE|SDL_HWACCEL|SDL_PREALLOC);
+	if(screen == NULL) {
+		printf("Error setting video mode!\n");
+		exit(-1);
+	}
+
+	background = SDL_LoadBMP("layout.bmp");
+	if(background == NULL) {
+		printf("Error creating background surfce!\n");
+		exit(-1);
+	}
+
+    Page0 page0(0, background);
+    pm = new PageManager;
+    pm->insert(&page0);
+    pm->setActivePage(0);
+
+	LMB = MMB = RMB = false;
+	bool Done = false;
+	SDL_Event ev;
+
+#ifdef BUILD_FOR_ANDROID
+    SDL_ShowCursor(SDL_DISABLE);
+#endif
+
+    SDL_UpdateRect(screen,0,0,0,0);
+
+    pm->getActive()->RedrawAll();
+
+	while( !Done  )
+	{
+		SDL_Delay(1);
+		if( SDL_PollEvent(&ev) == 0 ) {
+			continue;
+		}
+		switch(ev.type)
+		{
+            case SDL_USEREVENT:
+                switch (ev.user.code) {
+                    case REDRAW_ALL:
+                        printf("redraw event!\n");
+                        pm->getActive()->RedrawAll();
+                        break;
+                }
+            break;
+
+			case SDL_MOUSEBUTTONDOWN:
+				switch(ev.button.button)
+				{
+					case SDL_BUTTON_LEFT:
+						LMB = true;
+                        pm->getActive()->OnMouseDown(ev.motion.x, ev.motion.y);
+						break;
+					case SDL_BUTTON_MIDDLE:
+						MMB = true;
+						break;
+					case SDL_BUTTON_RIGHT:
+						RMB = true;
+						break;
+					default:
+						break;
+				}
+				break;
+			case SDL_MOUSEBUTTONUP:
+				switch(ev.button.button)
+				{
+					case SDL_BUTTON_LEFT:
+						LMB = false;
+                        pm->getActive()->OnMouseUp(ev.motion.x, ev.motion.y);
+						break;
+					case SDL_BUTTON_MIDDLE:
+						MMB = false;
+						break;
+					case SDL_BUTTON_RIGHT:
+						RMB = false;
+						break;
+					default:
+						break;
+				}
+				break;
+			case SDL_MOUSEMOTION:
+//			   Gui->OnMouseMove(ev.motion.x, ev.motion.y);
+//				if(LMB) Gui->Drag(ev.motion.xrel, ev.motion.yrel);
+				break;
+			case SDL_QUIT:
+				Done = true;
+				break;
+			case SDL_KEYDOWN:
+				switch(ev.key.keysym.sym)
+				{
+					case SDLK_SPACE:
+						Done = true;
+						break;
+					default:
+						break;
+				}
+			default:
+				break;
+		}
+	}
+
+    SDL_FreeSurface(background);
+
+	return 1;
+}
+
+#if 0
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 {
 	if( -1 == SDL_Init(SDL_INIT_VIDEO) ) {
@@ -246,5 +398,4 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 
 	return 1;
 }
-
-
+#endif

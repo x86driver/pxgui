@@ -8,12 +8,12 @@
 
 //---------------------------------------------------------------------------
 
-TGuiElement::TGuiElement(TGui *Parent, int x, int y, int width, int height, const char * name)
+TGuiElement::TGuiElement(class Pages *pages, int x, int y, int width, int height, const char * name)
     : x(x), y(y), lastx(x), lasty(y), zIndex(0),
       width(width), height(height), name(strdup(name)),
       bVisible(true), bDragable(false), bMouseFocus(false),
       bInvalidRect(true), ActiveAlpha(255), PassiveAlpha(255),
-      surface(NULL), Parent(Parent)
+      surface(NULL), page(pages), Parent(pages->get_gui())
 {
     if (width < 0 || height < 0) {
         return;     // Do nothing, create surface later
