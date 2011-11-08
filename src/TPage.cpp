@@ -4,9 +4,15 @@
 #include <string.h>
 
 PageManager::PageManager()
-    : activePage(0), activeGui(NULL), cmd_switch_page(this)
+    : activePage(-1), activeGui(NULL), cmd_switch_page(this)
 {
     memset(&pages[0], 0, sizeof(pages));
+}
+
+PageManager &PageManager::getInstance()
+{
+    static PageManager obj;
+    return obj;
 }
 
 void PageManager::operator()(void *data)

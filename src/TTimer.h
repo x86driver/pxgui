@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "lib/functor.h"
 #include "lib/tuple.h"
+#include "TPage.h"
 #include <list>
 #include <map>
 using namespace std;
@@ -18,9 +19,10 @@ enum timer_flags {
 typedef std::tuple_element<0, std::tuple<void (void)>>::type TimerCallback;
 
 struct timer_struct {
-    timer_struct(enum timer_flags flag, const Functor<TimerCallback> cmd)
-        : flag(flag), cmd(cmd) {}
+    timer_struct(enum timer_flags flag, const Functor<TimerCallback> cmd, Pages *page)
+        : flag(flag), page(page), cmd(cmd) {}
     enum timer_flags flag;
+    Pages *page;
     Functor<TimerCallback> cmd;
 };
 
@@ -38,7 +40,7 @@ public:
         static TimerManager obj;
         return obj;
     }
-    int insert(int elapsed, const Functor<TimerCallback> &cmd);
+    int insert(Pages *page, int elapsed, const Functor<TimerCallback> &cmd);
     void set_flag(int id, timer_flags flag);
     void start();
     void run();
@@ -59,7 +61,7 @@ private:
 
 class TTimer {
 public:
-    TTimer(int elapsed, const Functor<TimerCallback> &cmd);
+    TTimer(Pages *page, int elapsed, const Functor<TimerCallback> &cmd);
     ~TTimer();
     void start();
     void stop();

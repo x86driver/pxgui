@@ -22,7 +22,7 @@
 #define REDRAW_ALL 0
 
 bool LMB, MMB, RMB;
-static PageManager *pm;
+//static PageManager *pm;
 SDL_Surface *screen;
 
 void show_me_money(void *widget)
@@ -43,8 +43,10 @@ void *thread_update_text(void *widget)
     user_event.type = SDL_USEREVENT;
     user_event.user.code = REDRAW_ALL;
 
+    auto &pm = PageManager::getInstance();
+
     while (1) {
-        if (pm->getActivePage() != 2) {
+        if (pm.getActivePage() != 2) {
             sleep(1);
             continue;
         }
@@ -124,7 +126,7 @@ private:
 
 class Page2 : public Pages {
 public:
-    Page2(SDL_Surface *background = NULL) : Pages(0, background)
+    Page2(SDL_Surface *background = NULL) : Pages(get_page(), background)
     {
         btn3 = new TButton(this, 30, 200, 100, 50, "btn3", "BULLSHIT");
         btn_update = new TButton(this, 30, 50, 80, 50, "btn_update", "Update!");
@@ -137,11 +139,15 @@ public:
         Gui->AddElement(count);
 
         Functor<TimerCallback> cmd(this, &Page2::onTimerEvent);
-        TTimer t(1000, cmd);
+        TTimer t(this, 1000, cmd);
 
 //        Functor<void (void*)> btn_cmd(this, &Page2::onTimerEvent2);
 //        btn_update->setClicked(btn_cmd, NULL);
 
+    }
+    virtual int get_page()
+    {
+        return 0;
     }
     virtual int get_next_page()
     {
@@ -156,10 +162,7 @@ public:
         char buf[64];
         time_t t = time(NULL);
 
-        if (!pm)
-            return;
-        if (pm->getActivePage() != 0)
-            return;
+        printf("%s got timer event!\n", __FUNCTION__);
         snprintf(buf, sizeof(buf), "%s", ctime(&t));
         buf[strlen(buf)-1] = '\0';
         count->settext(buf);
@@ -213,11 +216,11 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
     }
 
 //    Page0 page0(background);
-    pm = new PageManager;
+    PageManager &pm = PageManager::getInstance();
 //    pm->insert(&page0);
     Page2 page2(snoopy);
-    pm->insert(&page2);
-    pm->setActivePage(0);
+    pm.insert(&page2);
+    pm.setActivePage(0);
 
 //    Page1 page1(linuxback);
 //    pm->insert(&page1);
@@ -235,7 +238,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 
     SDL_UpdateRect(screen,0,0,0,0);
 
-    pm->getActive()->RedrawAll();
+    pm.getActive()->RedrawAll();
 
     (TimerManager::getInstance()).start();
 
@@ -251,7 +254,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
                 switch (ev.user.code) {
                     case REDRAW_ALL:
                         printf("redraw event!\n");
-                        pm->getActive()->RedrawAll();
+                        pm.getActive()->RedrawAll();
                         break;
                 }
             break;
@@ -261,7 +264,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 				{
 					case SDL_BUTTON_LEFT:
 						LMB = true;
-                        pm->getActive()->OnMouseDown(ev.motion.x, ev.motion.y);
+                        pm.getActive()->OnMouseDown(ev.motion.x, ev.motion.y);
 						break;
 					case SDL_BUTTON_MIDDLE:
 						MMB = true;
@@ -278,7 +281,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 				{
 					case SDL_BUTTON_LEFT:
 						LMB = false;
-                        pm->getActive()->OnMouseUp(ev.motion.x, ev.motion.y);
+                        pm.getActive()->OnMouseUp(ev.motion.x, ev.motion.y);
 						break;
 					case SDL_BUTTON_MIDDLE:
 						MMB = false;

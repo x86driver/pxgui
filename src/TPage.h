@@ -16,7 +16,7 @@ class Pages;
 
 class PageManager {
 public:
-    PageManager();
+    static PageManager &getInstance();
     void operator()(void *data);
     void insert(Pages *page);
     void remove(int page);
@@ -32,6 +32,7 @@ private:
 //    Functor<TButton::CallbackType> cmd_switch_page;
     Functor<void (void*)> cmd_switch_page;
 
+    PageManager();
     void switch_to(int page);
     PageManager(const PageManager &);
     void operator=(const PageManager &);
@@ -45,6 +46,7 @@ public:
 
     virtual ~Pages();
     virtual void onTimerEvent() = 0;
+    virtual int get_page() = 0;
     virtual int get_next_page() = 0;
     virtual TButton *get_switch_button() = 0;
 

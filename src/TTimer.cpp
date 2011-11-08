@@ -32,7 +32,7 @@ TimerManager::TimerManager()
 {
 }
 
-int TimerManager::insert(int elapsed, const Functor<TimerCallback> &cmd)
+int TimerManager::insert(Pages *page, int elapsed, const Functor<TimerCallback> &cmd)
 {
     if (elapsed != gcd) {
         int m = elapsed;
@@ -45,7 +45,7 @@ int TimerManager::insert(int elapsed, const Functor<TimerCallback> &cmd)
         gcd = m;
     }
 
-    timer_struct *ts = new timer_struct(TIMER_START, cmd);
+    timer_struct *ts = new timer_struct(TIMER_START, cmd, page);
 
     auto it = find_if(tlist.begin(), tlist.end(), Pred(elapsed));
 
@@ -72,12 +72,15 @@ void TimerManager::set_flag(int id, timer_flags flag)
 
 void TimerManager::dispatch(int period)
 {
+    PageManager &pm = PageManager::getInstance();
+
     for (auto t = tlist.begin(); t != tlist.end(); ++t) {
         struct timer_head *th = *t;
         if (period >= th->elapsed) {
             for (auto it = th->tslist.begin(); it!= th->tslist.end(); ++it) {
-                if ((*it)->flag == TIMER_START)
+                if ((*it)->flag == TIMER_START && (*it)->page->get_page() == pm.getActivePage()) {
                     (*it)->cmd();
+                }
             }
             th->elapsed = th->orig_elapsed;
         } else {
@@ -112,9 +115,9 @@ void TimerManager::start()
 //    pthread_join(tid, NULL); FIXME 這裡不應該做 join
 }
 
-TTimer::TTimer(int elapsed, const Functor<TimerCallback> &cmd)
+TTimer::TTimer(Pages *page, int elapsed, const Functor<TimerCallback> &cmd)
     : timer(TimerManager::getInstance()),
-      id(timer.insert(elapsed, cmd))
+      id(timer.insert(page, elapsed, cmd))
 {
 }
 
