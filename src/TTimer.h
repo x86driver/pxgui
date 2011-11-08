@@ -25,6 +25,8 @@ struct timer_struct {
 };
 
 struct timer_head {
+    timer_head(int elapsed)
+        : elapsed(elapsed), orig_elapsed(elapsed), tslist() {}
     int elapsed;
     int orig_elapsed;
     list<timer_struct*> tslist;
@@ -38,6 +40,7 @@ public:
     }
     int insert(int elapsed, const Functor<TimerCallback> &cmd);
     void set_flag(int id, timer_flags flag);
+    void start();
     void run();
 
 private:
@@ -47,8 +50,9 @@ private:
     ~TimerManager() {}
     void dispatch(int period);
 
-    int time_index;
     int gcd;
+    int time_index;
+    pthread_t tid;
     list<timer_head*> tlist;
     map<int, struct timer_struct*> m;
 };

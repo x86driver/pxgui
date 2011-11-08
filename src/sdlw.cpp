@@ -13,6 +13,7 @@
 #include "TText.h"
 #include "TWindow.h"
 #include "TButton.h"
+#include "TTimer.h"
 #include "sdlw.h"
 #include "platform.h"
 
@@ -123,7 +124,7 @@ private:
 
 class Page2 : public Pages {
 public:
-    Page2(SDL_Surface *background = NULL) : Pages(2, background)
+    Page2(SDL_Surface *background = NULL) : Pages(0, background)
     {
         btn3 = new TButton(this, 30, 200, 100, 50, "btn3", "BULLSHIT");
         btn_update = new TButton(this, 30, 50, 80, 50, "btn_update", "Update!");
@@ -135,8 +136,12 @@ public:
         Gui->AddElement(mytext3);
         Gui->AddElement(count);
 
-        myTimer = new TTimer();
-        connect(this->timer, onTimerEvent());
+        Functor<TimerCallback> cmd(this, &Page2::onTimerEvent);
+        TTimer t(1000, cmd);
+
+//        Functor<void (void*)> btn_cmd(this, &Page2::onTimerEvent2);
+//        btn_update->setClicked(btn_cmd, NULL);
+
     }
     virtual int get_next_page()
     {
@@ -151,9 +156,18 @@ public:
         char buf[64];
         time_t t = time(NULL);
 
+        if (!pm)
+            return;
+        if (pm->getActivePage() != 0)
+            return;
         snprintf(buf, sizeof(buf), "%s", ctime(&t));
         buf[strlen(buf)-1] = '\0';
         count->settext(buf);
+
+        SDL_Event user_event;
+        user_event.type = SDL_USEREVENT;
+        user_event.user.code = REDRAW_ALL;
+        SDL_PushEvent(&user_event);
     }
 
 private:
@@ -198,16 +212,18 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
         exit(-1);
     }
 
-    Page0 page0(background);
+//    Page0 page0(background);
     pm = new PageManager;
-    pm->insert(&page0);
-    pm->setActivePage(0);
-
-    Page1 page1(linuxback);
-    pm->insert(&page1);
-
+//    pm->insert(&page0);
     Page2 page2(snoopy);
     pm->insert(&page2);
+    pm->setActivePage(0);
+
+//    Page1 page1(linuxback);
+//    pm->insert(&page1);
+
+//    Page2 page2(snoopy);
+//    pm->insert(&page2);
 
 	LMB = MMB = RMB = false;
 	bool Done = false;
@@ -220,6 +236,8 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
     SDL_UpdateRect(screen,0,0,0,0);
 
     pm->getActive()->RedrawAll();
+
+    (TimerManager::getInstance()).start();
 
 	while( !Done  )
 	{

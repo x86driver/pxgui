@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <algorithm>
+#include <pthread.h>
 #include "TTimer.h"
 
 class Pred {
@@ -27,7 +28,7 @@ static void *timer_thread(void *data)
 }
 
 TimerManager::TimerManager()
-    : time_index(0), gcd(1000), tlist()
+    : gcd(1000), time_index(0), tid(0), tlist(), m()
 {
 }
 
@@ -44,16 +45,14 @@ int TimerManager::insert(int elapsed, const Functor<TimerCallback> &cmd)
         gcd = m;
     }
 
-    timer_struct *ts = new timer_struct(TIMER_STOP, cmd);
+    timer_struct *ts = new timer_struct(TIMER_START, cmd);
 
     auto it = find_if(tlist.begin(), tlist.end(), Pred(elapsed));
 
     if (it != tlist.end()) {
         (*it)->tslist.push_back(ts);
     } else {                    // not found
-        timer_head *th = new timer_head;
-        th->elapsed = elapsed;
-        th->orig_elapsed = elapsed;
+        timer_head *th = new timer_head(elapsed);
         th->tslist.push_back(ts);
         tlist.push_back(th);
         tlist.sort(comp);
@@ -91,22 +90,26 @@ void TimerManager::dispatch(int period)
 
 void TimerManager::run()
 {
-
     for (auto i = tlist.begin(); i != tlist.end(); ++i) {
         printf("%d\n", (*i)->elapsed);
     }
 
     printf("Timer interval: %d\n", gcd);
 
-    int total_time = 0;
-//    while (1) {
-    for (int i = 0; i < 10; ++i) {
-        total_time += gcd;
-        printf("\033[1;31m===== elapsed %05d =====\033[0;38m\n", total_time);
+//    int total_time = 0;
+    while (1) {
+//        total_time += gcd;
+//        printf("\033[1;31m===== elapsed %05d =====\033[0;38m\n", total_time);
         usleep(gcd * 1000);
         dispatch(gcd);
-        printf("\033[0;31m========== end ===== =====\033[0;38m\n\n\n");
+//        printf("\033[0;31m========== end ===== =====\033[0;38m\n\n\n");
     }
+}
+
+void TimerManager::start()
+{
+    pthread_create(&tid, NULL, timer_thread, NULL);
+//    pthread_join(tid, NULL); FIXME 這裡不應該做 join
 }
 
 TTimer::TTimer(int elapsed, const Functor<TimerCallback> &cmd)
@@ -129,6 +132,7 @@ void TTimer::stop()
     timer.set_flag(id, TIMER_STOP);
 }
 
+#if USE_FOR_DEBUG
 class Pageabc {
 public:
     Pageabc();
@@ -175,6 +179,10 @@ int main()
 //    TTimer t3(1000, cmd3);
 //    t3.start();
 
-    timer_thread(NULL);
+    auto &t = TimerManager::getInstance();
+    t.start();
+//    timer_thread(NULL);
+
     return 0;
 }
+#endif
