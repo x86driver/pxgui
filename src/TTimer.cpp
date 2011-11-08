@@ -31,7 +31,7 @@ TimerManager::TimerManager()
 {
 }
 
-int TimerManager::insert(int elapsed, Functor<TimerCallback> &cmd)
+int TimerManager::insert(int elapsed, const Functor<TimerCallback> &cmd)
 {
     if (elapsed != gcd) {
         int m = elapsed;
@@ -44,9 +44,7 @@ int TimerManager::insert(int elapsed, Functor<TimerCallback> &cmd)
         gcd = m;
     }
 
-    timer_struct *ts = new timer_struct {
-        TIMER_STOP, cmd
-    };
+    timer_struct *ts = new timer_struct(TIMER_STOP, cmd);
 
     auto it = find_if(tlist.begin(), tlist.end(), Pred(elapsed));
 
@@ -101,7 +99,8 @@ void TimerManager::run()
     printf("Timer interval: %d\n", gcd);
 
     int total_time = 0;
-    while (1) {
+//    while (1) {
+    for (int i = 0; i < 10; ++i) {
         total_time += gcd;
         printf("\033[1;31m===== elapsed %05d =====\033[0;38m\n", total_time);
         usleep(gcd * 1000);
@@ -110,7 +109,7 @@ void TimerManager::run()
     }
 }
 
-TTimer::TTimer(int elapsed, Functor<TimerCallback> &cmd)
+TTimer::TTimer(int elapsed, const Functor<TimerCallback> &cmd)
     : timer(TimerManager::getInstance()),
       id(timer.insert(elapsed, cmd))
 {
@@ -132,7 +131,7 @@ void TTimer::stop()
 
 class Pageabc {
 public:
-    Pageabc() : count(0) {}
+    Pageabc();
     void onTimerEvent()
     {
         printf("Timer1\n");
@@ -151,10 +150,19 @@ private:
     int count;
 };
 
+Pageabc::Pageabc()
+    : count(0)
+{
+    Functor<TimerCallback> cmd3(this, &Pageabc::onTimer3);
+    TTimer t3(1000, cmd3);
+    t3.start();
+}
+
 int main()
 {
     Pageabc p;
 
+/*
     Functor<TimerCallback> cmd(&p, &Pageabc::onTimerEvent);
     Functor<TimerCallback> cmd2(&p, &Pageabc::onTimer2);
     TTimer t(500, cmd);
@@ -162,10 +170,10 @@ int main()
 
     TTimer t2(1000, cmd2);
     t2.start();
-
-    Functor<TimerCallback> cmd3(&p, &Pageabc::onTimer3);
-    TTimer t3(1000, cmd3);
-    t3.start();
+*/
+//    Functor<TimerCallback> cmd3(&p, &Pageabc::onTimer3);
+//    TTimer t3(1000, cmd3);
+//    t3.start();
 
     timer_thread(NULL);
     return 0;

@@ -18,8 +18,10 @@ enum timer_flags {
 typedef std::tuple_element<0, std::tuple<void (void)>>::type TimerCallback;
 
 struct timer_struct {
+    timer_struct(enum timer_flags flag, const Functor<TimerCallback> cmd)
+        : flag(flag), cmd(cmd) {}
     enum timer_flags flag;
-    Functor<TimerCallback> &cmd;
+    Functor<TimerCallback> cmd;
 };
 
 struct timer_head {
@@ -34,7 +36,7 @@ public:
         static TimerManager obj;
         return obj;
     }
-    int insert(int elapsed, Functor<TimerCallback> &cmd);
+    int insert(int elapsed, const Functor<TimerCallback> &cmd);
     void set_flag(int id, timer_flags flag);
     void run();
 
@@ -53,7 +55,7 @@ private:
 
 class TTimer {
 public:
-    TTimer(int elapsed, Functor<TimerCallback> &cmd);
+    TTimer(int elapsed, const Functor<TimerCallback> &cmd);
     ~TTimer();
     void start();
     void stop();
