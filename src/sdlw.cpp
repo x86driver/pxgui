@@ -60,7 +60,7 @@ void *thread_update_text(void *widget)
 
 class Page0 : public Pages {
 public:
-    Page0(int page, SDL_Surface *background = NULL) : Pages(page, background)
+    Page0(SDL_Surface *background = NULL) : Pages(0, background)
     {
         btn1 = new TButton(this, 10, 80, 80, 50, "btn1", "CLICK");
         wnd1 = new TWindow(this, 10, 10, 50, 50, "wnd1", "Hello!");
@@ -94,7 +94,7 @@ private:
 class Page1 : public Pages
 {
 public:
-    Page1(int page, SDL_Surface *background = NULL) : Pages(page, background)
+    Page1(SDL_Surface *background = NULL) : Pages(1, background)
     {
         btn2 = new TButton(this, 300, 150, 100, 70, "btn2", "FUCK");
         mytext2 = new TText(this, 10, 10, 24, "text2", "Shit!");
@@ -106,7 +106,7 @@ public:
 // 在 abstract 應該傳回 -1, 這樣 set_switch_button 就會知道不用做 set 了
     virtual int get_next_page()
     {
-        return 0;
+        return 2;
     }
    virtual TButton *get_switch_button()
     {
@@ -121,6 +121,48 @@ private:
     TText *mytext2;
 };
 
+class Page2 : public Pages {
+public:
+    Page2(SDL_Surface *background = NULL) : Pages(2, background)
+    {
+        btn3 = new TButton(this, 30, 200, 100, 50, "btn3", "BULLSHIT");
+        btn_update = new TButton(this, 30, 50, 80, 50, "btn_update", "Update!");
+        mytext3 = new TText(this, 10, 140, 16, "text3", "I'm bull shit");
+        count = new TText(this, 130, 70, 20, "count", "count: ");
+
+        Gui->AddElement(btn3);
+        Gui->AddElement(btn_update);
+        Gui->AddElement(mytext3);
+        Gui->AddElement(count);
+
+        myTimer = new TTimer();
+        connect(this->timer, onTimerEvent());
+    }
+    virtual int get_next_page()
+    {
+        return 0;
+    }
+   virtual TButton *get_switch_button()
+    {
+        return btn3;
+    }
+    virtual void onTimerEvent()
+    {
+        char buf[64];
+        time_t t = time(NULL);
+
+        snprintf(buf, sizeof(buf), "%s", ctime(&t));
+        buf[strlen(buf)-1] = '\0';
+        count->settext(buf);
+    }
+
+private:
+    TButton *btn3;
+    TButton *btn_update;
+    TText *mytext3;
+    TText *count;
+};
+
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 {
 	if( -1 == SDL_Init(SDL_INIT_VIDEO) ) {
@@ -130,7 +172,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 
 	atexit(SDL_Quit);
 
-    SDL_Surface *background, *linuxback;
+    SDL_Surface *background, *linuxback, *snoopy;
 
 	screen = SDL_SetVideoMode(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT, 16, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE|SDL_HWACCEL|SDL_PREALLOC);
 	if(screen == NULL) {
@@ -150,13 +192,22 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
         exit(-1);
     }
 
-    Page0 page0(0, background);
+    snoopy = SDL_LoadBMP("snoopy.bmp");
+    if (snoopy == NULL) {
+        printf("Error creating background surfce!\n");
+        exit(-1);
+    }
+
+    Page0 page0(background);
     pm = new PageManager;
     pm->insert(&page0);
     pm->setActivePage(0);
 
-    Page1 page1(1, linuxback);
+    Page1 page1(linuxback);
     pm->insert(&page1);
+
+    Page2 page2(snoopy);
+    pm->insert(&page2);
 
 	LMB = MMB = RMB = false;
 	bool Done = false;
