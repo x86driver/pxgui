@@ -19,10 +19,7 @@
 
 //---------------------------------------------------------------------------
 
-#define REDRAW_ALL 0
-
 bool LMB, MMB, RMB;
-//static PageManager *pm;
 SDL_Surface *screen;
 
 void show_me_money(void *widget)
@@ -63,7 +60,7 @@ void *thread_update_text(void *widget)
 
 class Page0 : public Pages {
 public:
-    Page0(SDL_Surface *background = NULL) : Pages(0, background)
+    Page0(SDL_Surface *background = NULL) : Pages(get_page(), background)
     {
         btn1 = new TButton(this, 10, 80, 80, 50, "btn1", "CLICK");
         wnd1 = new TWindow(this, 10, 10, 50, 50, "wnd1", "Hello!");
@@ -75,6 +72,11 @@ public:
 
 //        Functor<TButton::CallbackType> cmd1(show_me_money);
 //        btn1->setClicked(cmd1, text1);
+    }
+
+    virtual int get_page()
+    {
+        return 0;
     }
     virtual int get_next_page()
     {
@@ -97,7 +99,7 @@ private:
 class Page1 : public Pages
 {
 public:
-    Page1(SDL_Surface *background = NULL) : Pages(1, background)
+    Page1(SDL_Surface *background = NULL) : Pages(get_page(), background)
     {
         btn2 = new TButton(this, 300, 150, 100, 70, "btn2", "FUCK");
         mytext2 = new TText(this, 10, 10, 24, "text2", "Shit!");
@@ -107,6 +109,11 @@ public:
     }
 // note: get_next_page() 等等不一定要是純虛擬函式
 // 在 abstract 應該傳回 -1, 這樣 set_switch_button 就會知道不用做 set 了
+
+    virtual int get_page()
+    {
+        return 1;
+    }
     virtual int get_next_page()
     {
         return 2;
@@ -147,7 +154,7 @@ public:
     }
     virtual int get_page()
     {
-        return 0;
+        return 2;
     }
     virtual int get_next_page()
     {
@@ -167,10 +174,7 @@ public:
         buf[strlen(buf)-1] = '\0';
         count->settext(buf);
 
-        SDL_Event user_event;
-        user_event.type = SDL_USEREVENT;
-        user_event.user.code = REDRAW_ALL;
-        SDL_PushEvent(&user_event);
+        refresh();
     }
 
 private:
@@ -215,18 +219,15 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
         exit(-1);
     }
 
-//    Page0 page0(background);
-    PageManager &pm = PageManager::getInstance();
-//    pm->insert(&page0);
+    Page0 page0(background);
+    Page1 page1(linuxback);
     Page2 page2(snoopy);
+
+    PageManager &pm = PageManager::getInstance();
+    pm.insert(&page0);
+    pm.insert(&page1);
     pm.insert(&page2);
     pm.setActivePage(0);
-
-//    Page1 page1(linuxback);
-//    pm->insert(&page1);
-
-//    Page2 page2(snoopy);
-//    pm->insert(&page2);
 
 	LMB = MMB = RMB = false;
 	bool Done = false;

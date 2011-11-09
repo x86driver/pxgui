@@ -27,6 +27,12 @@ static void *timer_thread(void *data)
     return NULL;
 }
 
+TimerManager &TimerManager::getInstance()
+{
+    static TimerManager obj;
+    return obj;
+}
+
 TimerManager::TimerManager()
     : gcd(1000), time_index(0), tid(0), tlist(), m()
 {

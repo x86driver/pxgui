@@ -8,6 +8,7 @@
 #include "lib/functor.h"
 
 const int MAX_PAGE = 256;
+const int REDRAW_ALL = 0;
 
 class TGui;
 class TGuiElement;
@@ -44,6 +45,7 @@ public:
     int get_page() const;
     TGui *get_gui() const;
 
+    void refresh();
     virtual ~Pages();
     virtual void onTimerEvent() = 0;
     virtual int get_page() = 0;

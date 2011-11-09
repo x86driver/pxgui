@@ -87,3 +87,11 @@ TGui *Pages::get_gui() const
 {
     return Gui;
 }
+
+void Pages::refresh()
+{
+    SDL_Event user_event;
+    user_event.type = SDL_USEREVENT;
+    user_event.user.code = REDRAW_ALL;
+    SDL_PushEvent(&user_event);
+}

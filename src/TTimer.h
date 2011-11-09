@@ -21,9 +21,14 @@ typedef std::tuple_element<0, std::tuple<void (void)>>::type TimerCallback;
 struct timer_struct {
     timer_struct(enum timer_flags flag, const Functor<TimerCallback> cmd, Pages *page)
         : flag(flag), page(page), cmd(cmd) {}
+
     enum timer_flags flag;
     Pages *page;
     Functor<TimerCallback> cmd;
+
+private:
+    timer_struct(const timer_struct &);
+    void operator=(const timer_struct &);
 };
 
 struct timer_head {
@@ -36,10 +41,7 @@ struct timer_head {
 
 class TimerManager {
 public:
-    static TimerManager &getInstance() {
-        static TimerManager obj;
-        return obj;
-    }
+    static TimerManager &getInstance();
     int insert(Pages *page, int elapsed, const Functor<TimerCallback> &cmd);
     void set_flag(int id, timer_flags flag);
     void start();
