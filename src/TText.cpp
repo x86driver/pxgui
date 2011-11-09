@@ -40,6 +40,7 @@ TText::~TText()
     free(str);
     SDL_FreeSurface(text);
     TTF_CloseFont(font);
+    TTF_Quit();
 }
 
 SDL_Surface *TText::render()

@@ -38,6 +38,19 @@ TimerManager::TimerManager()
 {
 }
 
+TimerManager::~TimerManager()
+{
+    for (auto i = tlist.begin(); i != tlist.end(); ++i) {
+        struct timer_head *th = *i;
+        for (auto j = th->tslist.begin(); j != th->tslist.end(); ++j) {
+            delete *j;
+        }
+        th->tslist.clear();
+        delete *i;
+    }
+    tlist.clear();
+}
+
 int TimerManager::insert(Pages *page, int elapsed, const Functor<TimerCallback> &cmd)
 {
     if (elapsed != gcd) {

@@ -51,7 +51,7 @@ private:
     TimerManager();
     TimerManager(const TimerManager &);
     TimerManager &operator=(const TimerManager &);
-    ~TimerManager() {}
+    ~TimerManager();
     void dispatch(int period);
 
     int gcd;
