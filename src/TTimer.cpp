@@ -42,7 +42,8 @@ TimerManager &TimerManager::getInstance()
 }
 
 TimerManager::TimerManager()
-    : gcd(1000), time_index(0), tid(0), tlist(), m()
+    : gcd(1000), time_index(0), tid(0), tlist(), m(),
+      pm(PageManager::getInstance())
 {
 }
 
@@ -100,8 +101,6 @@ void TimerManager::set_flag(int id, timer_flags flag)
 
 void TimerManager::dispatch(int period)
 {
-    PageManager &pm = PageManager::getInstance();
-
     for (auto t = tlist.begin(); t != tlist.end(); ++t) {
         struct timer_head *th = *t;
         if (period >= th->elapsed) {

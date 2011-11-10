@@ -68,6 +68,7 @@ private:
     pthread_t tid;
     vector<timer_head*> tlist;
     map<int, struct timer_struct*> m;
+    PageManager &pm;
 };
 
 class TTimer {

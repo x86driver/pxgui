@@ -114,7 +114,7 @@ public:
         timer_control->setClicked(tcmd, NULL);
 
         Functor<TimerCallback> cmd(this, &Page1::onTimerEvent);
-        t = new TTimer(this, 500, cmd);
+        t = new TTimer(this, 50, cmd);
     }
     virtual int get_page()
     {

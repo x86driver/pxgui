@@ -77,7 +77,6 @@ void ScreenManager::run()
     		case SDL_USEREVENT:
 	            switch (ev.user.code) {
                     case REDRAW_ALL:
-                    printf("redraw event!\n");
                     pm.getActive()->RedrawAll();
                     break;
                 }
