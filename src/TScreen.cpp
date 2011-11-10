@@ -55,11 +55,11 @@ void ScreenManager::run()
     bool LMB, MMB, RMB;
     PageManager &pm = PageManager::getInstance();
 
-    pm.getActive()->RedrawAll();
-
 #ifdef BUILD_FOR_ANDROID
     SDL_ShowCursor(SDL_DISABLE);
 #endif
+
+    pm.getActive()->RedrawAll();
 
     SDL_UpdateRect(screen, 0, 0, 0, 0);
 
