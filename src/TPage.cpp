@@ -1,6 +1,7 @@
 #include "TPage.h"
 #include "TGui.h"
 #include "TButton.h"
+#include "TScreen.h"
 #include <string.h>
 
 PageManager::PageManager()
@@ -70,7 +71,7 @@ int PageManager::getActivePage() const
 extern SDL_Surface *screen;
 Pages::Pages(int page_number, SDL_Surface *background)
         : page(page_number),
-          Gui(new TGui(screen, background))
+          Gui(new TGui(ScreenManager::getInstance().get_screen(), background))
 {
 }
 
