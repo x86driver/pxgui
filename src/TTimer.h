@@ -52,6 +52,7 @@ public:
     static TimerManager &getInstance();
     int insert(Pages *page, int elapsed, const Functor<TimerCallback> &cmd);
     void set_flag(int id, timer_flags flag);
+    enum timer_flags get_flag(int id);
     void start();
     void run();
 
@@ -75,6 +76,7 @@ public:
     ~TTimer();
     void start();
     void stop();
+    bool isRun() const;
 
 private:
     TimerManager &timer;

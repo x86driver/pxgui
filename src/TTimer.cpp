@@ -144,6 +144,14 @@ void TimerManager::start()
 //    pthread_join(tid, NULL); FIXME 這裡不應該做 join
 }
 
+enum timer_flags TimerManager::get_flag(int id)
+{
+    auto it = m.find(id);
+    if (it != m.end())
+        return it->second->flag;
+    return TIMER_STOP;
+}
+
 TTimer::TTimer(Pages *page, int elapsed, const Functor<TimerCallback> &cmd)
     : timer(TimerManager::getInstance()),
       id(timer.insert(page, elapsed, cmd))
@@ -162,6 +170,15 @@ void TTimer::start()
 void TTimer::stop()
 {
     timer.set_flag(id, TIMER_STOP);
+}
+
+bool TTimer::isRun() const
+{
+    enum timer_flags f = timer.get_flag(id);
+    if (f == TIMER_START)
+        return true;
+    else
+        return false;
 }
 
 #if USE_FOR_DEBUG

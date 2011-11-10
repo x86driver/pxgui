@@ -101,6 +101,7 @@ class Page1 : public Pages
 public:
     Page1(SDL_Surface *background = NULL) : Pages(get_page(), background)
     {
+        timer_control = new TButton(this, 30, 150, 80, 50, "btn_update", "Timer!");
         btn2 = new TButton(this, 300, 150, 100, 70, "btn2", "FUCK");
         mytext2 = new TText(this, 10, 10, 24, "text2", "Shit!");
 
@@ -109,13 +110,14 @@ public:
 
         Gui->AddElement(btn2);
         Gui->AddElement(mytext2);
+        Gui->AddElement(timer_control);
+
+        Functor<TButton::CallbackType> tcmd(this, &Page1::btn_clicked);
+        timer_control->setClicked(tcmd, NULL);
 
         Functor<TimerCallback> cmd(this, &Page1::onTimerEvent);
-        TTimer t(this, 500, cmd);
+        t = new TTimer(this, 500, cmd);
     }
-// note: get_next_page() 等等不一定要是純虛擬函式
-// 在 abstract 應該傳回 -1, 這樣 set_switch_button 就會知道不用做 set 了
-
     virtual int get_page()
     {
         return 1;
@@ -136,9 +138,22 @@ public:
         mytext2->settext(buf);
         refresh();
     }
+
+private:
+    void btn_clicked(void *data)
+    {
+        bool status = t->isRun();
+        if (status == true)
+            t->stop();
+        else
+            t->start();
+    }
+
 private:
     TButton *btn2;
-    TText *mytext2;
+    TButton *timer_control;
+    TText   *mytext2;
+    TTimer  *t;
 };
 
 class Page2 : public Pages {
@@ -146,12 +161,10 @@ public:
     Page2(SDL_Surface *background = NULL) : Pages(get_page(), background)
     {
         btn3 = new TButton(this, 30, 200, 100, 50, "btn3", "BULLSHIT");
-        btn_update = new TButton(this, 30, 50, 80, 50, "btn_update", "Update!");
         mytext3 = new TText(this, 10, 140, 16, "text3", "I'm bull shit");
         count = new TText(this, 130, 70, 20, "count", "count: ");
 
         Gui->AddElement(btn3);
-        Gui->AddElement(btn_update);
         Gui->AddElement(mytext3);
         Gui->AddElement(count);
 
@@ -189,7 +202,6 @@ public:
 
 private:
     TButton *btn3;
-    TButton *btn_update;
     TText *mytext3;
     TText *count;
 };
