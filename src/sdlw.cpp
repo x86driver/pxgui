@@ -104,8 +104,14 @@ public:
         btn2 = new TButton(this, 300, 150, 100, 70, "btn2", "FUCK");
         mytext2 = new TText(this, 10, 10, 24, "text2", "Shit!");
 
+        mytext2->setfgcolor(200, 255, 200);
+        mytext2->setbgcolor(50, 50, 255);
+
         Gui->AddElement(btn2);
         Gui->AddElement(mytext2);
+
+        Functor<TimerCallback> cmd(this, &Page1::onTimerEvent);
+        TTimer t(this, 500, cmd);
     }
 // note: get_next_page() 等等不一定要是純虛擬函式
 // 在 abstract 應該傳回 -1, 這樣 set_switch_button 就會知道不用做 set 了
@@ -124,7 +130,11 @@ public:
     }
     virtual void onTimerEvent()
     {
-//        text1->settext("abc");
+        char buf[64];
+        static int count = 0;
+        snprintf(buf, sizeof(buf), "fuck me %d", count++);
+        mytext2->settext(buf);
+        refresh();
     }
 private:
     TButton *btn2;
