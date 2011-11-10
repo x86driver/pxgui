@@ -12,7 +12,7 @@
 #  include <uvector.h>
 using namespace ustl;
 #else
-#  include <list>
+#  include <vector>
 #  include <map>
 using namespace std;
 #endif
