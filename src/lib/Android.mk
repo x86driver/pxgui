@@ -6,7 +6,7 @@ LOCAL_SRC_FILES:= \
 
 LOCAL_C_INCLUDES += vendor/garmin/external/ustl
 LOCAL_STATIC_LIBRARIES := libustl
-LOCAL_CFLAGS += -Wall -Wextra -Weffc++ -std=gnu++0x -DBUILD_FOR_ANDROID -g -DUSE_USTL
+LOCAL_CFLAGS += -Wall -Wextra -Weffc++ -std=gnu++0x -DBUILD_FOR_ANDROID -g -DDOREMI_USE_USTL
 
 LOCAL_MODULE:= stl
 

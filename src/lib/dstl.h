@@ -1,7 +1,7 @@
 #ifndef Doremi_STL
 #define Doremi_STL
 
-#ifdef USE_USTL
+#ifdef DOREMI_USE_USTL
 #include <uvector.h>
 #include <uctralgo.h>
 using namespace ustl;

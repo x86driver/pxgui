@@ -4,7 +4,7 @@
 
 #include "dstl.h"
 
-#ifdef USE_USTL
+#ifdef DOREMI_USE_USTL
 #include <uvector.h>
 #include <ulist.h>
 using namespace ustl;
