@@ -223,15 +223,13 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
     pm.insert(&page2);
     pm.setActivePage(0);
 
-#ifdef BUILD_FOR_ANDROID
-    SDL_ShowCursor(SDL_DISABLE);
-#endif
-
-//    SDL_UpdateRect(screen,0,0,0,0);
-
-    pm.getActive()->RedrawAll();
-
-    (TimerManager::getInstance()).start();
+    TimerManager::getInstance().start();
 
     sm.run();
+
+    SDL_FreeSurface(background);
+    SDL_FreeSurface(linuxback);
+    SDL_FreeSurface(snoopy);
+
+    return 0;
 }

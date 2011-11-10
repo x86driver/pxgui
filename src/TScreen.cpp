@@ -55,6 +55,12 @@ void ScreenManager::run()
     bool LMB, MMB, RMB;
     PageManager &pm = PageManager::getInstance();
 
+    pm.getActive()->RedrawAll();
+
+#ifdef BUILD_FOR_ANDROID
+    SDL_ShowCursor(SDL_DISABLE);
+#endif
+
     SDL_UpdateRect(screen, 0, 0, 0, 0);
 
     LMB = MMB = RMB = false;
