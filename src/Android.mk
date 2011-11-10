@@ -9,14 +9,16 @@ LOCAL_SRC_FILES:= \
     TWindow.cpp \
     TText.cpp \
     utils.cpp \
-    TPage.cpp
+    TPage.cpp \
+    TTimer.cpp
 
 LOCAL_C_INCLUDES := /home/shane/pro/libsdl/SDL-1.2.14/include
 LOCAL_C_INCLUDES += /home/shane/source/include/ /home/shane/source/include/freetype2
 LOCAL_C_INCLUDES += external/sdl_ttf
-LOCAL_STATIC_LIBRARIES := libSDL libSDL_ttf libfreetype
+LOCAL_C_INCLUDES += vendor/garmin/external/ustl
+LOCAL_STATIC_LIBRARIES := libSDL libSDL_ttf libfreetype libustl
 LOCAL_SHARED_LIBRARIES := libts
-LOCAL_CFLAGS += -Wall -Wextra -Weffc++ -std=gnu++0x -DBUILD_FOR_ANDROID -O2
+LOCAL_CFLAGS += -Wall -Wextra -Weffc++ -std=gnu++0x -DBUILD_FOR_ANDROID -DUSE_USTL -O2
 
 LOCAL_MODULE:= gui
 

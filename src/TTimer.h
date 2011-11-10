@@ -2,12 +2,20 @@
 #define TTimerH
 
 #include <stdlib.h>
+#include "platform.h"
 #include "lib/functor.h"
 #include "lib/tuple.h"
 #include "TPage.h"
-#include <list>
-#include <map>
+
+#if defined(DOREMI_USE_USTL)
+#  include <umap.h>
+#  include <uvector.h>
+using namespace ustl;
+#else
+#  include <list>
+#  include <map>
 using namespace std;
+#endif
 
 const int MAX_TIMER = 256;
 
@@ -36,7 +44,7 @@ struct timer_head {
         : elapsed(elapsed), orig_elapsed(elapsed), tslist() {}
     int elapsed;
     int orig_elapsed;
-    list<timer_struct*> tslist;
+    vector<timer_struct*> tslist;
 };
 
 class TimerManager {
@@ -57,7 +65,7 @@ private:
     int gcd;
     int time_index;
     pthread_t tid;
-    list<timer_head*> tlist;
+    vector<timer_head*> tlist;
     map<int, struct timer_struct*> m;
 };
 

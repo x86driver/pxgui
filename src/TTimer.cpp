@@ -1,8 +1,16 @@
 #include <stdio.h>
 #include <unistd.h>
-#include <algorithm>
 #include <pthread.h>
 #include "TTimer.h"
+#include "lib/dstl.h"
+
+/*
+#if defined(DOREMI_USE_USTL)
+#  include <uctralgo.h>
+#else
+#  include <algorithm>
+#endif
+*/
 
 class Pred {
 public:
@@ -74,7 +82,8 @@ int TimerManager::insert(Pages *page, int elapsed, const Functor<TimerCallback> 
         timer_head *th = new timer_head(elapsed);
         th->tslist.push_back(ts);
         tlist.push_back(th);
-        tlist.sort(comp);
+//        tlist.sort(comp);
+        doremi::doremi_insertion_sort(tlist.begin(), tlist.end(), comp);
     }
 
     m[time_index] = ts;
@@ -107,7 +116,8 @@ void TimerManager::dispatch(int period)
         }
     }
 
-    tlist.sort(comp);
+//    tlist.sort(comp);
+    doremi::doremi_insertion_sort(tlist.begin(), tlist.end(), comp);
 }
 
 void TimerManager::run()

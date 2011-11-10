@@ -8,7 +8,8 @@
 const int DEFAULT_SCREEN_WIDTH = 480;
 const int DEFAULT_SCREEN_HEIGHT = 272;
 
-#define USE_DOUBLE_BUFFER 1
+#define DOREMI_USE_USTL         1
+#define USE_DOUBLE_BUFFER       1
 
 #else
 #error "No platform define"
