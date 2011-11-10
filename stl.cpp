@@ -98,7 +98,7 @@ int main()
     }
 
 //    doremi_insertion_sort(tlist, comp);
-    doremi::__insertion_sort(tlist.begin(), tlist.end(), comp);
+    doremi::doremi_insertion_sort(tlist.begin(), tlist.end(), comp);
 
     for (auto i = tlist.begin(); i != tlist.end(); ++i) {
         printf("%d %d\n", (*i)->elapsed, (*i)->orig_elapsed);

@@ -2,6 +2,7 @@
 #define Doremi_STL
 
 #ifdef USE_USTL
+#include <uvector.h>
 #include <uctralgo.h>
 using namespace ustl;
 #else
@@ -37,7 +38,7 @@ inline void doremi_linear_insert(RandomAccessIterator first,
 }
 
 template <typename RandomAccessIterator, typename Compare>
-void __insertion_sort(RandomAccessIterator first,
+void doremi_insertion_sort(RandomAccessIterator first,
                      RandomAccessIterator last, Compare comp)
 {
     if (first == last) return;
