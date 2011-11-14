@@ -179,7 +179,7 @@ public:
     }
     virtual int get_next_page()
     {
-        return 0;
+        return 3;
     }
    virtual TButton *get_switch_button()
     {
@@ -204,6 +204,121 @@ private:
     TText *count;
 };
 
+class Page3 : public Pages {
+public:
+    Page3(SDL_Surface *background = NULL) : Pages(get_page(), background)
+    {
+        btn = new TButton(this, 350, 210, 100, 50, "btn", "COW");
+
+        Gui->AddElement(btn);
+
+        Functor<TimerCallback> cmd(this, &Page3::onTimerEvent);
+        TTimer t(this, 100, cmd);
+    }
+    virtual int get_page()
+    {
+        return 3;
+    }
+    virtual int get_next_page()
+    {
+        return 0;
+    }
+    virtual TButton *get_switch_button()
+    {
+        return btn;
+    }
+    virtual void onTimerEvent()
+    {
+        draw();
+        refresh();
+    }
+
+void _HLine(SDL_Surface *Surface, Sint16 x1, Sint16 x2, Sint16 y, Uint32 Color)
+{
+    if(x1>x2){Sint16 tmp=x1; x1=x2; x2=tmp;}
+
+    SDL_Rect l;
+    l.x=x1; l.y=y; l.w=x2-x1+1; l.h=1;
+
+    SDL_FillRect(Surface, &l, Color);
+}
+
+void _VLine(SDL_Surface *Surface, Sint16 x, Sint16 y1, Sint16 y2, Uint32 Color)
+{
+    if(y1>y2){Sint16 tmp=y1; y1=y2; y2=tmp;}
+
+    SDL_Rect l;
+    l.x=x; l.y=y1; l.w=1; l.h=y2-y1+1;
+
+    SDL_FillRect(Surface, &l, Color);
+}
+
+void sge_Rect(SDL_Surface *Surface, Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, Uint32 color)
+{
+    _HLine(Surface,x1,x2,y1,color);
+    _HLine(Surface,x1,x2,y2,color);
+    _VLine(Surface,x1,y1,y2,color);
+    _VLine(Surface,x2,y1,y2,color);
+}
+
+void draw()
+{
+    Uint32 halfHeight;
+    Uint32 color;
+    Uint32 target_color;
+
+    Uint32 sBaseColor = 0xff000000;
+    Uint32 sColors[] = {0x0000ff, 0x00ff00, 0xff0000};
+    Uint32 sIntervals[] = {0x000001, 0x000100, 0x010000};
+
+    static Uint32 mCount = DEFAULT_SCREEN_HEIGHT / 2;
+    static Uint32 mColorSelect = 0;
+
+    Uint32 i;
+
+    color = sColors[mColorSelect];
+    Uint32 interval = sIntervals[mColorSelect];
+
+    halfHeight = DEFAULT_SCREEN_HEIGHT / 2;
+
+    SDL_Rect rect;
+    rect.x = rect.y = 0;
+    rect.w = DEFAULT_SCREEN_WIDTH;
+    rect.h = DEFAULT_SCREEN_HEIGHT;
+
+    for (i = 0; i < halfHeight; ++i) {
+        Uint32 diff = (((mCount - i) * 4) * interval) % color;
+
+        Uint32 mycolor = sBaseColor+diff;
+        target_color = SDL_MapRGBA(Gui->surface->format,
+            (mycolor >> 16) & 0xff,
+            (mycolor >> 8)  & 0xff,
+            (mycolor)       & 0xff,
+            (mycolor >> 24) & 0xff);
+
+        sge_Rect(Gui->surface, halfHeight - i, (halfHeight - 1) - i,
+             (DEFAULT_SCREEN_WIDTH - halfHeight) + i, halfHeight + i, target_color);
+
+    }
+
+//    SDL_Flip(screen);
+
+    ++mCount;
+    mCount = mCount % 0xff;
+    if (mCount < halfHeight) {
+        mCount = halfHeight;
+
+        mColorSelect++;
+        if (mColorSelect > 2) {
+            mColorSelect = 0;
+        }
+    }
+}
+
+private:
+    TButton *btn;
+};
+
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 {
     ScreenManager &sm = ScreenManager::getInstance();
@@ -216,12 +331,14 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
     Page0 page0(background);
     Page1 page1(linuxback);
     Page2 page2(snoopy);
+    Page3 page3;
 
     PageManager &pm = PageManager::getInstance();
     pm.insert(&page0);
     pm.insert(&page1);
     pm.insert(&page2);
-    pm.setActivePage(0);
+    pm.insert(&page3);
+    pm.setActivePage(3);
 
     TimerManager::getInstance().start();
 
