@@ -10,7 +10,7 @@
 #ifdef BUILD_FOR_ANDROID
     #define DEFAULT_FONT "/system/fonts/DroidSansFallback.ttf"
 #else
-    #define DEFAULT_FONT "/usr/share/cups/fonts/Monospace"
+    #define DEFAULT_FONT "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc"
 #endif
 
 TText::TText(Pages *pages, int x, int y, int fsize, const char *name, const char *str)
