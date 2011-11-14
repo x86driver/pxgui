@@ -44,11 +44,6 @@ void PageManager::switch_to(int page)
         printf("don't switch page!\n");
 }
 
-TGui *PageManager::getActive() const
-{
-    return this->activeGui;
-}
-
 void PageManager::set_switch_button(TButton *btn, int target_page)
 {
     btn->setClicked(cmd_switch_page, (void*)target_page);
@@ -63,11 +58,6 @@ void PageManager::setActivePage(int page)
     }
 }
 
-int PageManager::getActivePage() const
-{
-    return activePage;
-}
-
 extern SDL_Surface *screen;
 Pages::Pages(int page_number, SDL_Surface *background)
         : page(page_number),
@@ -77,11 +67,6 @@ Pages::Pages(int page_number, SDL_Surface *background)
 
 Pages::~Pages()
 {
-}
-
-int Pages::get_page() const
-{
-    return page;
 }
 
 TGui *Pages::get_gui() const

@@ -58,7 +58,7 @@ void *thread_update_text(void *widget)
 
 class Page0 : public Pages {
 public:
-    Page0(SDL_Surface *background = NULL) : Pages(get_page(), background)
+    Page0(SDL_Surface *background = NULL) : Pages(0, background)
     {
         btn1 = new TButton(this, 10, 80, 80, 50, "btn1", "CLICK");
         wnd1 = new TWindow(this, 10, 10, 50, 50, "wnd1", "Hello!");
@@ -72,10 +72,6 @@ public:
 //        btn1->setClicked(cmd1, text1);
     }
 
-    virtual int get_page()
-    {
-        return 0;
-    }
     virtual int get_next_page()
     {
         return 1;
@@ -97,7 +93,7 @@ private:
 class Page1 : public Pages
 {
 public:
-    Page1(SDL_Surface *background = NULL) : Pages(get_page(), background)
+    Page1(SDL_Surface *background = NULL) : Pages(1, background)
     {
         timer_control = new TButton(this, 30, 150, 80, 50, "btn_update", "Timer!幹");
         btn2 = new TButton(this, 300, 150, 100, 70, "btn2", "FUCK");
@@ -115,10 +111,6 @@ public:
 
         Functor<TimerCallback> cmd(this, &Page1::onTimerEvent);
         t = new TTimer(this, 50, cmd);
-    }
-    virtual int get_page()
-    {
-        return 1;
     }
     virtual int get_next_page()
     {
@@ -156,7 +148,7 @@ private:
 
 class Page2 : public Pages {
 public:
-    Page2(SDL_Surface *background = NULL) : Pages(get_page(), background)
+    Page2(SDL_Surface *background = NULL) : Pages(2, background)
     {
         btn3 = new TButton(this, 30, 200, 100, 50, "btn3", "BULLSHIT");
         mytext3 = new TText(this, 10, 140, 16, "text3", "我是帥哥宇");
@@ -172,10 +164,6 @@ public:
 //        Functor<void (void*)> btn_cmd(this, &Page2::onTimerEvent2);
 //        btn_update->setClicked(btn_cmd, NULL);
 
-    }
-    virtual int get_page()
-    {
-        return 2;
     }
     virtual int get_next_page()
     {
@@ -206,7 +194,7 @@ private:
 
 class Page3 : public Pages {
 public:
-    Page3(SDL_Surface *background = NULL) : Pages(get_page(), background)
+    Page3(SDL_Surface *background = NULL) : Pages(3, background)
     {
         btn = new TButton(this, 350, 210, 100, 50, "btn", "COW");
 
@@ -214,10 +202,6 @@ public:
 
         Functor<TimerCallback> cmd(this, &Page3::onTimerEvent);
         TTimer t(this, 20, cmd);
-    }
-    virtual int get_page()
-    {
-        return 3;
     }
     virtual int get_next_page()
     {

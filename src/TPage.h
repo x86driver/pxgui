@@ -23,8 +23,8 @@ public:
     void remove(int page);
     void set_switch_button(TButton *btn, int target_page);
     void setActivePage(int page);
-    int  getActivePage() const;
-    TGui *getActive() const;
+    inline int  getActivePage() const;
+    inline TGui *getActive() const;
 
 private:
     int  activePage;
@@ -42,13 +42,12 @@ private:
 class Pages {
 public:
     Pages(int page_number, SDL_Surface *background = NULL);
-    int get_page() const;
     TGui *get_gui() const;
 
     void refresh();
+    inline  int get_page() const;
     virtual ~Pages();
     virtual void onTimerEvent() = 0;
-    virtual int get_page() = 0;
     virtual int get_next_page() = 0;
     virtual TButton *get_switch_button() = 0;
 
@@ -59,5 +58,20 @@ private:
     Pages(const Pages &);
     void operator=(const Pages &);
 };
+
+TGui *PageManager::getActive() const
+{
+    return this->activeGui;
+}
+
+int PageManager::getActivePage() const
+{
+    return activePage;
+}
+
+int Pages::get_page() const
+{
+    return page;
+}
 
 #endif
