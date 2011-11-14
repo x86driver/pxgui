@@ -7,7 +7,11 @@
 #include "utils.h"
 #include "sdlw.h"
 
-#define DEFAULT_FONT "/usr/share/cups/fonts/Monospace"
+#ifdef BUILD_FOR_ANDROID
+    #define DEFAULT_FONT "/system/fonts/DroidSansFallback.ttf"
+#else
+    #define DEFAULT_FONT "/usr/share/cups/fonts/Monospace"
+#endif
 
 TText::TText(Pages *pages, int x, int y, int fsize, const char *name, const char *str)
     : TGuiElement(pages, x, y, -1, -1, name),
@@ -45,7 +49,7 @@ TText::~TText()
 
 SDL_Surface *TText::render()
 {
-    SDL_Surface *t = TTF_RenderText_Shaded(font, str, forecolor, backcolor);
+    SDL_Surface *t = TTF_RenderUTF8_Shaded(font, str, forecolor, backcolor);
 
     if ( t == NULL ) {
         fprintf(stderr, "Couldn't render text: %s\n", SDL_GetError());

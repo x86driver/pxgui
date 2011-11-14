@@ -99,7 +99,7 @@ class Page1 : public Pages
 public:
     Page1(SDL_Surface *background = NULL) : Pages(get_page(), background)
     {
-        timer_control = new TButton(this, 30, 150, 80, 50, "btn_update", "Timer!");
+        timer_control = new TButton(this, 30, 150, 80, 50, "btn_update", "Timer!幹");
         btn2 = new TButton(this, 300, 150, 100, 70, "btn2", "FUCK");
         mytext2 = new TText(this, 10, 10, 24, "text2", "Shit!");
 
@@ -159,7 +159,7 @@ public:
     Page2(SDL_Surface *background = NULL) : Pages(get_page(), background)
     {
         btn3 = new TButton(this, 30, 200, 100, 50, "btn3", "BULLSHIT");
-        mytext3 = new TText(this, 10, 140, 16, "text3", "I'm bull shit");
+        mytext3 = new TText(this, 10, 140, 16, "text3", "我是帥哥宇");
         count = new TText(this, 130, 70, 20, "count", "count: ");
 
         Gui->AddElement(btn3);
