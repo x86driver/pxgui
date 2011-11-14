@@ -27,7 +27,8 @@ void PageManager::insert(Pages *page)
     if (n >= 0 && n < MAX_PAGE)   // 0~255
         pages[n] = page->get_gui();
 
-    set_switch_button(page->get_switch_button(), page->get_next_page());
+    set_switch_button(page->get_switch_next_button(), page->get_next_page());
+    set_switch_button(page->get_switch_prev_button(), page->get_prev_page());
 }
 
 void PageManager::switch_to(int page)
@@ -46,7 +47,8 @@ void PageManager::switch_to(int page)
 
 void PageManager::set_switch_button(TButton *btn, int target_page)
 {
-    btn->setClicked(cmd_switch_page, (void*)target_page);
+    if (btn)
+        btn->setClicked(cmd_switch_page, (void*)target_page);
 }
 
 void PageManager::setActivePage(int page)

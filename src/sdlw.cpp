@@ -60,11 +60,13 @@ class Page0 : public Pages {
 public:
     Page0(SDL_Surface *background = NULL) : Pages(0, background)
     {
-        btn1 = new TButton(this, 10, 80, 80, 50, "btn1", "CLICK");
+        btn1 = new TButton(this, 100, 80, 80, 50, "btn1", "Next");
+        btn2 = new TButton(this, 10, 80, 80, 50, "btn2", "上一頁");
         wnd1 = new TWindow(this, 10, 10, 50, 50, "wnd1", "Hello!");
         text1 = new TText(this, 50, 50, 24, "text1", "Fuck ^_^");
 
         Gui->AddElement(btn1);
+        Gui->AddElement(btn2);
         Gui->AddElement(wnd1);
         Gui->AddElement(text1);
 
@@ -72,13 +74,21 @@ public:
 //        btn1->setClicked(cmd1, text1);
     }
 
-    virtual int get_next_page()
+    virtual int get_next_page() const
     {
         return 1;
     }
-   virtual TButton *get_switch_button()
+    virtual int get_prev_page() const
+    {
+        return 3;
+    }
+    virtual TButton *get_switch_next_button() const
     {
         return btn1;
+    }
+    virtual TButton *get_switch_prev_button() const
+    {
+        return btn2;
     }
     virtual void onTimerEvent()
     {
@@ -86,6 +96,7 @@ public:
     }
 private:
     TButton *btn1;
+    TButton *btn2;
     TWindow *wnd1;
     TText   *text1;
 };
@@ -112,11 +123,11 @@ public:
         Functor<TimerCallback> cmd(this, &Page1::onTimerEvent);
         t = new TTimer(this, 50, cmd);
     }
-    virtual int get_next_page()
+    virtual int get_next_page() const
     {
         return 2;
     }
-   virtual TButton *get_switch_button()
+   virtual TButton *get_switch_next_button() const
     {
         return btn2;
     }
@@ -165,11 +176,11 @@ public:
 //        btn_update->setClicked(btn_cmd, NULL);
 
     }
-    virtual int get_next_page()
+    virtual int get_next_page() const
     {
         return 3;
     }
-   virtual TButton *get_switch_button()
+   virtual TButton *get_switch_next_button() const
     {
         return btn3;
     }
@@ -203,11 +214,11 @@ public:
         Functor<TimerCallback> cmd(this, &Page3::onTimerEvent);
         TTimer t(this, 20, cmd);
     }
-    virtual int get_next_page()
+    virtual int get_next_page() const
     {
         return 0;
     }
-    virtual TButton *get_switch_button()
+    virtual TButton *get_switch_next_button() const
     {
         return btn;
     }

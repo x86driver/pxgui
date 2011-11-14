@@ -48,8 +48,10 @@ public:
     inline  int get_page() const;
     virtual ~Pages();
     virtual void onTimerEvent() = 0;
-    virtual int get_next_page() = 0;
-    virtual TButton *get_switch_button() = 0;
+    virtual int get_next_page() const = 0;
+    virtual int get_prev_page() const { return 0; }
+    virtual TButton *get_switch_next_button() const = 0;
+    virtual TButton *get_switch_prev_button() const { return NULL; }
 
 protected:
     int page;
