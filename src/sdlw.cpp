@@ -213,7 +213,7 @@ public:
         Gui->AddElement(btn);
 
         Functor<TimerCallback> cmd(this, &Page3::onTimerEvent);
-        TTimer t(this, 100, cmd);
+        TTimer t(this, 20, cmd);
     }
     virtual int get_page()
     {
