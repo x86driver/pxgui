@@ -42,7 +42,7 @@ public:
 	void  SetFocus(char * name);
 	void  Redraw();
 	void  RedrawAll();
-	void  OnMouseDown(int x, int y);
+	void  OnMouseDown(int x, int y, bool delay = false);
 	void  OnMouseUp(int x, int y);
 	void  Drag(int xrel, int yrel);
 	// No description

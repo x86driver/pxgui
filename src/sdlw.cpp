@@ -106,9 +106,16 @@ class Page1 : public Pages
 public:
     Page1(SDL_Surface *background = NULL) : Pages(1, background)
     {
+        backlight = 0;
+
         timer_control = new TButton(this, 30, 150, 80, 50, "btn_update", "Timer!幹");
         btn2 = new TButton(this, 300, 150, 100, 70, "btn2", "FUCK");
         mytext2 = new TText(this, 10, 10, 24, "text2", "Shit!");
+
+        counter = new TText(this, 150, 10, 16, "counter", "Backlight:   0");
+
+        up_btn = new TButton(this, 270, 10, 60, 40, "up", "UP");
+        down_btn = new TButton(this, 270, 50, 60, 40, "down", "Down");
 
         mytext2->setfgcolor(200, 255, 200);
         mytext2->setbgcolor(50, 50, 255);
@@ -117,8 +124,22 @@ public:
         Gui->AddElement(mytext2);
         Gui->AddElement(timer_control);
 
+        Gui->AddElement(up_btn);
+        Gui->AddElement(down_btn);
+        Gui->AddElement(counter);
+
         Functor<TButton::CallbackType> tcmd(this, &Page1::btn_clicked);
         timer_control->setClicked(tcmd, NULL);
+
+        Functor<TButton::CallbackType> upcmd(this, &Page1::up_clicked);
+        Functor<TButton::CallbackType> updelay(this, &Page1::up_delayed);
+        Functor<TButton::CallbackType> downcmd(this, &Page1::down_clicked);
+        Functor<TButton::CallbackType> downdelay(this, &Page1::down_delayed);
+
+        up_btn->setClicked(upcmd);
+        up_btn->setDelayed(updelay);
+        down_btn->setClicked(downcmd);
+        down_btn->setDelayed(downdelay);
 
         Functor<TimerCallback> cmd(this, &Page1::onTimerEvent);
         t = new TTimer(this, 50, cmd);
@@ -150,9 +171,54 @@ private:
             t->start();
     }
 
+    void show_backlight()
+    {
+        char buf[64];
+        snprintf(buf, sizeof(buf), "Backlight:   %d", backlight);
+        counter->settext(buf);
+        refresh();
+    }
+
+    void up_clicked(void *data)
+    {
+        ++backlight;
+        if (backlight > 100)
+            backlight = 100;
+        show_backlight();
+    }
+
+    void up_delayed(void *data)
+    {
+        backlight += 10;
+        if (backlight > 100)
+            backlight = 100;
+        show_backlight();
+    }
+
+    void down_clicked(void *data)
+    {
+        --backlight;
+        if (backlight < 0)
+            backlight = 0;
+        show_backlight();
+    }
+
+    void down_delayed(void *data)
+    {
+        backlight -= 10;
+        if (backlight < 0)
+            backlight = 0;
+        show_backlight();
+    }
+
+private:
+    int backlight;
+
 private:
     TButton *btn2;
     TButton *timer_control;
+    TButton *up_btn, *down_btn;
+    TText   *counter;
     TText   *mytext2;
     TTimer  *t;
 };

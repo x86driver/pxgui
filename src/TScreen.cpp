@@ -52,6 +52,8 @@ SDL_Surface *ScreenManager::get_screen() const
 
 void ScreenManager::run()
 {
+    static int button_timer = 0;
+    const int delay = 1;
     bool LMB, MMB, RMB;
     PageManager &pm = PageManager::getInstance();
 
@@ -66,9 +68,22 @@ void ScreenManager::run()
     LMB = MMB = RMB = false;
     bool Done = false;
     SDL_Event ev;
+    SDL_Event old_ev;
 
     while( !Done  ) {
-    	SDL_Delay(1);
+        SDL_Delay(delay);
+
+#define THRESHOLD 200
+        if (LMB == true) {
+            button_timer += delay;
+            if (button_timer > THRESHOLD) {
+                pm.getActive()->OnMouseDown(old_ev.motion.x, old_ev.motion.y, true);
+                button_timer = 0;
+            }
+        } else {
+            button_timer = 0;
+        }
+
 	    if( SDL_PollEvent(&ev) == 0 ) {
 	        continue;
     	}
@@ -86,6 +101,7 @@ void ScreenManager::run()
                 switch(ev.button.button) {
                     case SDL_BUTTON_LEFT:
                         LMB = true;
+                        old_ev = ev;
                         pm.getActive()->OnMouseDown(ev.motion.x, ev.motion.y);
                         break;
 

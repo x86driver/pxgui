@@ -15,7 +15,7 @@ TButton::TButton(Pages *pages, int x, int y, int width, int height, const char *
       caption(strdup(caption)), fontsize(FONT_SIZE),
       fontcolor({0, 0, 0, 0}), Col(),
       cmd_widget(NULL), cmd_data(NULL),
-      nocmd(), cmd(nocmd)
+      nocmd(), cmd(nocmd), delay_cmd(nocmd)
 {
 	// set colors
 	Col.Border.r = 0x00; Col.Border.g = 0x00; Col.Border.b = 0x00;
@@ -104,6 +104,12 @@ bool  TButton::OnMouseUp()
 	return true;
 }
 
+bool  TButton::OnMouseDownDelay()
+{
+    delay_cmd(delay_data);
+    return true;
+}
+
 void  TButton::setfontsize(int size)
 {
     fontsize = size;
@@ -118,6 +124,12 @@ void  TButton::setClicked(Functor<CallbackType> &cmd, void *data)
 {
     this->cmd = cmd;
     this->cmd_data = data;
+}
+
+void  TButton::setDelayed(Functor<CallbackType> &cmd, void *data)
+{
+    this->delay_cmd = cmd;
+    this->delay_data = data;
 }
 
 #if 0

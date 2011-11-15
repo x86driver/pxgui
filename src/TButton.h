@@ -16,9 +16,9 @@ private:
     SDL_Color fontcolor;
 	TColors Col;
     TGuiElement *cmd_widget;
-    void *cmd_data;
+    void *cmd_data, *delay_data;
     NoCommand<CallbackType> nocmd;
-    Functor<CallbackType> cmd;
+    Functor<CallbackType> cmd, delay_cmd;
 
 	void  DrawBtnUp();
 	void  DrawBtnDown();
@@ -29,8 +29,10 @@ public:
 	void  Draw();
     void  setfontsize(int size);
     void  setfontcolor(uint8_t r, uint8_t g, uint8_t b);
-    void  setClicked(Functor<CallbackType> &cmd, void *data);
+    void  setClicked(Functor<CallbackType> &cmd, void *data = NULL);
+    void  setDelayed(Functor<CallbackType> &cmd, void *data = NULL);
 	bool  OnMouseDown();
+    bool  OnMouseDownDelay();
 	bool  OnMouseUp();
 
 private:

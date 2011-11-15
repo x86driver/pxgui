@@ -12,6 +12,7 @@ class TGuiElement
 public:
 	// virtuals
 	virtual bool  OnMouseDown() { return false; }
+    virtual bool  OnMouseDownDelay() { return false; }
 	virtual bool  OnMouseUp() { return false; }
 	virtual void OnMouseMove(int, int) { return; }
 

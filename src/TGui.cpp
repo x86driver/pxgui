@@ -208,7 +208,7 @@ void  TGui::SetFocus(__attribute__((unused)) char * name)
 }
 
 // Looks up the first topmost clicked Element end brings it to front
-void  TGui::OnMouseDown(int x, int y)
+void  TGui::OnMouseDown(int x, int y, bool delay)
 {
 	int i;
 	TGuiElement *e;
@@ -227,8 +227,12 @@ void  TGui::OnMouseDown(int x, int y)
 
 		// already has focus = break;
 		if( hittest && zList[i]->bMouseFocus ) {
-			if( zList[i]->OnMouseDown() )
+            if (delay == true) {
+                if (zList[i]->OnMouseDownDelay())
+                    Redraw();
+			} else if( zList[i]->OnMouseDown() ) {
 				Redraw();
+            }
 			return;
 		}
 
@@ -249,8 +253,11 @@ void  TGui::OnMouseDown(int x, int y)
 			}
 			zList[i] = e;
 			zList[i]->zIndex = i;
-			zList[i]->OnMouseDown();
-			
+            if (delay == true)
+                zList[i]->OnMouseDownDelay();
+            else
+                zList[i]->OnMouseDown();
+
 			// on mouse focus change invalidate all elements
 			for(i=0; i<Count; i++)
 				zList[i]->bInvalidRect = true;
