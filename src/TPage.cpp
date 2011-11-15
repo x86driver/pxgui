@@ -91,3 +91,12 @@ void Pages::refresh_all()
     user_event.user.code = REDRAW_ALL;
     SDL_PushEvent(&user_event);
 }
+
+void Pages::addOneElement(TGuiElement *widget)
+{
+    Gui->AddElement(widget);
+}
+
+void Pages::addElement()
+{
+}

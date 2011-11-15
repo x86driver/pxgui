@@ -65,10 +65,7 @@ public:
         wnd1 = new TWindow(this, 10, 10, 50, 50, "wnd1", "Hello!");
         text1 = new TText(this, 50, 50, 24, "text1", "Fuck ^_^");
 
-        Gui->AddElement(btn1);
-        Gui->AddElement(btn2);
-        Gui->AddElement(wnd1);
-        Gui->AddElement(text1);
+        addElement(btn1, btn2, wnd1, text1);
 
 //        Functor<TButton::CallbackType> cmd1(show_me_money);
 //        btn1->setClicked(cmd1, text1);
@@ -120,13 +117,8 @@ public:
         mytext2->setfgcolor(200, 255, 200);
         mytext2->setbgcolor(50, 50, 255);
 
-        Gui->AddElement(btn2);
-        Gui->AddElement(mytext2);
-        Gui->AddElement(timer_control);
-
-        Gui->AddElement(up_btn);
-        Gui->AddElement(down_btn);
-        Gui->AddElement(counter);
+        addElement(btn2, mytext2, timer_control);
+        addElement(up_btn, down_btn, counter);
 
         Functor<TButton::CallbackType> tcmd(this, &Page1::btn_clicked);
         timer_control->setClicked(tcmd, NULL);
@@ -234,9 +226,7 @@ public:
         mytext3 = new TText(this, 10, 140, 16, "text3", "我是帥哥宇");
         count = new TText(this, 130, 70, 20, "count", "count: ");
 
-        Gui->AddElement(btn3);
-        Gui->AddElement(mytext3);
-        Gui->AddElement(count);
+        addElement(btn3, mytext3, count);
 
         Functor<TimerCallback> cmd(this, &Page2::onTimerEvent);
         TTimer t(this, 1000, cmd);

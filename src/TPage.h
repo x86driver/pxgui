@@ -45,6 +45,7 @@ public:
 
     void refresh();
     void refresh_all();
+    template <typename T, typename... Args> void addElement(T &&t, Args&& ... args);
     inline  int get_page() const;
     virtual ~Pages();
     virtual void onTimerEvent() = 0;
@@ -57,6 +58,9 @@ protected:
     int page;
     TGui *Gui;
 private:
+    void addElement();
+    void addOneElement(TGuiElement *element);
+
     Pages(const Pages &);
     void operator=(const Pages &);
 };
@@ -74,6 +78,13 @@ int PageManager::getActivePage() const
 int Pages::get_page() const
 {
     return page;
+}
+
+template <typename T, typename... Args>
+void Pages::addElement(T &&widget, Args&&... args)
+{
+    addOneElement(widget);
+    addElement(args...);
 }
 
 #endif
