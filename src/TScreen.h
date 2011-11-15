@@ -3,6 +3,11 @@
 
 #include <SDL.h>
 
+enum {
+    REDRAW = 0,
+    REDRAW_ALL
+};
+
 class ScreenManager {
 public:
     void        run();

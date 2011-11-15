@@ -91,9 +91,12 @@ void ScreenManager::run()
     	switch(ev.type) {
     		case SDL_USEREVENT:
 	            switch (ev.user.code) {
+                    case REDRAW:
+                        pm.getActive()->Redraw();
+                        break;
                     case REDRAW_ALL:
-                    pm.getActive()->Redraw();
-                    break;
+                        pm.getActive()->RedrawAll();
+                        break;
                 }
                 break;
 

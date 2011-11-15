@@ -80,6 +80,14 @@ void Pages::refresh()
 {
     SDL_Event user_event;
     user_event.type = SDL_USEREVENT;
+    user_event.user.code = REDRAW;
+    SDL_PushEvent(&user_event);
+}
+
+void Pages::refresh_all()
+{
+    SDL_Event user_event;
+    user_event.type = SDL_USEREVENT;
     user_event.user.code = REDRAW_ALL;
     SDL_PushEvent(&user_event);
 }

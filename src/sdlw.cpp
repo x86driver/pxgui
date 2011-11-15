@@ -142,7 +142,7 @@ public:
         down_btn->setDelayed(downdelay);
 
         Functor<TimerCallback> cmd(this, &Page1::onTimerEvent);
-        t = new TTimer(this, 50, cmd);
+        t = new TTimer(this, 1000, cmd);
     }
     virtual int get_next_page() const
     {
@@ -158,7 +158,7 @@ public:
         static int count = 0;
         snprintf(buf, sizeof(buf), "fuck me %d", count++);
         mytext2->settext(buf);
-        refresh();
+        refresh_all();
     }
 
 private:
@@ -176,7 +176,8 @@ private:
         char buf[64];
         snprintf(buf, sizeof(buf), "Backlight:   %d", backlight);
         counter->settext(buf);
-        refresh();
+        mytext2->bInvalidRect = true;
+        refresh_all();
     }
 
     void up_clicked(void *data)
@@ -192,6 +193,7 @@ private:
         backlight += 10;
         if (backlight > 100)
             backlight = 100;
+        up_btn->bInvalidRect = true;
         show_backlight();
     }
 
@@ -208,6 +210,7 @@ private:
         backlight -= 10;
         if (backlight < 0)
             backlight = 0;
+        down_btn->bInvalidRect = true;
         show_backlight();
     }
 
