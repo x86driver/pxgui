@@ -49,8 +49,8 @@ public:
     inline  int get_page() const;
     virtual ~Pages();
     virtual void onTimerEvent() = 0;
-    virtual int get_next_page() const = 0;
-    virtual int get_prev_page() const { return 0; }
+    inline  virtual int get_next_page() const;
+    inline  virtual int get_prev_page() const;
     virtual TButton *get_switch_next_button() const = 0;
     virtual TButton *get_switch_prev_button() const { return NULL; }
 
@@ -65,6 +65,8 @@ private:
     void operator=(const Pages &);
 };
 
+// PageManager inline implementations
+
 TGui *PageManager::getActive() const
 {
     return this->activeGui;
@@ -75,9 +77,22 @@ int PageManager::getActivePage() const
     return activePage;
 }
 
+
+// Pages inline implementations
+
 int Pages::get_page() const
 {
     return page;
+}
+
+int Pages::get_next_page() const
+{
+    return page+1;
+}
+
+int Pages::get_prev_page() const
+{
+    return ((page-1) < 0 ? 0 : page-1);
 }
 
 template <typename T, typename... Args>

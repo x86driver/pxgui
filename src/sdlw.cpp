@@ -70,11 +70,6 @@ public:
 //        Functor<TButton::CallbackType> cmd1(show_me_money);
 //        btn1->setClicked(cmd1, text1);
     }
-
-    virtual int get_next_page() const
-    {
-        return 1;
-    }
     virtual int get_prev_page() const
     {
         return 3;
@@ -135,10 +130,6 @@ public:
 
         Functor<TimerCallback> cmd(this, &Page1::onTimerEvent);
         t = new TTimer(this, 1000, cmd);
-    }
-    virtual int get_next_page() const
-    {
-        return 2;
     }
    virtual TButton *get_switch_next_button() const
     {
@@ -234,10 +225,6 @@ public:
 //        Functor<void (void*)> btn_cmd(this, &Page2::onTimerEvent2);
 //        btn_update->setClicked(btn_cmd, NULL);
 
-    }
-    virtual int get_next_page() const
-    {
-        return 3;
     }
    virtual TButton *get_switch_next_button() const
     {
