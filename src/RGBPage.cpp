@@ -115,10 +115,12 @@ bool RGBPage::change_color(SDL_Surface *surface)
         case PAGE_PATTERN_CHECKER:
             SDL_Color color1 = {0x55, 0x55, 0x55, 0x55};
             SDL_Color color2 = {0xaa, 0xaa, 0xaa, 0xaa};
+            SDL_Color color3 = {0xff, 0xff, 0xff, 0xaa};
             int count = 0;
+            int x, y;
 
-            for (int x = 0; x < width; ++x) {
-                for (int y = 0; y < height; ++y) {
+            for (x = 0; x < width; ++x) {
+                for (y = 0; y < height; ++y) {
                     if ((count % 2) == 0) {
                         canvas->draw_Pixel(x, y, GetCol(surface, color1));
                     } else {
@@ -126,6 +128,14 @@ bool RGBPage::change_color(SDL_Surface *surface)
                     }
                 }
             }
+
+            x = (width / 2) - 1;
+            y = (height / 2) - 1;
+            canvas->draw_VLine(x, 0, height, GetCol(surface, color3));
+            canvas->draw_VLine(x + 1, 0, height, GetCol(surface, color3));
+            canvas->draw_HLine(0, width, y, GetCol(surface, color3));
+            canvas->draw_HLine(0, width, y + 1, GetCol(surface, color3));
+
             break;
     }
 
