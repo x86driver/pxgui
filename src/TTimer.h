@@ -2,6 +2,7 @@
 #define TTimerH
 
 #include <stdlib.h>
+#include <pthread.h>
 #include "platform.h"
 #include "lib/functor.h"
 #include "lib/tuple.h"
