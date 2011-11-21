@@ -22,6 +22,7 @@ public:
     void remove(int page);
     void set_switch_button(TButton *btn, int target_page);
     void setActivePage(int page);
+    void switch_to(int page);
     inline int  getActivePage() const;
     inline TGui *getActive() const;
 
@@ -29,11 +30,10 @@ private:
     int  activePage;
     TGui *activeGui;
     TGui *pages[MAX_PAGE];
-//    Functor<TButton::CallbackType> cmd_switch_page;
     Functor<void (void*)> cmd_switch_page;
 
     PageManager();
-    void switch_to(int page);
+//    void switch_to(int page);
     PageManager(const PageManager &);
     void operator=(const PageManager &);
 };

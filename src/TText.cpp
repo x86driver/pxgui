@@ -49,6 +49,11 @@ TText::~TText()
 
 SDL_Surface *TText::render()
 {
+    if (strlen(str) == 0) {
+        setAspect(0, 0);
+        return NULL;
+    }
+
     SDL_Surface *t = TTF_RenderUTF8_Shaded(font, str, forecolor, backcolor);
 
     if ( t == NULL ) {
@@ -63,6 +68,9 @@ SDL_Surface *TText::render()
 
 void TText::Draw()
 {
+    if (!text)
+        return;
+
     SDL_Rect rect;
     rect.x = 0;
     rect.y = 0;

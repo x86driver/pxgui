@@ -6,6 +6,7 @@
 #include "TGuiElement.h"
 #include "TText.h"
 #include "TButton.h"
+#include "utils.h"
 //---------------------------------------------------------------------------
 
 static const int FONT_SIZE = 16;
@@ -37,20 +38,27 @@ TButton::~TButton()
 
 void  TButton::render_text()
 {
+    if (strlen(caption) == 0)
+        return;
+
     TText *txt = new TText(page, 0, 0, fontsize, "button text", caption);
     txt->setfgcolor(fontcolor.r, fontcolor.g, fontcolor.b);
+
     SDL_Surface *text_surface = txt->render();
     SDL_Rect dst;
+
     dst.x = (width - text_surface->w) / 2;
     dst.y = (height - text_surface->h) / 2;
+
     SDL_BlitSurface(text_surface, NULL, surface, &dst);
+
     delete txt;
     SDL_FreeSurface(text_surface);
 }
 
 void  TButton::Draw()
 {
-    printf("Draw button [%s] up: %p\n", name, __builtin_return_address(0));
+    gui_dbg("Draw button [%s] up: %p\n", name, __builtin_return_address(0));
 	DrawBtnUp();
 }
 
@@ -89,7 +97,6 @@ void  TButton::DrawBtnDown()
 bool  TButton::OnMouseDown()
 {
 	DrawBtnDown();
-//    cmd(cmd_widget, cmd_data);
 	bInvalidRect = true;
 	return true;
 }
@@ -99,8 +106,6 @@ bool  TButton::OnMouseUp()
 	DrawBtnUp();
 	bInvalidRect = true;
     cmd(cmd_data);
-    if (cmd_widget)
-        cmd_widget->bInvalidRect = true;    // We redraw the action widget
 	return true;
 }
 
@@ -131,12 +136,3 @@ void  TButton::setDelayed(Functor<CallbackType> &cmd, void *data)
     this->delay_cmd = cmd;
     this->delay_data = data;
 }
-
-#if 0
-void  TButton::setClicked(Functor<CallbackType> &cmd, TGuiElement *widget, void *data)
-{
-    this->cmd = cmd;
-    this->cmd_widget = widget;
-    this->cmd_data = data;
-}
-#endif

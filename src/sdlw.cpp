@@ -17,6 +17,7 @@
 #include "TScreen.h"
 #include "sdlw.h"
 #include "platform.h"
+#include "RGBPage.h"
 
 //---------------------------------------------------------------------------
 
@@ -58,7 +59,7 @@ void *thread_update_text(void *widget)
 
 class Page0 : public Pages {
 public:
-    Page0(SDL_Surface *background = NULL) : Pages(0, background)
+    Page0(int page, SDL_Surface *background = NULL) : Pages(page, background)
     {
         btn1 = new TButton(this, 100, 80, 80, 50, "btn1", "Next");
         btn2 = new TButton(this, 10, 80, 80, 50, "btn2", "上一頁");
@@ -96,7 +97,7 @@ private:
 class Page1 : public Pages
 {
 public:
-    Page1(SDL_Surface *background = NULL) : Pages(1, background)
+    Page1(int page, SDL_Surface *background = NULL) : Pages(page, background)
     {
         backlight = 0;
 
@@ -211,7 +212,7 @@ private:
 
 class Page2 : public Pages {
 public:
-    Page2(SDL_Surface *background = NULL) : Pages(2, background)
+    Page2(int page, SDL_Surface *background = NULL) : Pages(page, background)
     {
         btn3 = new TButton(this, 30, 200, 100, 50, "btn3", "BULLSHIT");
         mytext3 = new TText(this, 10, 140, 16, "text3", "我是帥哥宇");
@@ -251,7 +252,7 @@ private:
 
 class Page3 : public Pages {
 public:
-    Page3(SDL_Surface *background = NULL) : Pages(3, background)
+    Page3(int page, SDL_Surface *background = NULL) : Pages(page, background)
     {
         btn = new TButton(this, 350, 210, 100, 50, "btn", "COW");
 
@@ -262,7 +263,7 @@ public:
     }
     virtual int get_next_page() const
     {
-        return 0;
+        return 4;
     }
     virtual TButton *get_switch_next_button() const
     {
@@ -369,17 +370,19 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
     linuxback  = sm.load_background("linux.bmp");
     snoopy     = sm.load_background("snoopy.bmp");
 
-    Page0 page0(background);
-    Page1 page1(linuxback);
-    Page2 page2(snoopy);
-    Page3 page3;
+    Page0 page0(0, background);
+    Page1 page1(1, linuxback);
+    Page2 page2(2, snoopy);
+    Page3 page3(3);
+    RGBPage rgbpage(4);
 
     PageManager &pm = PageManager::getInstance();
     pm.insert(&page0);
     pm.insert(&page1);
     pm.insert(&page2);
     pm.insert(&page3);
-    pm.setActivePage(3);
+    pm.insert(&rgbpage);
+    pm.setActivePage(4);
 
     TimerManager::getInstance().start();
 
