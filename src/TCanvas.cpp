@@ -54,6 +54,14 @@ void TCanvas::draw_VLine(Sint16 x, Sint16 y1, Sint16 y2, Uint32 Color)
     SDL_FillRect(surface, &l, Color);
 }
 
+void TCanvas::draw_Rect(Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, Uint32 color)
+{
+    draw_HLine(x1,x2,y1,color);
+    draw_HLine(x1,x2,y2,color);
+    draw_VLine(x1,y1,y2,color);
+    draw_VLine(x2,y1,y2,color);
+}
+
 /*
  * Set the pixel at (x, y) to the given value
  * NOTE: The surface must be locked before calling this!

@@ -20,6 +20,7 @@ public:
 
     void draw_HLine(Sint16 x1, Sint16 x2, Sint16 y, Uint32 Color);
     void draw_VLine(Sint16 x, Sint16 y1, Sint16 y2, Uint32 Color);
+    void draw_Rect(Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, Uint32 color);
     void draw_Pixel(int x, int y, Uint32 color);
 
     virtual void Draw();
