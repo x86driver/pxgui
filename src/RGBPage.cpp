@@ -50,24 +50,85 @@ void RGBPage::onDraw(SDL_Surface *surface)
 
 bool RGBPage::change_color(SDL_Surface *surface)
 {
-    static uint32_t i = 0;
+    const int width = DEFAULT_SCREEN_WIDTH;
+    const int height = DEFAULT_SCREEN_HEIGHT;
+
+    static uint32_t index = 0;
     static const SDL_Color color[] = {
         {0xff, 0x00, 0x00, 0x00},
         {0x00, 0xff, 0x00, 0x00},
         {0x00, 0x00, 0xff, 0x00},
         {0xff, 0xff, 0xff, 0x00},
-        {0x00, 0x00, 0x00, 0x00}
+        {0x00, 0x00, 0x00, 0x00},
+        {0x80, 0x80, 0x80, 0x00}
     };
 
+#if 0
     if (i >= (sizeof(color)/sizeof(color[1]))) {
         i = 1;
         SDL_FillRect(surface, NULL, GetCol(surface, color[0]));
         return true;
     }
+#endif
 
-    SDL_FillRect(surface, NULL, GetCol(surface, color[i]));
+    switch (index) {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+            SDL_FillRect(surface, NULL, GetCol(surface, color[index]));
+            break;
+        default:
+            SDL_FillRect(surface, NULL, GetCol(surface, color[5]));
+            break;
+    }
 
-    ++i;
+    SDL_Color black = {0, 0, 0, 0};
 
+    switch (index) {
+        case PAGE_FLICKER_HORIZONTAL:
+            for (int i = 0; i < height; ++i) {
+                if ((i % 2) != 0) {
+                    canvas->draw_HLine(0, width, i, GetCol(surface, black));
+                }
+            }
+            break;
+
+        case PAGE_FLICKER_VERTICAL:
+            for (int i = 0; i < width; ++i) {
+                if ((i % 2) != 0) {
+                    canvas->draw_VLine(i, 0, height, GetCol(surface, black));
+                }
+            }
+            break;
+
+        case PAGE_PATTERN_RECT:
+            SDL_Rect rect;
+            rect.x = width / 4;
+            rect.y = height / 4;
+            rect.w = width / 2;
+            rect.h = height / 2;
+            SDL_FillRect(surface, &rect, GetCol(surface, black));
+            break;
+
+        case PAGE_PATTERN_CHECKER:
+            SDL_Color color1 = {0x55, 0x55, 0x55, 0x55};
+            SDL_Color color2 = {0xaa, 0xaa, 0xaa, 0xaa};
+            int count = 0;
+
+            for (int x = 0; x < width; ++x) {
+                for (int y = 0; y < height; ++y) {
+                    if ((count % 2) == 0) {
+                        canvas->draw_Pixel(x, y, GetCol(surface, color1));
+                    } else {
+                        canvas->draw_Pixel(x, y, GetCol(surface, color2));
+                    }
+                }
+            }
+            break;
+    }
+
+    ++index;
     return false;
 }
