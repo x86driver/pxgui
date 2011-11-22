@@ -147,3 +147,13 @@ void GeneralInfo::show_button()
     addElement(upbtn, downbtn);
 
 }
+
+TButton *GeneralInfo::get_switch_next_button() const
+{
+    return nextbtn;
+}
+
+int GeneralInfo::get_next_page() const
+{
+    return 0;
+}

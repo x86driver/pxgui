@@ -262,10 +262,6 @@ public:
         Functor<TimerCallback> cmd(this, &Page3::onTimerEvent);
         TTimer t(this, 20, cmd);
     }
-    virtual int get_next_page() const
-    {
-        return 4;
-    }
     virtual TButton *get_switch_next_button() const
     {
         return btn;
@@ -389,7 +385,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
     pm.insert(&rgbpage);
     pm.insert(&general);
 
-    pm.setActivePage(5);
+    pm.setActivePage(0);
 
     TimerManager::getInstance().start();
 

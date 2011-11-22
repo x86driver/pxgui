@@ -2,6 +2,9 @@
 #ifndef TButtonH
 #define TButtonH
 
+#include "TGui.h"
+#include "TGuiElement.h"
+#include "TText.h"
 #include "lib/functor.h"
 #include "lib/tuple.h"
 
@@ -19,6 +22,7 @@ private:
     void *cmd_data, *delay_data;
     NoCommand<CallbackType> nocmd;
     Functor<CallbackType> cmd, delay_cmd;
+    TText *txt;
 
 	void  DrawBtnUp();
 	void  DrawBtnDown();

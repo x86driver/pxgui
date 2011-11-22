@@ -9,7 +9,6 @@
 class RGBPage : public Pages {
 public:
     RGBPage(int page, SDL_Surface *background = NULL);
-    virtual int get_next_page() const;
 
 private:
     TCanvas *canvas;

@@ -21,11 +21,6 @@ RGBPage::RGBPage(int page, SDL_Surface *background)
     addElement(canvas);
 }
 
-int RGBPage::get_next_page() const
-{
-    return 0;
-}
-
 void RGBPage::onClick(SDL_Surface *surface)
 {
     if (change_color(surface) == true) {

@@ -22,7 +22,8 @@ private:
 
     void show_button();
 
-    virtual TButton *get_switch_next_button() const { return NULL; }
+    virtual int get_next_page() const;
+    virtual TButton *get_switch_next_button() const;
     virtual void onTimerEvent();
 
 private:
