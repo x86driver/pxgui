@@ -13,7 +13,8 @@ LOCAL_SRC_FILES:= \
     TTimer.cpp \
     TScreen.cpp \
     TCanvas.cpp \
-    RGBPage.cpp
+    RGBPage.cpp \
+    GeneralInfo.cpp
 
 LOCAL_C_INCLUDES := /home/shane/pro/libsdl/SDL-1.2.14/include
 LOCAL_C_INCLUDES += /home/shane/source/include/ /home/shane/source/include/freetype2

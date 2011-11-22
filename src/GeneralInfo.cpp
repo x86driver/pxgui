@@ -21,7 +21,7 @@ GeneralInfo::GeneralInfo(int page, SDL_Surface *background)
     TText *text_info1[nr_info1];
 
     for (int i = 0; i < nr_info1; ++i) {
-        text_info1[i] = new TText(this, 0, 27*i, 16, "text", info1[i]);
+        text_info1[i] = new TText(this, 2, 27*i, 16, "text", info1[i]);
         addElement(text_info1[i]);
     }
 
