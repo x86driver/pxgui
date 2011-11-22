@@ -18,6 +18,7 @@
 #include "sdlw.h"
 #include "platform.h"
 #include "RGBPage.h"
+#include "GeneralInfo.h"
 
 //---------------------------------------------------------------------------
 
@@ -365,24 +366,30 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 {
     ScreenManager &sm = ScreenManager::getInstance();
     SDL_Surface *background, *linuxback, *snoopy;
+    SDL_Surface *white;
 
     background = sm.load_background("layout.bmp");
     linuxback  = sm.load_background("linux.bmp");
     snoopy     = sm.load_background("snoopy.bmp");
+    white      = sm.create_background(0xff, 0xff, 0xff);
 
     Page0 page0(0, background);
     Page1 page1(1, linuxback);
     Page2 page2(2, snoopy);
     Page3 page3(3);
     RGBPage rgbpage(4);
+    GeneralInfo general(5, white);
 
     PageManager &pm = PageManager::getInstance();
+
     pm.insert(&page0);
     pm.insert(&page1);
     pm.insert(&page2);
     pm.insert(&page3);
     pm.insert(&rgbpage);
-    pm.setActivePage(4);
+    pm.insert(&general);
+
+    pm.setActivePage(5);
 
     TimerManager::getInstance().start();
 

@@ -45,6 +45,22 @@ SDL_Surface *ScreenManager::load_background(const char * const filename)
     return s;
 }
 
+SDL_Surface *ScreenManager::create_background(uint8_t r, uint8_t g, uint8_t b)
+{
+    SDL_PixelFormat *fmt = screen->format;
+    SDL_Surface *surface = SDL_CreateRGBSurface(SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE|SDL_HWACCEL|SDL_PREALLOC, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT, fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
+
+    if (surface == NULL) {
+	    printf("Error creating main GUI surface\n");
+    	exit(-1);
+    }
+
+    Uint32 color = SDL_MapRGB(surface->format, r, g, b);
+    SDL_FillRect(surface, NULL, color);
+
+    return surface;
+}
+
 SDL_Surface *ScreenManager::get_screen() const
 {
     return screen;

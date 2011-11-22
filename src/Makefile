@@ -1,5 +1,5 @@
 TARGET = gui
-OBJS = sdlw.o  TButton.o  TGui.o  TGuiElement.o  TWindow.o TText.o TPage.o TTimer.o TScreen.o TCanvas.o utils.o RGBPage.o
+OBJS = sdlw.o  TButton.o  TGui.o  TGuiElement.o  TWindow.o TText.o TPage.o TTimer.o TScreen.o TCanvas.o utils.o RGBPage.o GeneralInfo.o
 CPP = g++
 CFLAGS = -g -Wall -Wextra -std=gnu++0x
 CFLAGS += `sdl-config --cflags --libs` `freetype-config --cflags --libs`
