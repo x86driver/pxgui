@@ -79,7 +79,7 @@ void GeneralInfo::fill_data1()
 void GeneralInfo::show_data1()
 {
     for (int i = 0; i < DATA1_SIZE; ++i) {
-        text_data1[i] = new TText(this, 130, LINESKIP*i, 16, "data1", data1[i]);
+        text_data1[i] = new TText(this, 120, LINESKIP*i, 16, "data1", data1[i]);
         addElement(text_data1[i]);
     }
 }
@@ -102,7 +102,7 @@ void GeneralInfo::show_info2()
     TText *text_info2[nr_info2];
 
     for (int i = 0; i < nr_info2; ++i) {
-        text_info2[i] = new TText(this, 250, LINESKIP*i, 16, "info2", info2[i]);
+        text_info2[i] = new TText(this, 240, LINESKIP*i, 16, "info2", info2[i]);
         addElement(text_info2[i]);
     }
 
@@ -124,24 +124,24 @@ void GeneralInfo::fill_data2()
 void GeneralInfo::show_data2()
 {
     for (int i = 0; i < DATA2_SIZE; ++i) {
-        text_data2[i] = new TText(this, 380, 26*i, 16, "data2", data2[i]);
+        text_data2[i] = new TText(this, 360, 26*i, 16, "data2", data2[i]);
         addElement(text_data2[i]);
     }
 }
 
 void GeneralInfo::show_button()
 {
-    const int x1 = 240;
-    const int y1 = 230;
-    const int width = 80;
+    const int x1 = 252;
+    const int y1 = 236;
+    const int width = 76;
     const int height = 36;
 
     exitbtn = new TButton(this, x1, y1, width, height, "exit", "Exit");
     backbtn = new TButton(this, x1+width, y1, width, height, "back", "Back");
     nextbtn = new TButton(this, x1+width*2, y1, width, height, "next", "Next");
 
-    upbtn   = new TButton(this, x1+width*2, 100, width, height, "up", "Up");
-    downbtn = new TButton(this, x1+width*2, 100+height, width, height, "down", "Down");
+    upbtn   = new TButton(this, x1+width*2, 110, width, height, "up", "Up");
+    downbtn = new TButton(this, x1+width*2, 110+height, width, height, "down", "Down");
 
     addElement(exitbtn, backbtn, nextbtn);
     addElement(upbtn, downbtn);
