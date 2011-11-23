@@ -1,7 +1,10 @@
-#include <framework/switch_blade.h>
 #include "TTimer.h"
 #include "GeneralInfo.h"
 #include "utils.h"
+
+#ifdef BUILD_FOR_ANDROID
+#include <framework/switch_blade.h>
+#endif
 
 GeneralInfo::GeneralInfo(int page, SDL_Surface *background)
     : Pages(page, background)
