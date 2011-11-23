@@ -44,11 +44,9 @@ private:
         ILIMITUSB,
         USB,
         FLASH,
-        DATA1_SIZE
-    };
+        DATA1_SIZE,
 
-    enum {
-        RAMTEST,
+        RAMTEST = DATA1_SIZE,
         ROMTEST,
         VMAX,
         POWERSRC,
@@ -57,16 +55,15 @@ private:
         BATTCAP,
         USBID,
         CHARGEVOL,
-        DATA2_SIZE
+        DATA2_SIZE = (CHARGEVOL+1)-DATA1_SIZE,
+        DATA_SIZE = CHARGEVOL+1
     };
 
     enum { LINESKIP = 26 };
     enum { DATA_LEN = 32 };
 
-    char  data1[DATA1_SIZE][DATA_LEN];
-    char  data2[DATA2_SIZE][DATA_LEN];
-    TText *text_data1[DATA1_SIZE];
-    TText *text_data2[DATA2_SIZE];
+    char  data[DATA_SIZE][DATA_LEN];
+    TText *text_data[DATA_SIZE];
 
     TButton *exitbtn;
     TButton *backbtn;

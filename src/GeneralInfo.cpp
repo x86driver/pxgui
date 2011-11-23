@@ -37,7 +37,7 @@ void GeneralInfo::onTimerEvent()
         (tm->tm_hour < 12 ? tm->tm_hour : tm->tm_hour - 12),
         tm->tm_min, tm->tm_sec);
 
-    text_data1[TIME]->settext(buf);
+    text_data[TIME]->settext(buf);
 
 #ifdef BUILD_FOR_ANDROID
     update_temp();
@@ -74,23 +74,23 @@ void GeneralInfo::show_info1()
 
 void GeneralInfo::fill_data1()
 {
-    strncpy(data1[CNO],         "0.0", DATA_LEN);
-    strncpy(data1[FREQ],        "0.0Hz", DATA_LEN);
-    strncpy(data1[TIME],        "0:0:0", DATA_LEN);
-    strncpy(data1[LASTRESET],   "0:0:0", DATA_LEN);
-    strncpy(data1[TEMP],        "36.0", DATA_LEN);
-    strncpy(data1[BATTERY],     "Li-ion", DATA_LEN);
-    strncpy(data1[BATTVOL],     "4000", DATA_LEN);
-    strncpy(data1[ILIMITUSB],   "1300", DATA_LEN);
-    strncpy(data1[USB],         "Unknown", DATA_LEN);
-    strncpy(data1[FLASH],       "SanDisk", DATA_LEN);
+    strncpy(data[CNO],         "0.0", DATA_LEN);
+    strncpy(data[FREQ],        "0.0Hz", DATA_LEN);
+    strncpy(data[TIME],        "0:0:0", DATA_LEN);
+    strncpy(data[LASTRESET],   "0:0:0", DATA_LEN);
+    strncpy(data[TEMP],        "36.0", DATA_LEN);
+    strncpy(data[BATTERY],     "Li-ion", DATA_LEN);
+    strncpy(data[BATTVOL],     "4000", DATA_LEN);
+    strncpy(data[ILIMITUSB],   "1300", DATA_LEN);
+    strncpy(data[USB],         "Unknown", DATA_LEN);
+    strncpy(data[FLASH],       "SanDisk", DATA_LEN);
 }
 
 void GeneralInfo::show_data1()
 {
     for (int i = 0; i < DATA1_SIZE; ++i) {
-        text_data1[i] = new TText(this, 120, LINESKIP*i, 16, "data1", data1[i]);
-        addElement(text_data1[i]);
+        text_data[i] = new TText(this, 120, LINESKIP*i, 16, "data1", data[i]);
+        addElement(text_data[i]);
     }
 }
 
@@ -120,22 +120,22 @@ void GeneralInfo::show_info2()
 
 void GeneralInfo::fill_data2()
 {
-    strncpy(data2[RAMTEST],     "Pass", DATA_LEN);
-    strncpy(data2[ROMTEST],     "Pass", DATA_LEN);
-    strncpy(data2[VMAX],        "0.0V", DATA_LEN);
-    strncpy(data2[POWERSRC],    "USB Type-B", DATA_LEN);
-    strncpy(data2[BACKLIGHT],   "100", DATA_LEN);
-    strncpy(data2[BATTCUR],     "0", DATA_LEN);
-    strncpy(data2[BATTCAP],     "100", DATA_LEN);
-    strncpy(data2[USBID],       "1435", DATA_LEN);
-    strncpy(data2[CHARGEVOL],   "5097", DATA_LEN);
+    strncpy(data[RAMTEST],     "Pass", DATA_LEN);
+    strncpy(data[ROMTEST],     "Pass", DATA_LEN);
+    strncpy(data[VMAX],        "0.0V", DATA_LEN);
+    strncpy(data[POWERSRC],    "USB Type-B", DATA_LEN);
+    strncpy(data[BACKLIGHT],   "100", DATA_LEN);
+    strncpy(data[BATTCUR],     "0", DATA_LEN);
+    strncpy(data[BATTCAP],     "100", DATA_LEN);
+    strncpy(data[USBID],       "1435", DATA_LEN);
+    strncpy(data[CHARGEVOL],   "5097", DATA_LEN);
 }
 
 void GeneralInfo::show_data2()
 {
-    for (int i = 0; i < DATA2_SIZE; ++i) {
-        text_data2[i] = new TText(this, 360, 26*i, 16, "data2", data2[i]);
-        addElement(text_data2[i]);
+    for (int i = DATA1_SIZE; i < DATA_SIZE; ++i) {
+        text_data[i] = new TText(this, 360, LINESKIP*(i-DATA1_SIZE), 16, "data2", data[i]);
+        addElement(text_data[i]);
     }
 }
 
@@ -180,7 +180,7 @@ void GeneralInfo::update_temp()
     *p++ = '.';
     *p++ = '0';
     *p++ = '\0';
-    text_data1[TEMP]->settext(result);
+    text_data[TEMP]->settext(result);
 }
 
 void GeneralInfo::update_battvol()
@@ -190,7 +190,7 @@ void GeneralInfo::update_battvol()
     read_sysfs(SB_SYSFS_PATH_BATTERY_VOLTAGE, result);
     result[strlen(result)-1] = '\0';
 
-    text_data1[BATTVOL]->settext(result);
+    text_data[BATTVOL]->settext(result);
 }
 
 #endif
