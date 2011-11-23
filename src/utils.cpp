@@ -40,3 +40,21 @@ void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
         break;           /* shouldn't happen, but avoids warnings */
     } // switch
 }
+
+/*
+ * Read sysfs from path to result
+ * Max data: 64 bytes
+ * return: 0 -> OK, otherwise -> fail
+ */
+#include <string.h>
+int read_sysfs(const char *path, char result[64])
+{
+    FILE *fp = fopen(path, "r");
+    if (!fp)
+        return -1;
+
+    fread(&result[0], 64, 1, fp);
+    fclose(fp);
+
+    return 0;
+}

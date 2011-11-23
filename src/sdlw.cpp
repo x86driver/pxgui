@@ -385,7 +385,7 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
     pm.insert(&rgbpage);
     pm.insert(&general);
 
-    pm.setActivePage(0);
+    pm.setActivePage(5);
 
     TimerManager::getInstance().start();
 

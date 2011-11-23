@@ -22,6 +22,12 @@ private:
 
     void show_button();
 
+#ifdef BUILD_FOR_ANDROID
+    void update_temp();
+    void update_battvol();
+#endif
+
+
     virtual int get_next_page() const;
     virtual TButton *get_switch_next_button() const;
     virtual void onTimerEvent();

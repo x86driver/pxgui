@@ -1,5 +1,7 @@
+#include <framework/switch_blade.h>
 #include "TTimer.h"
 #include "GeneralInfo.h"
+#include "utils.h"
 
 GeneralInfo::GeneralInfo(int page, SDL_Surface *background)
     : Pages(page, background)
@@ -33,6 +35,11 @@ void GeneralInfo::onTimerEvent()
         tm->tm_min, tm->tm_sec);
 
     text_data1[TIME]->settext(buf);
+
+#ifdef BUILD_FOR_ANDROID
+    update_temp();
+    update_battvol();
+#endif
 
     refresh();
 }
@@ -157,3 +164,30 @@ int GeneralInfo::get_next_page() const
 {
     return 0;
 }
+
+
+#ifdef BUILD_FOR_ANDROID
+
+void GeneralInfo::update_temp()
+{
+    char result[64];
+    char *p;
+    read_sysfs(SB_SYSFS_PATH_BATTERY_TEMPERATURE, result);
+    p = &result[strlen(result)-1];
+    *p++ = '.';
+    *p++ = '0';
+    *p++ = '\0';
+    text_data1[TEMP]->settext(result);
+}
+
+void GeneralInfo::update_battvol()
+{
+    char result[64];
+
+    read_sysfs(SB_SYSFS_PATH_BATTERY_VOLTAGE, result);
+    result[strlen(result)-1] = '\0';
+
+    text_data1[BATTVOL]->settext(result);
+}
+
+#endif
