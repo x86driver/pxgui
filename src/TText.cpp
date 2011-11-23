@@ -13,59 +13,25 @@
     #define DEFAULT_FONT "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc"
 #endif
 
-FontManager &FontManager::getInstance()
-{
-    static FontManager obj;
-    return obj;
-}
-
-FontManager::FontManager()
-{
-    if (TTF_Init() < 0) {
-        fprintf(stderr, "Couldn't initialize TTF: %s\n", SDL_GetError());
-        SDL_Quit();
-        return;
-    }
-
-    int default_size[] = {16, 20, 24};
-
-    for (size_t i = 0; i < sizeof(default_size)/sizeof(default_size[0]); ++i) {
-        m[default_size[i]] = TTF_OpenFont(DEFAULT_FONT, default_size[i]);
-        if (m[default_size[i]] == NULL) {
-        fprintf(stderr, "Couldn't load %d pt font from %s: %s\n",
-                default_size[i], DEFAULT_FONT, SDL_GetError());
-        }
-    }
-}
-
-FontManager::~FontManager()
-{
-    for (auto it = m.begin(); it != m.end(); ++it) {
-        TTF_CloseFont(it->second);
-    }
-    TTF_Quit();
-}
-
-TTF_Font *FontManager::getFont(int ptsize)
-{
-    auto it = m.find(ptsize);
-    if (it != m.end()) {
-        return it->second;
-    } else {
-        fprintf(stderr, "Can't support %d size font\n", ptsize);
-        exit(-1);
-    }
-
-    return NULL;
-}
-
 TText::TText(Pages *pages, int x, int y, int fsize, const char *name, const char *str)
     : TGuiElement(pages, x, y, -1, -1, name),
       str(strdup(str)), fontsize(fsize),
       backcolor({0xff, 0xff, 0xff, 0xff}),
       forecolor({0x00, 0x00, 0x00, 0x00}),
-      text(NULL)
+      text(NULL), font(NULL)
 {
+    if ( TTF_Init() < 0 ) {
+        fprintf(stderr, "Couldn't initialize TTF: %s\n",SDL_GetError());
+        SDL_Quit();
+        return;
+    }
+
+    font = TTF_OpenFont(DEFAULT_FONT, fontsize);
+    if ( font == NULL ) {
+        fprintf(stderr, "Couldn't load %d pt font from %s: %s\n",
+                    fontsize, DEFAULT_FONT, SDL_GetError());
+    }
+
     text = render();
 
     SDL_SetAlpha(surface, SDL_SRCALPHA, 255);
@@ -77,6 +43,8 @@ TText::~TText()
 {
     free(str);
     SDL_FreeSurface(text);
+    TTF_CloseFont(font);
+    TTF_Quit();
 }
 
 SDL_Surface *TText::render()
@@ -86,11 +54,11 @@ SDL_Surface *TText::render()
         return NULL;
     }
 
-    TTF_Font *font = FontManager::getInstance().getFont(fontsize);
     SDL_Surface *t = TTF_RenderUTF8_Shaded(font, str, forecolor, backcolor);
 
     if ( t == NULL ) {
         fprintf(stderr, "Couldn't render text: %s\n", SDL_GetError());
+        TTF_CloseFont(font);
     }
 
     setAspect(t->w, t->h);
