@@ -4,11 +4,14 @@
 
 #ifdef BUILD_FOR_ANDROID
 #include <framework/switch_blade.h>
+#include "sysfs.h"
 #endif
 
 GeneralInfo::GeneralInfo(int page, SDL_Surface *background)
     : Pages(page, background)
 {
+    backlight = 100;
+
     fill_data1();
     fill_data2();
 
@@ -41,10 +44,13 @@ void GeneralInfo::onTimerEvent()
 
 #ifdef BUILD_FOR_ANDROID
     update_temp();
-    update_battvol();
+
+    update_sysfs(SB_SYSFS_PATH_BATTERY_VOLTAGE, BATTVOL);
+    update_sysfs(USB_LIMIT_CURRENT, ILIMITUSB);
+    update_sysfs(SB_SYSFS_PATH_BATTERY_CURRENT, BATTCUR);
 #endif
 
-    refresh();
+    refresh_all();
 }
 
 void GeneralInfo::show_info1()
@@ -124,7 +130,7 @@ void GeneralInfo::fill_data2()
     strncpy(data[ROMTEST],     "Pass", DATA_LEN);
     strncpy(data[VMAX],        "0.0V", DATA_LEN);
     strncpy(data[POWERSRC],    "USB Type-B", DATA_LEN);
-    strncpy(data[BACKLIGHT],   "100", DATA_LEN);
+    snprintf(data[BACKLIGHT], sizeof(data[BACKLIGHT]), "%d", backlight);
     strncpy(data[BATTCUR],     "0", DATA_LEN);
     strncpy(data[BATTCAP],     "100", DATA_LEN);
     strncpy(data[USBID],       "1435", DATA_LEN);
@@ -153,9 +159,57 @@ void GeneralInfo::show_button()
     upbtn   = new TButton(this, x1+width*2, 110, width, height, "up", "Up");
     downbtn = new TButton(this, x1+width*2, 110+height, width, height, "down", "Down");
 
+    Functor<TButton::CallbackType> upcmd(this, &GeneralInfo::up_backlight_clicked);
+    Functor<TButton::CallbackType> downcmd(this, &GeneralInfo::down_backlight_clicked);
+    Functor<TButton::CallbackType> updelay(this, &GeneralInfo::up_backlight_delayed);
+    Functor<TButton::CallbackType> downdelay(this, &GeneralInfo::down_backlight_delayed);
+
+    upbtn->setClicked(upcmd);
+    upbtn->setDelayed(updelay);
+    downbtn->setClicked(downcmd);
+    downbtn->setDelayed(downdelay);
+
     addElement(exitbtn, backbtn, nextbtn);
     addElement(upbtn, downbtn);
 
+}
+
+void GeneralInfo::refresh_backlight()
+{
+    if (backlight < 5)
+        backlight = 5;
+    else if (backlight > 100)
+        backlight = 100;
+
+    snprintf(data[BACKLIGHT], sizeof(data[BACKLIGHT]), "%d", backlight);
+    text_data[BACKLIGHT]->settext(data[BACKLIGHT]);
+    refresh_all();
+}
+
+void GeneralInfo::down_backlight_clicked(void *data)
+{
+    --backlight;
+    refresh_backlight();
+}
+
+void GeneralInfo::up_backlight_clicked(void *data)
+{
+    ++backlight;
+    refresh_backlight();
+}
+
+void GeneralInfo::up_backlight_delayed(void *data)
+{
+    backlight += 10;
+    upbtn->bInvalidRect = true;
+    refresh_backlight();
+}
+
+void GeneralInfo::down_backlight_delayed(void *data)
+{
+    backlight -= 10;
+    downbtn->bInvalidRect = true;
+    refresh_backlight();
 }
 
 TButton *GeneralInfo::get_switch_next_button() const
@@ -171,6 +225,17 @@ int GeneralInfo::get_next_page() const
 
 #ifdef BUILD_FOR_ANDROID
 
+void GeneralInfo::update_sysfs(const char *sysfs, int col)
+{
+    char result[64];
+
+    memset(&result[0], 0, sizeof(result));
+    read_sysfs(sysfs, result);
+    result[strlen(result)-1] = '\0';
+
+    text_data[col]->settext(result);
+}
+
 void GeneralInfo::update_temp()
 {
     char result[64];
@@ -183,14 +248,5 @@ void GeneralInfo::update_temp()
     text_data[TEMP]->settext(result);
 }
 
-void GeneralInfo::update_battvol()
-{
-    char result[64];
-
-    read_sysfs(SB_SYSFS_PATH_BATTERY_VOLTAGE, result);
-    result[strlen(result)-1] = '\0';
-
-    text_data[BATTVOL]->settext(result);
-}
-
 #endif
+

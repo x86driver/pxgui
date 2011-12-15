@@ -25,8 +25,16 @@ private:
 #ifdef BUILD_FOR_ANDROID
     void update_temp();
     void update_battvol();
+    void update_usblimit();
+    void update_usbcurr();
+    void update_sysfs(const char *sysfs, int col);
 #endif
 
+    void refresh_backlight();
+    void up_backlight_clicked(void *data);
+    void up_backlight_delayed(void *data);
+    void down_backlight_clicked(void *data);
+    void down_backlight_delayed(void *data);
 
     virtual int get_next_page() const;
     virtual TButton *get_switch_next_button() const;
@@ -70,6 +78,8 @@ private:
     TButton *nextbtn;
     TButton *upbtn;
     TButton *downbtn;
+
+    int backlight;
 };
 
 #endif
