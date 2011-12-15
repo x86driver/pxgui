@@ -183,6 +183,8 @@ void GeneralInfo::refresh_backlight()
 
     snprintf(data[BACKLIGHT], sizeof(data[BACKLIGHT]), "%d", backlight);
     text_data[BACKLIGHT]->settext(data[BACKLIGHT]);
+    write_sysfs(SB_SYSFS_PATH_BACKLIGHT_BRIGHTNESS, data[BACKLIGHT]);
+
     refresh_all();
 }
 

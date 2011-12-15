@@ -58,3 +58,20 @@ int read_sysfs(const char *path, char result[64])
 
     return 0;
 }
+
+/*
+ * Write sysfs
+ * Max data: written until the end of data ('\0')
+ * return: 0 -> OK, otherwise -> fail
+ */
+int write_sysfs(const char *path, const char *data)
+{
+    FILE *fp = fopen(path, "w");
+    if (!fp)
+        return -1;
+
+    fwrite(data, strlen(data), 1, fp);
+    fclose(fp);
+
+    return 0;
+}
