@@ -48,6 +48,7 @@ void GeneralInfo::onTimerEvent()
     update_sysfs(SB_SYSFS_PATH_BATTERY_VOLTAGE, BATTVOL);
     update_sysfs(USB_LIMIT_CURRENT, ILIMITUSB);
     update_sysfs(SB_SYSFS_PATH_BATTERY_CURRENT, BATTCUR);
+    update_sysfs(SB_SYSFS_PATH_BATTERY_CAPACITY, BATTCAP);
 #endif
 
     refresh_all();
