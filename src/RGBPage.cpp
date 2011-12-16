@@ -15,7 +15,7 @@ RGBPage::RGBPage(int page, SDL_Surface *background)
     Functor<TCanvas::CallbackType> draw_cmd(this, &RGBPage::onDraw);
     Functor<TCanvas::CallbackType> click_cmd(this, &RGBPage::onClick);
 
-    canvas = new TCanvas(this, 0, 0, 480, 272, draw_cmd);
+    canvas = new TCanvas(this, 0, 0, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT, draw_cmd);
     canvas->setClicked(click_cmd);
 
     addElement(canvas);

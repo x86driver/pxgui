@@ -118,8 +118,8 @@ void  TGui::Redraw()
 	int i = 0;
 	int sx, sy, dx, dy, xl, xh, yl, yh;
 	xl = xh = yl = yh = 0;
-	sx = 480; // set dirty to max
-	sy = 272;
+	sx = DEFAULT_SCREEN_WIDTH; // set dirty to max
+	sy = DEFAULT_SCREEN_HEIGHT;
 	dx = 0;
 	dy = 0;
 
@@ -143,21 +143,16 @@ void  TGui::Redraw()
 	}
 	// compute the global dirty rectangle
 
-    if (sx == 480 && sy == 272) {
+    if (sx == DEFAULT_SCREEN_WIDTH && sy == DEFAULT_SCREEN_HEIGHT) {
         dirty.x = dirty.y = 0;
-        dirty.w = 480;
-        dirty.h = 272;
+        dirty.w = DEFAULT_SCREEN_WIDTH;
+        dirty.h = DEFAULT_SCREEN_HEIGHT;
     } else {
 	dirty.x = sx;
 	dirty.y = sy;
 	dirty.w = dx-sx;
 	dirty.h = dy-sy;
     }
-#endif
-#if 0
-    dirty.x = dirty.y = 0;
-    dirty.w = 480;
-    dirty.h = 272;
 #endif
 
 	//cout << "DRCT: " << dirty.x << ", " << dirty.y << ", " << dirty.w << ", " << dirty.h << "\n";

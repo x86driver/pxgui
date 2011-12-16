@@ -7,6 +7,7 @@
 #include "TText.h"
 #include "TButton.h"
 #include "utils.h"
+#include "platform.h"
 //---------------------------------------------------------------------------
 
 static const int FONT_SIZE = 16;

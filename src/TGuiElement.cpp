@@ -5,6 +5,7 @@
 #include "SDL.h"
 #include "TGui.h"
 #include "TGuiElement.h"
+#include "platform.h"
 
 //---------------------------------------------------------------------------
 
@@ -15,12 +16,17 @@ TGuiElement::TGuiElement(class Pages *pages, int x, int y, int width, int height
       bInvalidRect(true), ActiveAlpha(255), PassiveAlpha(255),
       surface(NULL), page(pages), Parent(pages->get_gui())
 {
+    lastx = this->x = x * SCREEN_WIDTH_RATIO;
+    lasty = this->y = y * SCREEN_HEIGHT_RATIO;
+    this->width = width * SCREEN_WIDTH_RATIO;
+    this->height = height * SCREEN_HEIGHT_RATIO;
+
     if (width < 0 || height < 0) {
         return;     // Do nothing, create surface later
     }
 
 	SDL_PixelFormat *fmt = Parent->surface->format;
-	surface = SDL_CreateRGBSurface( SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE|SDL_SRCALPHA|SDL_HWACCEL|SDL_PREALLOC, width, height, fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
+	surface = SDL_CreateRGBSurface( SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_HWPALETTE|SDL_SRCALPHA|SDL_HWACCEL|SDL_PREALLOC, this->width, this->height, fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
 	if(surface == NULL) {
 		printf("Error creating GuiElement surface\n");
 		exit(-1);
@@ -86,6 +92,8 @@ void  TGuiElement::setVisible(bool visible)
 
 void  TGuiElement::setAspect(int width, int height)
 {
+//    this->width = width * SCREEN_WIDTH_RATIO;
+//    this->height = height * SCREEN_HEIGHT_RATIO;
     this->width = width;
     this->height = height;
 

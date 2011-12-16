@@ -6,6 +6,7 @@
 #include "TText.h"
 #include "utils.h"
 #include "sdlw.h"
+#include "platform.h"
 
 #ifdef BUILD_FOR_ANDROID
     #define DEFAULT_FONT "/system/fonts/DroidSansFallback.ttf"
@@ -15,7 +16,7 @@
 
 TText::TText(Pages *pages, int x, int y, int fsize, const char *name, const char *str)
     : TGuiElement(pages, x, y, -1, -1, name),
-      str(strdup(str)), fontsize(fsize),
+      str(strdup(str)), fontsize(fsize * SCREEN_WIDTH_RATIO),
       backcolor({0xff, 0xff, 0xff, 0xff}),
       forecolor({0x00, 0x00, 0x00, 0x00}),
       text(NULL), font(NULL)
